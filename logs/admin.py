@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from log.models import Page, Metric
+from .models import Page, Metric
 
 
 admin.site.register(Page)
