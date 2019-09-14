@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework_nested import routers
 
-from .views import PageViewSet, MetricViewSet, weather
+from .views import PageViewSet, MetricViewSet, weather, mood
 
 
 router = routers.SimpleRouter()
@@ -12,7 +12,8 @@ pages_router.register(r'metrics', MetricViewSet, base_name='page-metrics')
 
 
 urlpatterns = [
-    path('weather/', weather)
+    path('weather/', weather),
+    path('mood/', mood)
 ]
 urlpatterns += router.urls
 urlpatterns += pages_router.urls

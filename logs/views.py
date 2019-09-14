@@ -32,3 +32,9 @@ def weather(request):
     resp.raise_for_status()
 
     return JsonResponse(resp.json())
+
+
+def mood(request):
+    return JsonResponse({
+        'success': True
+    })
