@@ -11,6 +11,7 @@ djangorestframework = "*"
 drf-nested-routers = "*"
 pyyaml = "*"
 uritemplate = "*"
+rev-ai = "*"
 
 [dev-packages]
 
