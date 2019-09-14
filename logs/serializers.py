@@ -4,13 +4,20 @@ from rest_framework import serializers
 from .models import Page, Metric
 
 
-class PageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Page
-        fields = ['id', 'date', 'text', 'metrics']
-
-
 class MetricSerializer(serializers.ModelSerializer):
+    def save(self):
+        self.validated_data['page'] = Page.objects.get(pk=self.context['view'].kwargs['page_pk'])
+        return super().save()
+
     class Meta:
         model = Metric
         fields = ['id', 'name', 'value']
+
+
+class PageSerializer(serializers.ModelSerializer):
+    owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    metric_set = MetricSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Page
+        fields = ['id', 'owner', 'date', 'content', 'metric_set']
