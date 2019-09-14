@@ -5,7 +5,95 @@
     <title>Pilot</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+
+      font-family: 'Open Sans', sans-serif;
+      overflow: hidden;
+    }
+
+    .page {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+    }
+    .page-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .title {
+      color: white;
+      font-size: 8em;
+      text-shadow: 0px 0px 8px black;
+    }
+    .background {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      bottom: 0px;
+      right: 0px;
+      z-index: -1;
+      background-image: url(/static/images/placeholder.jpg);
+    }
+    .info {
+      position: absolute;
+      z-index: 1;
+      top: 25px;
+      left: 25px;
+      color: white;
+      text-shadow: 0px 0px 2px black;
+    }
+
+    .info ul {
+      margin: 0;
+    }
+    </style>
+    <script>
+      function updateTime() {
+        $("#time").text(new Date());
+      }
+
+      $(document).ready(() => {
+        $("html, body").animate({ scrollTop: 0 }, 500);
+        $(".next-2").click((e) => {
+          e.preventDefault();
+          $("html, body").animate({ scrollTop: $("#page2").offset().top }, 1000);
+        });
+        updateTime();
+        setInterval(updateTime, 1000);
+      });
+    </script>
   </head>
   <body>
+    <div id="page1" class="page page-center">
+      <div class="background"></div>
+      <div class="info">
+        <ul>
+          <li><i class="fa fa-fw fa-clock-o"></i> <span id="time"></span></li>
+          <li><i class="fa fa-fw fa-cloud"></i> Weather</li>
+        </ul>
+      </div>
+      <div style="text-align: center">
+        <div class="title">Hello, Grey!</div>
+        <div class="btn next-2">Check in today</div>
+      </div>
+    </div>
+    <div id="page2" class="page">
+      Page 2
+    </div>
+    <div id="page3", class="page">
+      Page 3
+    </div>
   </body>
 </html>
