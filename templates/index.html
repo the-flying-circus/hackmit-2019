@@ -72,6 +72,10 @@
         });
         updateTime();
         setInterval(updateTime, 1000);
+
+        $.get("/weather", (data) => {
+          $("#weather").text(data.consolidated_weather[0].weather_state_name);
+        });
       });
     </script>
   </head>
@@ -81,7 +85,7 @@
       <div class="info">
         <ul>
           <li><i class="fa fa-fw fa-clock-o"></i> <span id="time"></span></li>
-          <li><i class="fa fa-fw fa-cloud"></i> Weather</li>
+          <li><i class="fa fa-fw fa-cloud"></i> <span id="weather">Weather</span></li>
         </ul>
       </div>
       <div style="text-align: center">
