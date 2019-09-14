@@ -9,6 +9,8 @@ requests = "*"
 django-extensions = "*"
 djangorestframework = "*"
 drf-nested-routers = "*"
+pyyaml = "*"
+uritemplate = "*"
 
 [dev-packages]
 
