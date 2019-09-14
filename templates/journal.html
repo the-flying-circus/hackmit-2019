@@ -1,0 +1,13 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="{% static "journal.js" %}"></script>
+    </head>
+    <body>
+        <button id="recordButton" onclick="doStream()">Record</button>
+        <div id="recordStatus"></div>
+        <table id="recordPartial"></table>
+        <textarea id="page"></textarea>
+    </body>
+</html>

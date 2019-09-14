@@ -22,6 +22,7 @@ from rest_framework.schemas import get_schema_view
 urlpatterns = [
     path('', include('logs.urls')),
     path('', TemplateView.as_view(template_name='index.html')),
+    path('journal/', TemplateView.as_view(template_name='journal.html')),
     path('openapi/', get_schema_view(title='Backend Documentation'), name='openapi-schema'),
     path('documentation/', TemplateView.as_view(
         template_name='redoc.html',
