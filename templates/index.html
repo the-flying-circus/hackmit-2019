@@ -12,6 +12,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="{% static "journal.js" %}"></script>
 
     <style>
     html, body {
@@ -94,7 +95,14 @@
       </div>
     </div>
     <div id="page2" class="page">
-      Page 2
+      <button id="recordButton" class="btn wave-effect" onclick="doStream()">Record</button>
+      <div id="recordStatus"></div>
+      <div class="card-panel">
+          <div id="journal">
+              <span id="final" contenteditable="true"></span>
+              <span id="partial" class="grey-text"></span>
+          </div>
+      </div>
     </div>
     <div id="page3", class="page">
       Page 3
