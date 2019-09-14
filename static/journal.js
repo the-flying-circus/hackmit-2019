@@ -5,10 +5,9 @@
  */
 function doStream() {
     statusElement = document.getElementById("recordStatus");
-    tableElement = document.getElementById("recordPartial");
-    pageElement = document.getElementById("page");
+    partialElement = document.getElementById("partial");
+    finalElement = document.getElementById("final");
     finalsReceived = 0;
-    currentCell = null;
     audioContext = new (window.AudioContext || window.WebkitAudioContext)();
 
     const access_token = '02WfsoJ_CZ9RgmNoJh38wAO536lPR7-j0iO7461C9XMn3myA1KG9JeeeGTSGVt3Iy412YUV50aHWoGhdLt9TRbaNJfD6U';
@@ -83,16 +82,13 @@ function onMessage(event) {
             statusElement.innerHTML =`Connected, job id is ${data.id}`;
             break;
         case "partial":
-            currentCell.innerHTML = parseResponse(data);
+            partialElement.innerHTML = parseResponse(data);
             break;
         case "final":
-            var text = parseResponse(data);
-            currentCell.innerHTML = text;
+            partialElement.innerHTML = "";
             if (data.type == "final"){
                 finalsReceived++;
-                var row = tableElement.insertRow(finalsReceived);
-                currentCell = row.insertCell(0);
-                pageElement.innerHTML += " " + text;
+                finalElement.innerHTML += " " + parseResponse(data);
             }
             break;
         default:
@@ -137,10 +133,4 @@ function parseResponse(response) {
 
 function resetDisplay() {
     finalsReceived = 0;
-    while(tableElement.hasChildNodes())
-    {
-        tableElement.removeChild(tableElement.firstChild);
-    }
-    var row = tableElement.insertRow(0);
-    currentCell = row.insertCell(0);
 }
