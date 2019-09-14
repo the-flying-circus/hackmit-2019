@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static "journal.css" %}">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -95,13 +96,15 @@
       </div>
     </div>
     <div id="page2" class="page">
-      <button id="recordButton" class="btn wave-effect" onclick="doStream()">Record</button>
-      <div id="recordStatus"></div>
-      <div class="card-panel">
-          <div id="journal">
-              <span id="final" contenteditable="true"></span>
-              <span id="partial" class="grey-text"></span>
+      <div class="container">
+        <button id="recordButton" class="btn wave-effect" onclick="doStream()">Record</button>
+        <div id="recordStatus"></div>
+        <div id="journal" class="card-panel">
+          <div onclick="document.getElementById('final').focus()">
+            <span id="final" contenteditable="true"></span>
+            <span id="partial" class="grey-text"></span>
           </div>
+        </div>
       </div>
     </div>
     <div id="page3", class="page">

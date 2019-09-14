@@ -39,6 +39,7 @@ function endStream() {
         audioContext.close();
     }
 
+    partialElement.innerHTML = "";
     var button = document.getElementById("recordButton");
     button.onclick = doStream;
     button.innerHTML = "Record";
@@ -49,7 +50,6 @@ function endStream() {
  * @param {Event} event 
  */
 function onOpen(event) {
-    resetDisplay();
     statusElement.innerHTML = "Opened";
     navigator.mediaDevices.getUserMedia({ audio: true }).then((micStream) => {
         audioContext.suspend();
@@ -129,8 +129,4 @@ function parseResponse(response) {
         message += response.type == "final" ?  response.elements[i].value : `${response.elements[i].value} `;
     }
     return message;
-}
-
-function resetDisplay() {
-    finalsReceived = 0;
 }
