@@ -1,8 +1,8 @@
 function addPrompt(text) {
   var finalElement = document.getElementById("final");
-  if (finalElement.innerHTML.length > 0)
+  if (finalElement.innerText.length > 1)
     finalElement.innerHTML += "<br><br><br>";
-  finalElement.innerHTML += "<h4></h4>";
+  finalElement.innerHTML += "<h5></h5>";
   scrollJournalBottom();
   animateTyping(text, finalElement.id);
 }
