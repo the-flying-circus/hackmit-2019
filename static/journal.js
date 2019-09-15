@@ -143,6 +143,7 @@ function onMessage(event) {
       break;
     case "partial":
       partialElement.innerHTML = parseResponse(data);
+      scrollJournalBottom();
       break;
     case "final":
       partialElement.innerHTML = "";
@@ -150,6 +151,7 @@ function onMessage(event) {
         finalsReceived++;
         finalElement.innerHTML += " " + parseResponse(data);
       }
+      scrollJournalBottom();
       break;
     default:
       // We expect all messages from the API to be one of these types
