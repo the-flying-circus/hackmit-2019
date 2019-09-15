@@ -1,4 +1,5 @@
 import requests
+import datetime
 
 from django.contrib.auth import get_user_model, login
 from django.http import JsonResponse, HttpResponse
@@ -13,6 +14,7 @@ from .IBMnlp import getIBMEmotions, getMoodScores
 class PageViewSet(viewsets.ModelViewSet):
     serializer_class = PageSerializer
     permission_classes = [permissions.IsAuthenticated]
+    lookup_field = 'date'
 
     def get_queryset(self):
         return Page.objects.filter(owner=self.request.user)
@@ -21,9 +23,10 @@ class PageViewSet(viewsets.ModelViewSet):
 class MetricViewSet(viewsets.ModelViewSet):
     serializer_class = MetricSerializer
     permission_classes = [permissions.IsAuthenticated]
+    lookup_field = 'name'
 
     def get_queryset(self):
-        return Metric.objects.filter(page=self.kwargs['page_pk'], page__owner=self.request.user)
+        return Metric.objects.filter(page__date=self.kwargs['page_date'], page__owner=self.request.user)
 
 
 @cache_page(60)
@@ -60,6 +63,23 @@ def user(request):
         )
         login(request, obj)
 
+    # TODO: this shouldn't be here
+    Page.objects.get_or_create(owner=request.user, date=datetime.date.today())
+
     return JsonResponse({
         "name": request.user.first_name
+    })
+
+
+def graph(request):
+    output = []
+
+    for page in Page.objects.filter(owner=request.user).order_by('date'):
+        output.append({
+            'date': page.date,
+            'metrics': {a: b for a, b in page.metric_set.values_list('name', 'value')}
+        })
+
+    return JsonResponse({
+        'data': output
     })

@@ -3,24 +3,45 @@ function addPrompt(text) {
   if (finalElement.innerHTML.length > 0)
     finalElement.innerHTML += "<br><br><br>";
   finalElement.innerHTML += "<h4></h4>";
+  scrollJournalBottom();
   animateTyping(text, finalElement.id);
 }
 
+function scrollJournalBottom() {
+  var journal = $("#journal-inner .simplebar-content-wrapper");
+  journal.animate({ scrollTop: journal.prop("scrollHeight") }, 400);
+}
+
 function animateTyping(text, parentId) {
-  document.getElementById(parentId).lastElementChild.innerHTML += text.charAt(0);
-  if (text.length == 1)
+  var parent = document.getElementById(parentId);
+  parent.lastElementChild.innerHTML += text.charAt(0);
+  if (text.length == 1) {
+    parent.innerHTML += "<br>";
+    scrollJournalBottom();
+    setEndOfContenteditable(parent);
     return;
+  }
   var pauseMS = 10 + Math.floor(Math.random() * 100);
   window.setTimeout(function() { animateTyping(text.substring(1), parentId); }, pauseMS);
 }
 
-function getAndAddPrompt() {
+function getAndInsertPrompt() {
   $.get("/prompt/", function(data) {
     { text: document.getElementById("final").innerText }
   })
     .done(function(data) {
       addPrompt(data.question);
     });
+}
+
+function setEndOfContenteditable(contentEditableElement) {
+  var range, selection;
+  range = document.createRange();
+  range.selectNodeContents(contentEditableElement);
+  range.collapse(false);
+  selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
 }
 
 

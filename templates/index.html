@@ -24,6 +24,8 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/4.2.1/simplebar.min.css" integrity="sha256-KuTN+Py9Ut+AuYFyA/Jn+4ENdElDpLe92SYOiFnJr9g=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplebar/4.2.1/simplebar.min.js" integrity="sha256-HnK5kukrBNKjtb6Agv0oBLwovaMdWG+LfPDnI5BLP2Y=" crossorigin="anonymous"></script>
 
     <style>
     html, body {
@@ -57,6 +59,9 @@
       right: 0px;
       z-index: -1;
       background-color: black;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
     }
     .info {
       position: absolute;
@@ -73,6 +78,14 @@
 
     .mapbox-improve-map {
       display: none;
+    }
+
+    .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+      background-color: transparent;
+    }
+
+    .mapboxgl-ctrl-attrib a {
+      color: #ddd;
     }
 
     #page2 .card-panel {
@@ -117,12 +130,66 @@
       font-weight: bold;
     }
 
+    .selector-button {
+      margin: 10px;
+    }
+
+    .selector-vertical {
+      display: block;
+    }
+
     .blur {
       filter: blur(10px);
+    }
+
+    .marker {
+      background-image: url('/static/images/mapbox-icon.png');
+      background-size: cover;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
     }
     </style>
     <script type="text/babel">
       const COLUMN_HEIGHT = 150
+
+      class Selector extends React.Component {
+        constructor(props) {
+          super(props)
+
+          this.state = {
+            value: this.props.value
+          }
+        }
+
+        render() {
+          var nums = [1, 2, 3, 4, 5]
+          if (this.props.vertical) {
+            nums = [5, 4, 3, 2, 1]
+          }
+
+          return <div style={
+            { display: this.props.vertical ? 'inline-block' : 'block' }
+          }>
+            {nums.map((i) =>
+              <a
+                key={i}
+                onClick={
+                  () => {
+                    this.setState({ value: i })
+                    if (this.props.onChange) {
+                      this.props.onChange(i)
+                    }
+                  }
+                }
+                className={'btn-floating btn-large waves-effect waves-light selector-button ' + (this.props.vertical ? 'selector-vertical ' : ' ') + (this.state.value === i ? 'green' : 'red')}>
+                {i}
+              </a>
+            )}
+            <div className='column-label'>{this.props.name}</div>
+          </div>
+        }
+      }
 
       class Column extends React.Component {
         constructor(props) {
@@ -183,10 +250,12 @@
         }
       }
 
-      ReactDOM.render(<div>
-        <Column name='Mood' value={30} />
-        <Column name='Anxiety' value={60} />
-        <Column name='Cynicism' value={90} />
+      ReactDOM.render(<div style={
+        {textAlign: 'center'}
+      }>
+        <Selector name='Mood' value={1} />
+        <Selector name='Anxiety' value={2} vertical={true} />
+        <Selector name='Cynicism' value={3} vertical={true} />
       </div>, document.querySelector("#columns"))
     </script>
 
@@ -198,12 +267,14 @@
       }
 
       const onPageLoad = {};
+      var currentPage = 1;
 
       function addPageLoadEvent(id, func) {
         onPageLoad[id] = func;
       }
 
       $(document).on("page", (e, id) => {
+        currentPage = id;
         $("html, body").animate({ scrollTop: $("#page" + id).offset().top }, 1000);
         const func = onPageLoad[id];
         if (func) {
@@ -235,13 +306,42 @@
           });
         });
 
+        maps[0].on('load', function() {
+          maps[0].stylesheet.layers.forEach(function(layer) {
+            if (layer.type === 'symbol') {
+              maps[0].removeLayer(layer.id);
+            }
+          });
+        });
+
+        const markers = [];
+
+        for (var i = 0; i < 360; i += 30) {
+            markers.push([-74.50 + 0.25 * Math.cos(i * Math.PI / 180), 40 + 0.25 * Math.sin(i * Math.PI / 180)]);
+        }
+
+        markers.forEach(function(mark) {
+          const el = document.createElement("div");
+          el.className = "marker";
+          new mapboxgl.Marker(el)
+            .setLngLat(mark)
+            .addTo(maps[1]);
+        });
+
         addPageLoadEvent(1, () => {
           updateTime();
           setInterval(updateTime, 1000);
 
           $.get("/weather", (data) => {
-            $("#weather").html("<img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='100px'>");
+            var tmp = Math.round((data.main.temp - 273.15)*9/5);
+            $("#weather").html("<img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='100px'><div position:inline>" + tmp + "°F</div>");
           });
+        });
+
+        window.addEventListener("wheel", function(e) {
+          if (e.deltaY > 0 && currentPage === 1) {
+            $(document).trigger("page", [2]);
+          }
         });
 
         $(document).trigger("page", [1]);
@@ -266,8 +366,9 @@
       <div id="background-map-1" class="background"></div>
       <div class="container">
         <button id="recordButton" class="btn wave-effect" onclick="doStream()">Record</button>
+        <button id="promptButton" class="btn wave-effect" onclick="getAndInsertPrompt()">Add Prompt</button>
         <div id="journal" class="card-panel">
-          <div onclick="document.getElementById('final').focus()">
+          <div id="journal-inner" data-simplebar data-simplebar-auto-hide="false" onclick="document.getElementById('final').focus()">
             <span id="final" contenteditable="true"></span>
             <span id="partial" class="grey-text text-darken-1"></span>
           </div>
