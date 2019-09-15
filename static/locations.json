@@ -10,6 +10,12 @@
             "image": "cambodia.jpg",
             "location": [103.864797, 13.4124745],
             "zoom": 15
+        },
+        {
+
+            "name": "Ulaanbaatar, Mongolia",
+            "image": "mongolia.jpg",
+            "location": [47.8864, 106.9057]
         }
     ]
 }
