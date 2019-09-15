@@ -30,7 +30,6 @@ function getAndAddPrompt() {
  * https://www.rev.ai/docs/streaming
  */
 function doStream() {
-    statusElement = document.getElementById("recordStatus");
     partialElement = document.getElementById("partial");
     finalElement = document.getElementById("final");
     finalsReceived = 0;
@@ -76,7 +75,7 @@ function endStream() {
  * @param {Event} event 
  */
 function onOpen(event) {
-    statusElement.innerHTML = "Opened";
+    console.log("Opened");
     navigator.mediaDevices.getUserMedia({ audio: true }).then((micStream) => {
         audioContext.suspend();
         var scriptNode = audioContext.createScriptProcessor(4096, 1, 1 );
@@ -93,7 +92,7 @@ function onOpen(event) {
  * @param {CloseEvent} event
  */
 function onClose(event) {
-    statusElement.innerHTML = `Closed with ${event.code}: ${event.reason}`;
+    console.log(`Closed with ${event.code}: ${event.reason}`);
 }
 
 /**
@@ -105,7 +104,7 @@ function onMessage(event) {
     var data = JSON.parse(event.data);
     switch (data.type){
         case "connected":
-            statusElement.innerHTML =`Connected, job id is ${data.id}`;
+            console.log(`Connected, job id is ${data.id}`);
             break;
         case "partial":
             partialElement.innerHTML = parseResponse(data);
@@ -114,7 +113,6 @@ function onMessage(event) {
             partialElement.innerHTML = "";
             if (data.type == "final"){
                 finalsReceived++;
-                console.log(parseResponse(data));
                 finalElement.innerHTML += " " + parseResponse(data);
             }
             break;
