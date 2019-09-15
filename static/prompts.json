@@ -18,7 +18,7 @@
             "Can you tell me more about {}?  You don't seem happy.",
             "It seems like {} has gotten you down.  Was there a time when you felt good today?",
             "It seems like {} is kind of hard to deal with.  Have you found anything that helps you cope or feel better?",
-            "Seems like things have been a difficult.  Can you tell me more about {}?"
+            "Seems like things have been a bit difficult.  Can you tell me more about {}?"
         ],
         "no_arg": [
             "Would you say you're hanging in there?",
