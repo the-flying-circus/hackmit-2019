@@ -20,4 +20,5 @@ $(document).ready(function() {
     instance.setDate(new Date(Number(instance.date) + 24*60*60000))
     instance._finishSelection();
   });
+  $(instance.$el).change();
 });
