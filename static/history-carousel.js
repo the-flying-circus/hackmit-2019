@@ -3,7 +3,7 @@ $(document).ready(function() {
   var instance = M.Datepicker.init(elems, {"autoClose": true, "defaultDate": new Date(), "setDefaultDate": true})[0];
   var carouselEl = document.getElementById("carousel-inner");
   $(instance.$el).change(() => $.get("/entry/", {
-    date: currentLog
+    date: instance.date.toISOString().substring(0, 10)
   })
     .done(function(data) {
       console.log(data.content);
