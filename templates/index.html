@@ -66,11 +66,15 @@
         $("#time").text(new Date());
       }
 
+      $(document).on("page", (e, id) => {
+        $("html, body").animate({ scrollTop: $("#page" + id).offset().top }, 1000);
+      });
+
       $(document).ready(() => {
-        $("html, body").animate({ scrollTop: 0 }, 500);
+        $(document).trigger("page", [1]);
         $(".next-2").click((e) => {
           e.preventDefault();
-          $("html, body").animate({ scrollTop: $("#page2").offset().top }, 1000);
+          $(document).trigger("page", [2]);
         });
         updateTime();
         setInterval(updateTime, 1000);
