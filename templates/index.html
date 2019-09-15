@@ -225,7 +225,7 @@
 
           return <div className={(this.props.vertical ? 'item-vert' : 'item-horiz') + ' ' + (this.props.right ? 'right' : 'left')}>
             {nums.map((i) =>
-              <span key={i} style={
+              <span key={<img src='../static/images/emots/'.concat(i, '.png')></img>} style={
                 {position: 'relative'}
               }>
                 {i == 1 && prefix && <img src={'/static/images/emots/' + prefix + '.png'} className='emot emot-abs' />}
