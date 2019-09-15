@@ -414,7 +414,7 @@
 
           $.get("/weather", (data) => {
             var tmp = Math.round((data.main.temp - 273.15)*9/5);
-            $("#weather").html("<div style='display:flex;align-items:center;'><img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='100px'><div style='font-size:2em;'>" + tmp + "°F</div></div>");
+            $("#weather").html("<div style='display:flex;align-items:center;'><div style='border-radius:50%;background-color:#AAA;line-height:0;'><img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='100px'></div><div style='font-size:2em;margin-left:20px;'>" + tmp + "°F</div></div>");
           });
         });
 
@@ -450,8 +450,8 @@
     {% csrf_token %}
     <div id="page1" class="page page-center">
       <div id="background" class="background"></div>
-      <div class="info row" style="background-color:rgba(0,0,0,0.5);">
-        <div id="weather"></div>
+      <div class="info card-panel black">
+        <div id="weather" style="margin-bottom:10px;"></div>
         <div id="time"></div>
       </div>
       <div style="text-align: center">
