@@ -83,6 +83,7 @@
       "name": "Ulaanbaatar, Mongolia",
       "wiki": "Ulaanbaatar",
       "image": "mongolia.jpg",
+      "zoom": 14,
       "location": [
         106.9057,
         47.8864
@@ -129,6 +130,7 @@
       "name": "Lalibela, Ethiopia",
       "wiki": "Lalibela",
       "image": "ethiopia.jpg",
+      "zoom": 14,
       "location": [
         39.0476,
         12.0309

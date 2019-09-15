@@ -537,6 +537,11 @@
         addPageLoadEvent(6, () => {
           $("#wiki-sidebar iframe").attr("src", "https://en.m.wikipedia.org/wiki/" + currentLocation.wiki);
           toggleLabels(true);
+
+          const bounds = new mapboxgl.LngLatBounds();
+          console.log(markerObjects);
+          markerObjects.forEach((x) => bounds.extend(x._lngLat));
+          map.fitBounds(bounds, { padding: 150 });
         });
 
         $.ajaxPrefilter((options, originalOptions, jqXHR) => {
