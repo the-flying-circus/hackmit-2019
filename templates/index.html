@@ -22,6 +22,9 @@
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/4.2.1/simplebar.min.css" integrity="sha256-KuTN+Py9Ut+AuYFyA/Jn+4ENdElDpLe92SYOiFnJr9g=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplebar/4.2.1/simplebar.min.js" integrity="sha256-HnK5kukrBNKjtb6Agv0oBLwovaMdWG+LfPDnI5BLP2Y=" crossorigin="anonymous"></script>
+
     <style>
     html, body {
       margin: 0;
@@ -264,7 +267,7 @@
       <div class="container">
         <button id="recordButton" class="btn wave-effect" onclick="doStream()">Record</button>
         <div id="journal" class="card-panel">
-          <div onclick="document.getElementById('final').focus()">
+          <div data-simplebar data-simplebar-auto-hide="false" onclick="document.getElementById('final').focus()">
             <span id="final" contenteditable="true"></span>
             <span id="partial" class="grey-text text-darken-1"></span>
           </div>
