@@ -92,6 +92,7 @@
       margin: 10px;
       margin-bottom: 0px;
       border-radius: 3px;
+      cursor: pointer;
     }
 
     .column-inner {
@@ -151,7 +152,17 @@
             }
 
             onMouseDown={
-              () => this.setState({ isDown: true })
+              (e) => {
+                this.setState({ isDown: true })
+
+                while (!e.target.classList.contains('column')) {
+                  e.target = e.target.parentElement
+                }
+
+                const rect = e.target.getBoundingClientRect()
+                const y = (COLUMN_HEIGHT - (e.clientY - rect.top)) / COLUMN_HEIGHT * 100
+                this.setState({ value: y })
+              }
             }
 
             onMouseUp={
