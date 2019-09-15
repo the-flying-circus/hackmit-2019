@@ -1,4 +1,5 @@
 function addPrompt(text) {
+  document.getElementById("promptButton").disabled = true;
   var finalElement = document.getElementById("final");
   if (finalElement.innerText.length > 1)
     finalElement.innerHTML += "<br><br><br>";
@@ -19,6 +20,7 @@ function animateTyping(text, parentId) {
     parent.innerHTML += "<br>";
     scrollJournalBottom();
     setEndOfContenteditable(parent);
+    document.getElementById("promptButton").disabled = false;
     return;
   }
   var pauseMS = 10 + Math.floor(Math.random() * 100);
@@ -26,8 +28,8 @@ function animateTyping(text, parentId) {
 }
 
 function getAndInsertPrompt() {
-  $.get("/prompt/", function(data) {
-    { text: document.getElementById("final").innerText }
+  $.get("/prompt/", {
+    text: document.getElementById("final").innerText
   })
     .done(function(data) {
       addPrompt(data.question);
