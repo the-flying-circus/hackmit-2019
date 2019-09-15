@@ -3,7 +3,13 @@ function addPrompt(text) {
   if (finalElement.innerHTML.length > 0)
     finalElement.innerHTML += "<br><br><br>";
   finalElement.innerHTML += "<h4></h4>";
+  scrollJournalBottom();
   animateTyping(text, finalElement.id);
+}
+
+function scrollJournalBottom() {
+  var journal = $("#journal-inner .simplebar-content-wrapper");
+  journal.animate({ scrollTop: journal.prop("scrollHeight") }, 400);
 }
 
 function animateTyping(text, parentId) {
@@ -11,6 +17,7 @@ function animateTyping(text, parentId) {
   parent.lastElementChild.innerHTML += text.charAt(0);
   if (text.length == 1) {
     parent.innerHTML += "<br>";
+    scrollJournalBottom();
     setEndOfContenteditable(parent);
     return;
   }
