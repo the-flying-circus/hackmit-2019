@@ -26,8 +26,7 @@ class MetricViewSet(viewsets.ModelViewSet):
 
 @cache_page(60)
 def weather(request):
-    #resp = requests.get("https://www.metaweather.com/api/location/2367105/")
-    resp = requests.get("http://api.openweathermap.org/data/2.5/weather?id=5587779&APPID=3a2410d61b7127eea64a08e1093fb82c")
+    resp = requests.get("http://api.openweathermap.org/data/2.5/weather?id=4931972&APPID=3a2410d61b7127eea64a08e1093fb82c")
     #print(resp)
     resp.raise_for_status()
 
