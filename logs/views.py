@@ -1,5 +1,7 @@
 import requests
 import datetime
+import json
+from random import randint
 
 from django.contrib.auth import get_user_model, login
 from django.http import JsonResponse, HttpResponse
@@ -10,6 +12,7 @@ from .models import Page, Metric
 from .serializers import PageSerializer, MetricSerializer
 from .IBMnlp import getIBMEmotions, getMoodScores, getEntityEmotions, parseEntityEmotions
 
+prompts = json.load(open('static/prompts.json'))
 
 class PageViewSet(viewsets.ModelViewSet):
     serializer_class = PageSerializer
@@ -67,9 +70,11 @@ def prompt(request):
     object, sentiment = parseEntityEmotions(entities, emotion, lastObj, lastSentiment)
 
     if object is None:
-        question = '{} question about nothing in particular'.format(sentiment)
+        questions = prompts[sentiment]['no_arg']
+        question = questions[randint(0, len(questions) - 1)]
     else:
-        question = '{} question about {}'.format(sentiment, object)
+        questions = prompts[sentiment]['arg']
+        question = questions[randint(0, len(questions) - 1)].format(object)
 
     return JsonResponse({
         "question": question,
