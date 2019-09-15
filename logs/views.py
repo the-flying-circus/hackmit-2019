@@ -1,4 +1,5 @@
 import requests
+import datetime
 
 from django.contrib.auth import get_user_model, login
 from django.http import JsonResponse, HttpResponse
@@ -61,6 +62,9 @@ def user(request):
             last_name='Golla'
         )
         login(request, obj)
+
+    # TODO: this shouldn't be here
+    Page.objects.get_or_create(owner=request.user, date=datetime.date.today())
 
     return JsonResponse({
         "name": request.user.first_name
