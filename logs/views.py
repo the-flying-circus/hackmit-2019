@@ -63,3 +63,17 @@ def user(request):
     return JsonResponse({
         "name": request.user.first_name
     })
+
+
+def graph(request):
+    output = []
+
+    for page in Page.objects.filter(owner=request.user).order_by('date'):
+        output.append({
+            'date': page.date,
+            'metrics': {a: b for a, b in page.metric_set.values_list('name', 'value')}
+        })
+
+    return JsonResponse({
+        'data': output
+    })
