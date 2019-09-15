@@ -2,16 +2,23 @@
     "positive": {
         "arg": [
             "Do you think {} has made you happier?",
+            "You seem to be ok with how things are going with {}.  What else is going well?",
+            "Can you tell me some more about {}?  It seems like you're alright with how things are going.",
+            "So would you say you're happy with your experiences with {} recently?"
         ],
         "no_arg": [
-            "Seems like things have been going well!  Would you say that's right?",
+            "Seems like things have been going well!  Is that right?",
+            "It seems like things are going somewhat smoothly.  That's great!  Do you have anything planned for the next couple days?",
+            "It's awesome that you seem to be doing well!  Can you tell me more about the past couple days.",
+            "Hey, this sounds like good news!  Would you say your mood has been stable lately?"
         ]
     },
     "negative" : {
         "arg":[
             "Can you tell me more about {}?  You don't seem happy.",
             "It seems like {} has gotten you down.  Was there a time when you felt good today?",
-            "It seems like {} is kind of hard to deal with.  Have you found anything that helps you cope or feel better?"
+            "It seems like {} is kind of hard to deal with.  Have you found anything that helps you cope or feel better?",
+            "Seems like things have been a difficult.  Can you tell me more about {}?"
         ],
         "no_arg": [
             "Would you say you're hanging in there?",
@@ -19,13 +26,16 @@
             "It seems like things have been rough lately.  What else have you been going through?",
             "You seem down.  Is there anything you're looking forward to?",
             "I'm sorry to hear this.  Can you tell me more about how you've been lately?",
-            "Can you tell me about something you've enjoyed recently?"   
+            "Can you tell me about something you've enjoyed recently?", 
+            "What sorts of things usually help you feel better?",
+            "Have you talked to anyone about this?"
         ]    
     },
     "neutral": {
         "arg": [
             "Can you tell me some more about {}?",
-
+            "Can you describe {} some more?",
+            "Is this stuff with {} new?"
         ],
         "no_arg": [
             "Tell me some more about how things have been lately.",
