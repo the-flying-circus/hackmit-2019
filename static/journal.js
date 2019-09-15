@@ -28,8 +28,8 @@ function animateTyping(text, parentId) {
 }
 
 function getAndInsertPrompt() {
-  $.get("/prompt/", function(data) {
-    { text: document.getElementById("final").innerText }
+  $.get("/prompt/", {
+    text: document.getElementById("final").innerText
   })
     .done(function(data) {
       addPrompt(data.question);

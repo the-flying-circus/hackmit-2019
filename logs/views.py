@@ -47,6 +47,7 @@ def mood(request):
 
 
 def prompt(request):
+    print(request.GET.get("text"))
     return JsonResponse({
         "question": "What made you feel sad?"
     })
