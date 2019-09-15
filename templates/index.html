@@ -332,7 +332,9 @@
       mapboxgl.accessToken = 'pk.eyJ1Ijoic3JrYnJhZGJ1cnkiLCJhIjoiY2p6Z2tzbnRnMG13MjNtbGV2ZGYzZDVkYSJ9.--vU61Pvq2Fd1UqhlIUd3g';
 
       function updateTime() {
-        $("#time").text(new Date());
+        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        var now = new Date();
+        $("#time").text(`${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}  ${now.toLocaleTimeString()}`);
       }
 
       const onPageLoad = {};
@@ -450,7 +452,7 @@
     {% csrf_token %}
     <div id="page1" class="page page-center">
       <div id="background" class="background"></div>
-      <div class="info card-panel black">
+      <div class="info card-panel black center-align">
         <div id="weather" style="margin-bottom:10px;"></div>
         <div id="time"></div>
       </div>
