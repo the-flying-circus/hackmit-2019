@@ -131,6 +131,14 @@
     .blur {
       filter: blur(10px);
     }
+
+    .marker {
+      background-image: url('/static/images/mapbox-icon.png');
+      background-size: cover;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
     </style>
     <script type="text/babel">
       const COLUMN_HEIGHT = 150
@@ -285,6 +293,20 @@
             center: [-74.50, 40],
             zoom: 10
           });
+        });
+
+        const markers = [];
+
+        for (var i = 0; i < 360; i += 30) {
+            markers.push([-74.50 + 0.25 * Math.cos(i * Math.PI / 180), 40 + 0.25 * Math.sin(i * Math.PI / 180)]);
+        }
+
+        markers.forEach(function(mark) {
+          const el = document.createElement("div");
+          el.className = "marker";
+          new mapboxgl.Marker(el)
+            .setLngLat(mark)
+            .addTo(maps[1]);
         });
 
         addPageLoadEvent(1, () => {
