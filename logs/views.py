@@ -1,5 +1,6 @@
 import requests
 
+from django.contrib.auth import get_user_model, login
 from django.http import JsonResponse, HttpResponse
 from rest_framework import viewsets, permissions
 from django.views.decorators.cache import cache_page
@@ -45,4 +46,20 @@ def mood(request):
 def prompt(request):
     return JsonResponse({
         "question": "What made you feel sad?"
+    })
+
+
+def user(request):
+    # TODO: actually implement auth
+    if not request.user.is_authenticated:
+        User = get_user_model()
+        obj, _ = User.objects.get_or_create(
+            username='grey',
+            first_name='Grey',
+            last_name='Golla'
+        )
+        login(request, obj)
+
+    return JsonResponse({
+        "name": request.user.first_name
     })
