@@ -322,6 +322,7 @@
 
       $(document).ready(() => {
         addPageLoadEvent(3, () => {
+          window.toggleLabels(false);
           $.get(`/pages/${currentLog}/`, (data) => {
             const metrics = {}
             data.metric_set.forEach((item) => {
@@ -452,7 +453,10 @@
 
         addPageLoadEvent(2, () => {
           window.toggleLabels(false);
-          setTimeout(() => addPrompt("How was your day?"), 1000);
+          var finalEl = document.getElementById("final");
+          setEndOfContenteditable(finalEl);
+          if (finalEl.innerText < 1)
+            setTimeout(() => addPrompt("How was your day?"), 1000);
         });
 
         $.ajaxPrefilter((options, originalOptions, jqXHR) => {
@@ -486,7 +490,8 @@
       <div id="background" class="background"></div>
       <div class="info card-panel black center-align">
         <div id="weather" style="margin-bottom:10px;"></div>
-        <div id="time"></div>
+        <div id="time" align="left"></div>
+        <div align="left" style="font-size:10pt;"><i>Cambridge, MA</i></div>
       </div>
       <div style="text-align: center">
         <div class="title">Hey, <span id="first-name" class="blur">User</span>!</div>
@@ -499,7 +504,7 @@
         <button id="promptButton" class="btn wave-effect" onclick="getAndInsertPrompt()">Add Prompt</button>
         <div id="journal" class="card-panel white">
           <div id="journal-inner" data-simplebar data-simplebar-auto-hide="false" onclick="document.getElementById('final').focus()">
-            <span id="final" contenteditable="true"><br></span>
+            <span id="final" contenteditable="true"></span>
             <span id="partial" class="grey-text text-darken-1"></span>
           </div>
         </div>
