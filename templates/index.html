@@ -74,6 +74,23 @@
       text-shadow: 0px 0px 2px black;
     }
 
+    .btn {
+      color: #000000;
+      background: #FFFFFF;
+    }
+
+    .btn:hover {
+      background-color: blue-grey;
+    }
+
+    .btn:active{
+      background-color: blue-grey;
+    }
+
+    #page1 .btn {
+      margin: 30px;
+    }
+
     .info ul {
       margin: 0;
     }
@@ -614,6 +631,17 @@
           <div id="prev-button"><i class="material-icons medium">chevron_left</i></div>
           <div id="next-button"><i class="material-icons medium">chevron_right</i></div>
           <div>
+            <table id="feelings">
+              <tr>
+                <td>Mood:</td><td id="mood-emoticon"></td>
+              </tr>
+              <tr>
+                <td>Anxiety:</td><td id="anxiety-emoticon"></td>
+              </tr>
+              <tr>
+                <td>Cynicism:</td><td id="cynicism-emoticon"></td>
+              </tr>
+            </table>
             <div id="carousel-inner" data-simplebar data-simplebar-auto-hide="false"></div>
           </div>
         </div>

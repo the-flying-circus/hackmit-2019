@@ -37,6 +37,7 @@ def getEntityEmotions(text):
          'text': text.replace('.', ',')}
 
     resp = requests.post('https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze', auth=("apikey", ibmKey), json=p)
+    resp.raise_for_status()
 
     try:
         return resp.json()['entities'], resp.json()['emotion']['document']['emotion']
