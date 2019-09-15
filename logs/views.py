@@ -74,6 +74,12 @@ def user(request):
 
 
 def graph(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            'success': False,
+            'error': 'Not Logged In'
+        })
+
     output = []
 
     for page in Page.objects.filter(owner=request.user).order_by('date'):
