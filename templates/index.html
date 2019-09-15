@@ -454,7 +454,7 @@
           if (e.deltaY > 0 && currentPage === 1) {
             $(document).trigger("page", [2]);
           }
-          if (e.deltaY < 0 && currentPage === 4) {
+          if (e.deltaY < 0 && (currentPage === 4 || currentPage === 2)) {
             $(document).trigger("page", [1]);
           }
         });
