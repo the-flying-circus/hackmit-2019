@@ -191,6 +191,16 @@
     .item-horiz {
       display: block;
     }
+
+    #background-map {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: -2;
+      background-color: black;
+    }
     </style>
     <script type="text/babel">
       const COLUMN_HEIGHT = 150
@@ -378,36 +388,52 @@
         const backgroundNum = new Date().getMinutes() % 2;
         $("#background").css("background-image", "url(/static/images/placeholder" + backgroundNum + ".jpg)");
 
-        const maps = [1, 2, 3].map((i) => {
-          return new mapboxgl.Map({
-            container: "background-map-" + i,
-            style: "mapbox://styles/mapbox/dark-v10",
-            center: [-74.50, 40],
-            zoom: 10
-          });
+        const map = new mapboxgl.Map({
+          container: "background-map",
+          style: "mapbox://styles/mapbox/dark-v10",
+          center: [-74.50, 40],
+          zoom: 10
         });
 
-        maps.slice(0, 2).forEach((map) => {
-          map.on('load', function() {
-            map.style.stylesheet.layers.forEach(function(layer) {
-              if (layer.type === 'symbol') {
-                map.removeLayer(layer.id);
-              }
-            });
+        window.toggleLabels = function(val) {
+          map.style.stylesheet.layers.forEach(function(layer) {
+            if (layer.type === 'symbol') {
+              map.setLayoutProperty(layer.id, 'visibility', val ? 'visible' : 'none');
+            }
           });
-        });
-        const markers = [];
 
-        for (var i = 0; i < 360; i += 30) {
-            markers.push([-74.50 + 0.25 * Math.cos(i * Math.PI / 180), 40 + 0.25 * Math.sin(i * Math.PI / 180)]);
+          if (val) {
+            const markers = [];
+            for (var i = 0; i < 360; i += 30) {
+                markers.push([-74.50 + 0.25 * Math.cos(i * Math.PI / 180), 40 + 0.25 * Math.sin(i * Math.PI / 180)]);
+            }
+
+            addMarkers(markers);
+          }
+          else {
+            removeMarkers();
+          }
         }
 
-        markers.forEach(function(mark) {
-          const el = document.createElement("div");
-          el.className = "marker";
-          new mapboxgl.Marker(el)
-            .setLngLat(mark)
-            .addTo(maps[1]);
+        var markerObjects = [];
+
+        function addMarkers(markers) {
+          markers.forEach(function(mark) {
+            const el = document.createElement("div");
+            el.className = "marker";
+            const m = new mapboxgl.Marker(el)
+              .setLngLat(mark)
+              .addTo(map);
+            markerObjects.push(m);
+          });
+        }
+
+        function removeMarkers() {
+          markerObjects.forEach((x) => x.remove());
+        }
+
+        map.on('load', function() {
+          window.toggleLabels(false);
         });
 
         addPageLoadEvent(1, () => {
@@ -418,6 +444,10 @@
             var tmp = Math.round((data.main.temp - 273.15)*9/5);
             $("#weather").html("<div style='display:flex;align-items:center;'><div style='border-radius:50%;background-color:#AAA;line-height:0;'><img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='100px'></div><div style='font-size:2em;margin-left:20px;'>" + tmp + "°F</div></div>");
           });
+        });
+
+        addPageLoadEvent(2, () => {
+          window.toggleLabels(false);
         });
 
         window.addEventListener("wheel", function(e) {
@@ -450,6 +480,7 @@
   </head>
   <body>
     {% csrf_token %}
+    <div id="background-map"></div>
     <div id="page1" class="page page-center">
       <div id="background" class="background"></div>
       <div class="info card-panel black center-align">
@@ -462,7 +493,6 @@
       </div>
     </div>
     <div id="page2" class="page">
-      <div id="background-map-1" class="background"></div>
       <div class="container">
         <button id="recordButton" class="btn wave-effect" onclick="doStream()">Record</button>
         <button id="promptButton" class="btn wave-effect" onclick="getAndInsertPrompt()">Add Prompt</button>
@@ -476,7 +506,6 @@
       </div>
     </div>
     <div id="page3" class="page page-center">
-      <div id="background-map-2" class="background"></div>
       <div style="text-align: center">
         <div id="columns"></div>
         <br />
@@ -485,7 +514,6 @@
       </div>
     </div>
     <div id="page4" class="page page-center">
-      <div id="background-map-3" class="background"></div>
       <div id="graphs">
         <div id="moodchart-container" class="container" style="position: relative; height:30vh; width:70vw">
           <canvas id="moodchart"></canvas>
@@ -557,7 +585,10 @@
               });
             }
 
-            addPageLoadEvent(4, updateChart);
+        addPageLoadEvent(4, () => {
+          updateChart();
+          toggleLabels(true);
+        });
         </script>
 
       </div>
