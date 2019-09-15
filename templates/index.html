@@ -510,85 +510,87 @@
       </div>
     </div>
     <div id="page4" class="page page-center">
-      <div id="graphs">
-        <div id="moodchart-container" class="container" style="position: relative; height:30vh; width:70vw">
-          <canvas id="moodchart"></canvas>
-        </div>
-        <div id="anxietychart-container" class="container" style="position: relative; height:30vh; width:70vw">
-          <canvas id="anxietychart"></canvas>
-        </div>
-        <div id="chart-container" class="container" style="position: relative; height:30vh; width:70vw">
-          <canvas id="moodchart"></canvas>
-        </div>
+      <div style="text-align: center">
+        <div id="graphs">
+          <div id="moodchart-container" class="container" style="position: relative; height:30vh; width:70vw">
+            <canvas id="moodchart"></canvas>
+          </div>
+          <div id="anxietychart-container" class="container" style="position: relative; height:30vh; width:70vw">
+            <canvas id="anxietychart"></canvas>
+          </div>
+          <div id="chart-container" class="container" style="position: relative; height:30vh; width:70vw">
+            <canvas id="moodchart"></canvas>
+          </div>
 
-        <script type="text/javascript">
-            let ctx = document.getElementById('moodchart');
-            let myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                    datasets: [{
-                        label: 'Mood',
+          <script type="text/javascript">
+              let ctx = document.getElementById('moodchart');
+              let myChart = new Chart(ctx, {
+                  type: 'line',
+                  data: {
+                      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                      datasets: [{
+                          label: 'Mood',
+                          data: [1, 2, 3, 4, 5, 4],
+                          backgroundColor: [
+                              'rgba(255, 99, 132, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)'
+                          ],
+                          borderWidth: 1
+                      }, {
+                        label: 'Anxiety',
                         data: [1, 2, 3, 4, 5, 4],
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)'
+                          'rgba(54, 162, 235, 0.2)'
                         ],
                         borderColor: [
-                            'rgba(255, 99, 132, 1)'
+                          'rgba(54, 162, 235, 1)'
                         ],
                         borderWidth: 1
-                    }, {
-                      label: 'Anxiety',
-                      data: [1, 2, 3, 4, 5, 4],
-                      backgroundColor: [
-                        'rgba(54, 162, 235, 0.2)'
-                      ],
-                      borderColor: [
-                        'rgba(54, 162, 235, 1)'
-                      ],
-                      borderWidth: 1
-                    }, {
-                      label: 'Cynicism',
-                      data: [1, 2, 3, 4, 5, 4],
-                      backgroundColor: [
-                        'rgba(255, 206, 86, 0.2)'
-                      ],
-                      borderColor: [
-                        'rgba(255, 206, 86, 1)'
-                      ],
-                      borderWidth: 1
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
-                }
-            });
-
-            function updateChart() {
-              $.get('/graph/', (data) => {
-                myChart.config.data.labels = data.data.map((x) => x.date);
-                ['mood', 'anxiety', 'cynicism'].forEach((name, i) => {
-                  myChart.config.data.datasets[i].data = data.data.map((x) => x.metrics[name]);
-                });
-                myChart.update();
+                      }, {
+                        label: 'Cynicism',
+                        data: [1, 2, 3, 4, 5, 4],
+                        backgroundColor: [
+                          'rgba(255, 206, 86, 0.2)'
+                        ],
+                        borderColor: [
+                          'rgba(255, 206, 86, 1)'
+                        ],
+                        borderWidth: 1
+                      }]
+                  },
+                  options: {
+                      maintainAspectRatio: false,
+                      scales: {
+                          yAxes: [{
+                              ticks: {
+                                  beginAtZero: true
+                              }
+                          }]
+                      }
+                  }
               });
-            }
 
-        addPageLoadEvent(4, () => {
-          updateChart();
-          toggleLabels(true);
-        });
-        </script>
+              function updateChart() {
+                $.get('/graph/', (data) => {
+                  myChart.config.data.labels = data.data.map((x) => x.date);
+                  ['mood', 'anxiety', 'cynicism'].forEach((name, i) => {
+                    myChart.config.data.datasets[i].data = data.data.map((x) => x.metrics[name]);
+                  });
+                  myChart.update();
+                });
+              }
 
+          addPageLoadEvent(4, () => {
+            updateChart();
+            toggleLabels(true);
+          });
+          </script>
+
+        </div>
+        <div class="btn next-1">Back To Home</div>
       </div>
-      <div class="btn next-1">Back To Home</div>
     </div>
   </body>
 </html>
