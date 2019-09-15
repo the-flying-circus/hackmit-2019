@@ -12,6 +12,7 @@ from django.views.decorators.cache import cache_page
 from .models import Page, Metric
 from .serializers import PageSerializer, MetricSerializer
 from .IBMnlp import getIBMEmotions, getMoodScores, getEntityEmotions, parseEntityEmotions
+from .amadeus import getPOIS
 
 prompts = json.load(open('static/prompts.json'))
 
@@ -141,3 +142,9 @@ def graph(request):
     return JsonResponse({
         'data': output
     })
+
+def pointsOfInterest(request):
+    lat = request.GET.get('latitude')
+    long = request.GET.get('longitude')
+    pois = getPOIS(lat, long)
+    return JsonResponse(pois)

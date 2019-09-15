@@ -455,13 +455,13 @@
             if (currentLocation.markers) {
               addMarkers(currentLocation.markers);
             }
-            else {
-              const markers = [];
-              for (var i = 0; i < 360; i += 30) {
-                  markers.push([currentLocation.location[0] + 0.25 * Math.cos(i * Math.PI / 180), currentLocation.location[1] + 0.25 * Math.sin(i * Math.PI / 180)]);
-              }
+            //else {
+            //  const markers = [];
+            //  for (var i = 0; i < 360; i += 30) {
+            //      markers.push([currentLocation.location[0] + 0.25 * Math.cos(i * Math.PI / 180), currentLocation.location[1] + 0.25 * Math.sin(i * Math.PI / 180)]);
+            //  }
 
-              addMarkers(markers);
+            //addMarkers(markers);
             }
           }
           else {

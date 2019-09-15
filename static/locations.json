@@ -1,15 +1,130 @@
 {
-    "locations": [
+  "locations": [
+    {
+      "name": "Kirkjufellsfoss, Iceland",
+      "image": "iceland.jpg",
+      "location": [
+        -23.3208618,
+        64.9264356
+      ],
+      "pois": [
         {
-            "name": "Kirkjufellsfoss, Iceland",
-            "image": "iceland.jpg",
-            "location": [-23.3208618, 64.9264356]
+          "location": [
+            64.92629,
+            -23.3115
+          ],
+          "name": "Kirkjufellsfoss"
         },
         {
-            "name": "Angkor Wat, Cambodia",
-            "image": "cambodia.jpg",
-            "location": [103.864797, 13.4124745],
-            "zoom": 15
+          "location": [
+            64.9402,
+            -23.306755
+          ],
+          "name": "Kirkjufell"
+        },
+        {
+          "location": [
+            64.927765,
+            -23.26163
+          ],
+          "name": "Bjargarsteinn Math\u00fas"
+        },
+        {
+          "location": [
+            64.92599,
+            -23.256493
+          ],
+          "name": "Laki Hafnarkaffi"
+        },
+        {
+          "location": [
+            64.92446,
+            -23.267239
+          ],
+          "name": "Kaffi 59"
+        },
+        {
+          "location": [
+            64.92438,
+            -23.267452
+          ],
+          "name": "RuBen"
+        },
+        {
+          "location": [
+            64.92685,
+            -23.25683
+          ],
+          "name": "Laki Tours"
+        },
+        {
+          "location": [
+            64.92475,
+            -23.260494
+          ],
+          "name": "Cafe Emil"
+        },
+        {
+          "location": [
+            64.924576,
+            -23.259775
+          ],
+          "name": "Meistarinn"
+        },
+        {
+          "location": [
+            64.92684,
+            -23.256807
+          ],
+          "name": "Restaurant at Hotel Framnes"
         }
-    ]
+      ]
+    },
+    {
+      "name": "Angkor Wat, Cambodia",
+      "image": "cambodia.jpg",
+      "location": [
+        103.864797,
+        13.4124745
+      ],
+      "zoom": 15,
+      "pois": [
+        {
+          "location": [
+            13.412469,
+            103.86699
+          ],
+          "name": "Angkor Wat"
+        },
+        {
+          "location": [
+            13.424464,
+            103.85624
+          ],
+          "name": "Phnom Bakheng"
+        },
+        {
+          "location": [
+            13.415674,
+            103.8586
+          ],
+          "name": "Ta Prohm Kel"
+        },
+        {
+          "location": [
+            13.412469,
+            103.86699
+          ],
+          "name": "Angkor Archaeological Park"
+        },
+        {
+          "location": [
+            13.425357,
+            103.858376
+          ],
+          "name": "Baksei Chamkrong Temple"
+        }
+      ]
+    }
+  ]
 }
