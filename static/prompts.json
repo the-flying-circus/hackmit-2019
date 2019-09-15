@@ -2,7 +2,7 @@
     "positive": {
         "arg": [
             "Do you think {} has made you happier?",
-        ]
+        ],
         "no_arg": [
             "Seems like things have been going well!  Would you say that's right?",
         ]
