@@ -378,6 +378,7 @@
 
       const onPageLoad = {};
       var currentPage = 1;
+      var currentLocation = null;
       var currentLog = null;
 
       function addPageLoadEvent(id, func) {
@@ -414,14 +415,22 @@
           }
         });
 
-        const backgroundNum = new Date().getMinutes() % 2;
-        $("#background").css("background-image", "url(/static/images/placeholder" + backgroundNum + ".jpg)");
-
         const map = new mapboxgl.Map({
           container: "background-map",
           style: "mapbox://styles/mapbox/dark-v10",
           center: [-74.50, 40],
           zoom: 10
+        });
+
+        $.get("/static/locations.json", (data) => {
+          const locations = data.locations;
+          const num = new Date().getMinutes() % locations.length;
+          currentLocation = locations[num];
+          $("#background").css("background-image", "url(/static/images/locations/" + currentLocation.image + ")");
+          map.flyTo({
+            center: currentLocation.location,
+            zoom: currentLocation.zoom || 10
+          });
         });
 
         window.toggleLabels = function(val) {
@@ -432,12 +441,17 @@
           });
 
           if (val) {
-            const markers = [];
-            for (var i = 0; i < 360; i += 30) {
-                markers.push([-74.50 + 0.25 * Math.cos(i * Math.PI / 180), 40 + 0.25 * Math.sin(i * Math.PI / 180)]);
+            if (currentLocation.markers) {
+              addMarkers(currentLocation.markers);
             }
+            else {
+              const markers = [];
+              for (var i = 0; i < 360; i += 30) {
+                  markers.push([currentLocation.location[0] + 0.25 * Math.cos(i * Math.PI / 180), currentLocation.location[1] + 0.25 * Math.sin(i * Math.PI / 180)]);
+              }
 
-            addMarkers(markers);
+              addMarkers(markers);
+            }
           }
           else {
             removeMarkers();

@@ -1,0 +1,15 @@
+{
+    "locations": [
+        {
+            "name": "Kirkjufellsfoss, Iceland",
+            "image": "iceland.jpg",
+            "location": [-23.3208618, 64.9264356]
+        },
+        {
+            "name": "Angkor Wat, Cambodia",
+            "image": "cambodia.jpg",
+            "location": [103.864797, 13.4124745],
+            "zoom": 15
+        }
+    ]
+}
