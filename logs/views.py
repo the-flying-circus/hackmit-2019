@@ -5,6 +5,7 @@ from random import randint
 
 from django.contrib.auth import get_user_model, login
 from django.http import JsonResponse, HttpResponse
+from django.utils.html import strip_tags
 from rest_framework import viewsets, permissions
 from django.views.decorators.cache import cache_page
 
@@ -75,8 +76,13 @@ def mood(request):
 def prompt(request):
     lastObj = request.GET.get("lastObj")
     lastSentiment = request.GET.get("lastSentiment")
-    entities, emotion = getEntityEmotions(request.GET.get("text"))
-    object, sentiment = parseEntityEmotions(entities, emotion, lastObj, lastSentiment)
+    text = strip_tags(request.GET.get("text", "")).strip()
+    if text:
+        entities, emotion = getEntityEmotions(text)
+        object, sentiment = parseEntityEmotions(entities, emotion, lastObj, lastSentiment)
+    else:
+        object = None
+        sentiment = 'negative'
 
     if object is None:
         questions = prompts[sentiment]['no_arg']

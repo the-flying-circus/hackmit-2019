@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="{% static "journal.css" %}">
     <link rel="stylesheet" href="{% static "history-carousel.css" %}">
+    <link href="https://fonts.googleapis.com/css?family=Hepta+Slab&display=swap" rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -80,11 +81,11 @@
     }
 
     .btn:hover {
-      background-color: blue-grey;
+      background-color: #03a9f4 !important;
     }
 
     .btn:active{
-      background-color: blue-grey;
+      background-color: #03a9f4 !important;
     }
 
     #page1 .btn {
@@ -235,14 +236,19 @@
           }
         }
 
-        render() {
-          const { prefix, suffix } = this.props
-          var nums = [1, 2, 3, 4, 5]
-          /**if (this.props.vertical) {
-            nums = [5, 4, 3, 2, 1]
-          }**/
+        componentDidUpdate(prevProps) {
+          if (this.props.value !== prevProps.value) {
+            this.setState({
+              value: this.props.value
+            })
+          }
+        }
 
-          return <div className={(this.props.vertical ? 'item-vert' : 'item-horiz') + ' ' + (this.props.right ? 'right' : 'left')}>
+        render() {
+          const { prefix, suffix, vertical } = this.props
+          var nums = [1, 2, 3, 4, 5]
+
+          return <div className={(vertical ? 'item-vert' : 'item-horiz') + ' ' + (this.props.right ? 'right' : 'left')}>
             {nums.map((i) =>
               <span key={i} style={
                 {position: 'relative'}
@@ -252,13 +258,14 @@
                 <a
                   onClick={
                     () => {
-                      this.setState({ value: i })
+                      const trueValue = vertical ? nums.length + 1 - i : i
+                      this.setState({ value: trueValue })
                       if (this.props.onChange) {
-                        this.props.onChange(i)
+                        this.props.onChange(trueValue)
                       }
                     }
                   }
-                  className={'btn-floating btn-large waves-effect waves-light selector-button ' + (this.props.vertical ? 'selector-vertical ' : ' ') + (this.state.value === i ? 'light-blue' : 'blue-grey')}>
+                  className={'btn-floating btn-large waves-effect waves-light selector-button ' + (vertical ? 'selector-vertical ' : ' ') + (this.state.value === (vertical ? nums.length + 1 - i : i) ? 'light-blue' : 'blue-grey')}>
                   <img src={'../static/images/emots/' + i + '.png'} width='100%' margin='auto'/>
                 </a>
               </span>
@@ -464,7 +471,7 @@
 
           $.get("/weather", (data) => {
             var tmp = Math.round((data.main.temp - 273.15)*9/5 + 32);
-            $("#weather").html("<div style='display:flex;align-items:center;'><div style='border-radius:50%;background-color:#AAA;line-height:0;'><img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='100px'></div><div style='font-size:2em;margin-left:20px;'>" + tmp + "°F</div></div>");
+            $("#weather").html("<div style='display:flex;align-items:center;'><div style='border-radius:50%;background-color:#AAA;line-height:0;'><img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='100px'></div><div style='margin-left:20px'><div style='font-size:2em;'>" + tmp + "°F</div><div style='font-size:10pt;'><i>Cambridge, MA</i></div></div></div>");
           });
         });
 
@@ -507,8 +514,7 @@
       <div id="background" class="background"></div>
       <div class="info card-panel black center-align">
         <div id="weather" style="margin-bottom:10px;"></div>
-        <div id="time" align="left" style="padding-top:15px;"></div>
-        <div align="left" style="font-size:10pt;"><i>Cambridge, MA</i></div>
+        <div id="time" style="padding-top:15px;"></div>
       </div>
       <div style="text-align: center">
         <div class="title">Hey, <span id="first-name" class="blur">User</span>!</div>
@@ -672,7 +678,7 @@
         <div class="btn next-5">Browse Entries</div>
       </div>
     </div>
-    <div id="page5" class="page">
+    <div id="page5" class="page page-center">
       <div class="container">
         <div id="history-carousel" class="card-panel white">
           <div class="input-field">
@@ -682,17 +688,17 @@
           <div id="prev-button"><i class="material-icons medium">chevron_left</i></div>
           <div id="next-button"><i class="material-icons medium">chevron_right</i></div>
           <div>
-            <table id="feelings">
-              <tr>
-                <td>Mood:</td><td id="mood-emoticon"></td>
-              </tr>
-              <tr>
-                <td>Anxiety:</td><td id="anxiety-emoticon"></td>
-              </tr>
-              <tr>
-                <td>Cynicism:</td><td id="cynicism-emoticon"></td>
-              </tr>
-            </table>
+            <div id="feelings" class="row">
+              <div class="col s12 m4">
+                <div>Mood:</div><div id="mood-emoticon"></div>
+              </div>
+              <div class="col s12 m4">
+                <div>Anxiety:</div><div id="anxiety-emoticon"></div>
+              </div>
+              <div class="col s12 m4">
+                <div>Cynicism:</div><div id="cynicism-emoticon"></div>
+              </div>
+            </div>
             <div id="carousel-inner" data-simplebar data-simplebar-auto-hide="false"></div>
           </div>
         </div>

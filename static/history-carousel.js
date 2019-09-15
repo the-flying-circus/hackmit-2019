@@ -5,7 +5,6 @@ $(document).ready(function() {
   $(instance.$el).change(() => $.get(`/pages/${instance.date.toISOString().substring(0, 10)}/?format=json`)
     .done(function(data) {
       carouselEl.innerHTML = data.content;
-      console.log(data);
       let emoticon_dict = {};
       for (let i = 0; i < data.metric_set.length; i++)
         emoticon_dict[data.metric_set[i]["name"]] = data.metric_set[i]["value"];

@@ -14,6 +14,7 @@
 
 #prev-button, #next-button {
   position: absolute;
+  z-index: 10;
   top: 50%;
   cursor: pointer;
   user-select: none;
@@ -28,13 +29,14 @@
 }
 
 #feelings {
-  width: auto;
   line-height: 0;
   margin-bottom: 2em;
 }
 
-#feelings td {
-  vertical-align: middle;
+#feelings > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #mood-emoticon, #anxiety-emoticon, #cynicism-emoticon {
@@ -42,6 +44,7 @@
   background-color: #AAA;
   border-radius: 50%;
   line-height: 0;
+  margin-left: 10px;
 }
 
 #feelings td img {
