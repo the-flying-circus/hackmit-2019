@@ -79,21 +79,21 @@ def prompt(request):
     text = strip_tags(request.GET.get("text", "")).strip()
     if text:
         entities, emotion = getEntityEmotions(text)
-        object, sentiment = parseEntityEmotions(entities, emotion, lastObj, lastSentiment)
+        obj, sentiment = parseEntityEmotions(entities, emotion, lastObj, lastSentiment)
     else:
-        object = None
+        obj = None
         sentiment = 'negative'
 
-    if object is None:
+    if obj is None:
         questions = prompts[sentiment]['no_arg']
         question = questions[randint(0, len(questions) - 1)]
     else:
         questions = prompts[sentiment]['arg']
-        question = questions[randint(0, len(questions) - 1)].format(object)
+        question = questions[randint(0, len(questions) - 1)].format(obj)
 
     return JsonResponse({
         "question": question,
-        "lastObj": object,
+        "lastObj": obj,
         "lastSentiment": sentiment
     })
 
