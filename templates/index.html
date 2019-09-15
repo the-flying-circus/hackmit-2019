@@ -448,6 +448,7 @@
 
         addPageLoadEvent(2, () => {
           window.toggleLabels(false);
+          setTimeout(() => addPrompt("How was your day?"), 1000);
         });
 
         $.ajaxPrefilter((options, originalOptions, jqXHR) => {
