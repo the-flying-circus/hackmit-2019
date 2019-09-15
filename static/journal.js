@@ -1,17 +1,26 @@
 function addPrompt(text) {
   var finalElement = document.getElementById("final");
-  finalElement.innerHTML += "<br><br><br><h4></h4>";
+  if (finalElement.innerHTML.length > 0)
+    finalElement.innerHTML += "<br><br><br>";
+  finalElement.innerHTML += "<h4></h4>";
   animateTyping(text, finalElement.id);
 }
 
 function animateTyping(text, parentId) {
   document.getElementById(parentId).lastElementChild.innerHTML += text.charAt(0);
-  if (text.length == 1) {
-    document.getElementById(parentId).innerHTML += "<br>";
+  if (text.length == 1)
     return;
-  }
   var pauseMS = 10 + Math.floor(Math.random() * 100);
   window.setTimeout(function() { animateTyping(text.substring(1), parentId); }, pauseMS);
+}
+
+function getAndAddPrompt() {
+  $.get("/prompt/", function(data) {
+    { text: document.getElementById("final").innerText }
+  })
+    .done(function(data) {
+      addPrompt(data.question);
+    });
 }
 
 
@@ -21,7 +30,6 @@ function animateTyping(text, parentId) {
  * https://www.rev.ai/docs/streaming
  */
 function doStream() {
-    statusElement = document.getElementById("recordStatus");
     partialElement = document.getElementById("partial");
     finalElement = document.getElementById("final");
     finalsReceived = 0;
@@ -67,7 +75,7 @@ function endStream() {
  * @param {Event} event 
  */
 function onOpen(event) {
-    statusElement.innerHTML = "Opened";
+    console.log("Opened");
     navigator.mediaDevices.getUserMedia({ audio: true }).then((micStream) => {
         audioContext.suspend();
         var scriptNode = audioContext.createScriptProcessor(4096, 1, 1 );
@@ -84,7 +92,7 @@ function onOpen(event) {
  * @param {CloseEvent} event
  */
 function onClose(event) {
-    statusElement.innerHTML = `Closed with ${event.code}: ${event.reason}`;
+    console.log(`Closed with ${event.code}: ${event.reason}`);
 }
 
 /**
@@ -96,7 +104,7 @@ function onMessage(event) {
     var data = JSON.parse(event.data);
     switch (data.type){
         case "connected":
-            statusElement.innerHTML =`Connected, job id is ${data.id}`;
+            console.log(`Connected, job id is ${data.id}`);
             break;
         case "partial":
             partialElement.innerHTML = parseResponse(data);

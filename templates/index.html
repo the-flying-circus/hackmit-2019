@@ -18,6 +18,10 @@
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.css' rel='stylesheet' />
 
+    <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
     <style>
     html, body {
       margin: 0;
@@ -75,8 +79,114 @@
     #page2 .container {
       padding: 15px;
     }
+
+    .column-container {
+      display: inline-block;
+    }
+
+    .column {
+      display: inline-block;
+      position: relative;
+      width: 60px;
+      background-color: rgba(0, 0, 0, 0.8);
+      margin: 10px;
+      margin-bottom: 0px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .column-inner {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      background-color: #b92e34;
+      border-radius: 3px;
+      z-index: 1;
+    }
+
+    .column-label {
+      display: block;
+      text-align: center;
+      color: white;
+      text-shadow: 0 0 3px black;
+      font-weight: bold;
+    }
+
+    .blur {
+      filter: blur(10px);
+    }
     </style>
-    <script>
+    <script type="text/babel">
+      const COLUMN_HEIGHT = 150
+
+      class Column extends React.Component {
+        constructor(props) {
+          super(props)
+
+          this.state = {
+            value: this.props.value,
+            isDown: false
+          }
+        }
+
+        render() {
+          const style = {
+            top: (100 - this.state.value) / 100 * COLUMN_HEIGHT
+          }
+
+          return <span className='column-container'>
+            <span className='column' style={
+              {height: COLUMN_HEIGHT}
+            } onMouseMove={
+              (e) => {
+                if (!this.state.isDown) {
+                  return
+                }
+
+                while (!e.target.classList.contains('column')) {
+                  e.target = e.target.parentElement
+                }
+
+                const rect = e.target.getBoundingClientRect()
+                const y = (COLUMN_HEIGHT - (e.clientY - rect.top)) / COLUMN_HEIGHT * 100
+                this.setState({ value: y })
+              }
+            }
+
+            onMouseDown={
+              (e) => {
+                this.setState({ isDown: true })
+
+                while (!e.target.classList.contains('column')) {
+                  e.target = e.target.parentElement
+                }
+
+                const rect = e.target.getBoundingClientRect()
+                const y = (COLUMN_HEIGHT - (e.clientY - rect.top)) / COLUMN_HEIGHT * 100
+                this.setState({ value: y })
+              }
+            }
+
+            onMouseUp={
+              () => this.setState({ isDown: false })
+            }
+            >
+              <span className='column-inner' style={style}></span>
+            </span>
+            <span className='column-label'>{this.props.name}</span>
+          </span>
+        }
+      }
+
+      ReactDOM.render(<div>
+        <Column name='Mood' value={30} />
+        <Column name='Anxiety' value={60} />
+        <Column name='Cynicism' value={90} />
+      </div>, document.querySelector("#columns"))
+    </script>
+    <script type="text/javascript">
       mapboxgl.accessToken = 'pk.eyJ1Ijoic3JrYnJhZGJ1cnkiLCJhIjoiY2p6Z2tzbnRnMG13MjNtbGV2ZGYzZDVkYSJ9.--vU61Pvq2Fd1UqhlIUd3g';
 
       function updateTime() {
@@ -103,6 +213,10 @@
             e.preventDefault();
             $(document).trigger("page", [i]);
           });
+        });
+
+        $.get("/user", (data) => {
+          $("#first-name").removeClass("blur").text(data.name);
         });
 
         const backgroundNum = new Date().getMinutes() % 2;
@@ -140,7 +254,7 @@
         </ul>
       </div>
       <div style="text-align: center">
-        <div class="title">Hey, Grey!</div>
+        <div class="title">Hey, <span id="first-name" class="blur">User</span>!</div>
         <div class="btn next-2">Check in today</div> <div class="btn next-3">View stats</div>
       </div>
     </div>
@@ -148,19 +262,18 @@
       <div id="background-map-1" class="background"></div>
       <div class="container">
         <button id="recordButton" class="btn wave-effect" onclick="doStream()">Record</button>
-        <div id="recordStatus"></div>
         <div id="journal" class="card-panel">
           <div onclick="document.getElementById('final').focus()">
             <span id="final" contenteditable="true"></span>
-            <span id="partial" class="grey-text"></span>
+            <span id="partial" class="grey-text text-darken-1"></span>
           </div>
         </div>
         <div class="btn next-3">Continue</div>
       </div>
     </div>
-    <div id="page3" class="page">
+    <div id="page3" class="page page-center">
       <div id="background-map-2" class="background"></div>
-      Page 3
+      <div id="columns"></div>
     </div>
   </body>
 </html>
