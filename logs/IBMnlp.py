@@ -53,7 +53,7 @@ def getMoodScores(emotions):
     return {'mood': mood, 'anxiety': anxiety, 'cynicism': cynicism}
 
 
-def parseEntityEmotions(entities, bigEmotions, blacklistedObj=None, blacklistedEmotion=None):
+def parseEntityEmotions(entities, bigEmotions, blacklistedObj='', blacklistedEmotion=''):
     maxEnt = -1
     gb = 'negative'
     for ind, entity in enumerate(entities):
@@ -82,7 +82,7 @@ def parseEntityEmotions(entities, bigEmotions, blacklistedObj=None, blacklistedE
         else:
             gb = 'neutral'
 
-        if blacklistedObj is None and gb == blacklistedEmotion:
+        if blacklistedObj == '' and gb == blacklistedEmotion:
             gb = 'neutral'
 
         return None, gb

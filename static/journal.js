@@ -4,7 +4,7 @@ let savedSentiment;
 function addPrompt(text) {
   document.getElementById("promptButton").disabled = true;
   let finalElement = document.getElementById("final");
-  if (finalElement.innerText.length >= 1)
+  if (finalElement.innerText.length > 1)
     finalElement.innerHTML += "<br><br><br>";
   finalElement.innerHTML += "<h5></h5>";
   scrollJournalBottom();
@@ -19,7 +19,6 @@ function scrollJournalBottom() {
 function animateTyping(text, parentId) {
   let parent = document.getElementById(parentId);
   parent.lastElementChild.innerHTML += text.charAt(0);
-  setEndOfContenteditable(parent);
   if (text.length == 1) {
     parent.innerHTML += "<br>";
     scrollJournalBottom();
@@ -42,7 +41,7 @@ function getAndInsertPrompt() {
     lastObj: savedObj,
     lastSentiment: savedSentiment
   })
-      .done(function(data) {
+      .done(function (data) {
         addPrompt(data.question);
         savedObj = data.lastObj;
         savedSentiment = data.lastSentiment

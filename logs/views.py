@@ -93,7 +93,7 @@ def prompt(request):
 
     return JsonResponse({
         "question": question,
-        "lastObj": object,
+        "lastObj": '' if object is None else object,
         "lastSentiment": sentiment
     })
 
