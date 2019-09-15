@@ -117,12 +117,46 @@
       font-weight: bold;
     }
 
+    .selector-button {
+      margin: 10px;
+    }
+
+    .selector-vertical {
+      display: block;
+    }
+
     .blur {
       filter: blur(10px);
     }
     </style>
     <script type="text/babel">
       const COLUMN_HEIGHT = 150
+
+      class Selector extends React.Component {
+        constructor(props) {
+          super(props)
+
+          this.state = {
+            value: this.props.value
+          }
+        }
+
+        render() {
+          return <div style={
+            { display: this.props.vertical ? 'inline-block' : 'block' }
+          }>
+            {[1, 2, 3, 4, 5].map((i) =>
+              <a
+                key={i}
+                onClick={() => this.setState({ value: i })}
+                className={'btn-floating btn-large waves-effect waves-light selector-button ' + (this.props.vertical ? 'selector-vertical ' : ' ') + (this.state.value === i ? 'green' : 'red')}>
+                {i}
+              </a>
+            )}
+            <div className='column-label'>{this.props.name}</div>
+          </div>
+        }
+      }
 
       class Column extends React.Component {
         constructor(props) {
@@ -183,10 +217,12 @@
         }
       }
 
-      ReactDOM.render(<div>
-        <Column name='Mood' value={30} />
-        <Column name='Anxiety' value={60} />
-        <Column name='Cynicism' value={90} />
+      ReactDOM.render(<div style={
+        {textAlign: 'center'}
+      }>
+        <Selector name='Mood' value={1} />
+        <Selector name='Anxiety' value={2} vertical={true} />
+        <Selector name='Cynicism' value={3} vertical={true} />
       </div>, document.querySelector("#columns"))
     </script>
     <script type="text/javascript">
