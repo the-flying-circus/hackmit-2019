@@ -27,8 +27,6 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/4.2.1/simplebar.min.css" integrity="sha256-KuTN+Py9Ut+AuYFyA/Jn+4ENdElDpLe92SYOiFnJr9g=" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplebar/4.2.1/simplebar.min.js" integrity="sha256-HnK5kukrBNKjtb6Agv0oBLwovaMdWG+LfPDnI5BLP2Y=" crossorigin="anonymous"></script>
 
     <style>
     html, body {
@@ -551,7 +549,7 @@
         <button id="recordButton" class="btn wave-effect" onclick="doStream()">Record</button>
         <button id="promptButton" class="btn wave-effect" onclick="getAndInsertPrompt()">Add Prompt</button>
         <div id="journal" class="card-panel white">
-          <div id="journal-inner" data-simplebar data-simplebar-auto-hide="false" onclick="document.getElementById('final').focus()">
+          <div id="journal-inner" onclick="document.getElementById('final').focus()">
             <span id="final" contenteditable="true"></span>
             <span id="partial" class="grey-text text-darken-1"></span>
           </div>
@@ -727,7 +725,7 @@
                 <div>Cynicism:</div><div id="cynicism-emoticon"></div>
               </div>
             </div>
-            <div id="carousel-inner" data-simplebar data-simplebar-auto-hide="false"></div>
+            <div id="carousel-inner"></div>
           </div>
         </div>
         <div class="btn next-1">Back To Home</div>
