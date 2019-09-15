@@ -15,6 +15,9 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="{% static "journal.js" %}"></script>
 
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.css' rel='stylesheet' />
+
     <style>
     html, body {
       margin: 0;
@@ -59,8 +62,22 @@
     .info ul {
       margin: 0;
     }
+
+    .mapbox-improve-map {
+      display: none;
+    }
+
+    #page2 .card-panel {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    #page2 .container {
+      padding: 15px;
+    }
     </style>
     <script>
+      mapboxgl.accessToken = 'pk.eyJ1Ijoic3JrYnJhZGJ1cnkiLCJhIjoiY2p6Z2tzbnRnMG13MjNtbGV2ZGYzZDVkYSJ9.--vU61Pvq2Fd1UqhlIUd3g';
+
       function updateTime() {
         $("#time").text(new Date());
       }
@@ -88,7 +105,14 @@
         });
 
         const backgroundNum = new Date().getMinutes() % 2;
-        $(".background").css("background-image", "url(/static/images/placeholder" + backgroundNum + ".jpg)");
+        $("#background").css("background-image", "url(/static/images/placeholder" + backgroundNum + ".jpg)");
+
+        new mapboxgl.Map({
+          container: "background-map",
+          style: "mapbox://styles/mapbox/dark-v10",
+          center: [-74.50, 40],
+          zoom: 8
+        })
 
         addPageLoadEvent(1, () => {
           updateTime();
@@ -105,7 +129,7 @@
   </head>
   <body>
     <div id="page1" class="page page-center">
-      <div class="background"></div>
+      <div id="background" class="background"></div>
       <div class="info">
         <ul>
           <li><i class="fa fa-fw fa-clock-o"></i> <span id="time"></span></li>
@@ -118,6 +142,7 @@
       </div>
     </div>
     <div id="page2" class="page">
+      <div id="background-map" class="background"></div>
       <div class="container">
         <button id="recordButton" class="btn wave-effect" onclick="doStream()">Record</button>
         <div id="recordStatus"></div>
