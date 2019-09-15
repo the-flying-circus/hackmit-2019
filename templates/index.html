@@ -534,7 +534,7 @@
             setTimeout(() => addPrompt("How was your day?"), 1000);
         });
 
-        addPageLoadEvent(6, () => {
+        addPageLoadEvent(4, () => {
           $("#wiki-sidebar iframe").attr("src", "https://en.m.wikipedia.org/wiki/" + currentLocation.wiki);
           toggleLabels(true);
 
@@ -742,7 +742,7 @@
               });
             }
 
-            addPageLoadEvent(4, () => {
+            addPageLoadEvent(5, () => {
               updateChart();
             });
           </script>
