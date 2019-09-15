@@ -19,7 +19,7 @@ function getAndAddPrompt() {
     { text: document.getElementById("final").innerText }
   })
     .done(function(data) {
-      addPrompt(data);
+      addPrompt(data.question);
     });
 }
 
