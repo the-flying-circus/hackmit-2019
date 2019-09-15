@@ -16,6 +16,11 @@
             "name": "Ulaanbaatar, Mongolia",
             "image": "mongolia.jpg",
             "location": [47.8864, 106.9057]
+        },
+        {
+            "name": "Lalibela, Ethopia",
+            "image": "ethopia.jpg",
+            "location": [12.0309, 39.0476]
         }
     ]
 }
