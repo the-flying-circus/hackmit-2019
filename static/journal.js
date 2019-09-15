@@ -114,7 +114,7 @@ function onOpen(event) {
   navigator.mediaDevices.getUserMedia({audio: true}).then((micStream) => {
     audioContext.suspend();
     let scriptNode = audioContext.createScriptProcessor(4096, 1, 1);
-    let input = input = audioContext.createMediaStreamSource(micStream);
+    let input = audioContext.createMediaStreamSource(micStream);
     scriptNode.addEventListener('audioprocess', (event) => processAudioEvent(event));
     input.connect(scriptNode);
     scriptNode.connect(audioContext.destination);

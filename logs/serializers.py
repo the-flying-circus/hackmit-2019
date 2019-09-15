@@ -1,3 +1,5 @@
+import bleach
+
 from rest_framework import serializers
 
 
@@ -17,6 +19,9 @@ class MetricSerializer(serializers.ModelSerializer):
 class PageSerializer(serializers.ModelSerializer):
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
     metric_set = MetricSerializer(many=True, read_only=True)
+
+    def validate_content(self, data):
+        return bleach.clean(data, tags=bleach.sanitizer.ALLOWED_TAGS + ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'br', 'hr'], strip=True, strip_comments=True)
 
     class Meta:
         model = Page
