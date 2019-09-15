@@ -1,15 +1,15 @@
 function addPrompt(text) {
   var finalElement = document.getElementById("final");
-  finalElement.innerHTML += "<br><br><br><h4></h4>";
+  if (finalElement.innerHTML.length > 0)
+    finalElement.innerHTML += "<br><br><br>";
+  finalElement.innerHTML += "<h4></h4>";
   animateTyping(text, finalElement.id);
 }
 
 function animateTyping(text, parentId) {
   document.getElementById(parentId).lastElementChild.innerHTML += text.charAt(0);
-  if (text.length == 1) {
-    document.getElementById(parentId).innerHTML += "<br>";
+  if (text.length == 1)
     return;
-  }
   var pauseMS = 10 + Math.floor(Math.random() * 100);
   window.setTimeout(function() { animateTyping(text.substring(1), parentId); }, pauseMS);
 }
@@ -114,6 +114,7 @@ function onMessage(event) {
             partialElement.innerHTML = "";
             if (data.type == "final"){
                 finalsReceived++;
+                console.log(parseResponse(data));
                 finalElement.innerHTML += " " + parseResponse(data);
             }
             break;
