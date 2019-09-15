@@ -252,12 +252,22 @@
         }
       }
 
+      function changeMetric(name, val) {
+        $.ajax({
+          url: `/pages/${currentLog}/metrics/${name}/`,
+          method: 'PATCH',
+          data: {
+            'value': val
+          }
+        })
+      }
+
       ReactDOM.render(<div style={
         {textAlign: 'center'}
       }>
-        <Selector name='Mood' value={1} />
-        <Selector name='Anxiety' value={2} vertical={true} />
-        <Selector name='Cynicism' value={3} vertical={true} />
+        <Selector name='Mood' value={1} onChange={(val) => changeMetric('mood', val)} />
+        <Selector name='Anxiety' value={2} vertical={true} onChange={(val) => changeMetric('anxiety', val)} />
+        <Selector name='Cynicism' value={3} vertical={true} onChange={(val) => changeMetric('cynicism', val)} />
       </div>, document.querySelector("#columns"))
     </script>
     <script type="text/javascript">
