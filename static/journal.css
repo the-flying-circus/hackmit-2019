@@ -9,6 +9,7 @@
   max-height: 100%;
   overflow-y: auto;
   cursor: text;
+  font-family: 'Hepta Slab', serif;
 }
 
 #journal span:focus {
