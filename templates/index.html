@@ -450,15 +450,6 @@
           window.toggleLabels(false);
         });
 
-        //window.addEventListener("wheel", function(e) {
-        //  if (e.deltaY > 0 && currentPage === 1) {
-        //    $(document).trigger("page", [2]);
-        //  }
-        //  if (e.deltaY < 0 && currentPage === 4) {
-        //    $(document).trigger("page", [1]);
-        //  }
-        //});
-
         $.ajaxPrefilter((options, originalOptions, jqXHR) => {
           if (["post", "put", "patch", "delete"].indexOf(options.type.toLowerCase()) !== -1) {
             const tok = $('[name="csrfmiddlewaretoken"]').val();
@@ -467,10 +458,15 @@
         });
 
         $("#continue").click(function() {
+          const text = $.trim($("#journal").text());
           $.ajax({
             url: `/pages/${currentLog}/`,
             method: 'PATCH',
-            data: { content: $.trim($("#journal").text()) }
+            data: { content: text }
+          }).then(() => {
+            $.get('/mood/?page=' + currentLog, () => {
+              $(document).trigger("page", [3]);
+            });
           });
         });
 
@@ -502,7 +498,7 @@
             <span id="partial" class="grey-text text-darken-1"></span>
           </div>
         </div>
-        <div id="continue" class="btn next-3">Continue</div>
+        <div id="continue" class="btn">Continue</div>
       </div>
     </div>
     <div id="page3" class="page page-center">

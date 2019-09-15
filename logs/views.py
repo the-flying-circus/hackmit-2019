@@ -38,6 +38,20 @@ def weather(request):
     return JsonResponse(resp.json())
 
 def mood(request):
+    page = request.GET.get('page')
+    if page is not None:
+        page = Page.objects.get(date=page, owner=request.user)
+        scores = getMoodScores(getIBMEmotions(page.content))
+        scores = {k: round((v * 4) + 1) for k, v in scores.items()}
+        for key, val in scores.items():
+            Metric.objects.update_or_create(page=page, name=key.lower(), defaults={
+                'value': val
+            })
+        return JsonResponse({
+            'success': True,
+            'scores': scores
+        })
+
     text = request.GET.get('text')
     if not text:
         return JsonResponse({
@@ -82,7 +96,7 @@ def graph(request):
     if not request.user.is_authenticated:
         return JsonResponse({
             'success': False,
-            'error': 'Not Logged In'
+            'error': 'Not logged in!'
         })
 
     output = []
