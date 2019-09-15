@@ -113,6 +113,10 @@
       text-shadow: 0 0 3px black;
       font-weight: bold;
     }
+
+    .blur {
+      filter: blur(10px);
+    }
     </style>
     <script type="text/babel">
       const COLUMN_HEIGHT = 150
@@ -211,6 +215,10 @@
           });
         });
 
+        $.get("/user", (data) => {
+          $("#first-name").removeClass("blur").text(data.name);
+        });
+
         const backgroundNum = new Date().getMinutes() % 2;
         $("#background").css("background-image", "url(/static/images/placeholder" + backgroundNum + ".jpg)");
 
@@ -246,7 +254,7 @@
         </ul>
       </div>
       <div style="text-align: center">
-        <div class="title">Hey, Grey!</div>
+        <div class="title">Hey, <span id="first-name" class="blur">User</span>!</div>
         <div class="btn next-2">Check in today</div> <div class="btn next-3">View stats</div>
       </div>
     </div>
@@ -254,7 +262,6 @@
       <div id="background-map-1" class="background"></div>
       <div class="container">
         <button id="recordButton" class="btn wave-effect" onclick="doStream()">Record</button>
-        <div id="recordStatus"></div>
         <div id="journal" class="card-panel">
           <div onclick="document.getElementById('final').focus()">
             <span id="final" contenteditable="true"></span>
