@@ -36,7 +36,6 @@ class MetricViewSet(viewsets.ModelViewSet):
 @cache_page(60)
 def weather(request):
     resp = requests.get("http://api.openweathermap.org/data/2.5/weather?id=4931972&APPID=3a2410d61b7127eea64a08e1093fb82c")
-    #print(resp)
     resp.raise_for_status()
 
     return JsonResponse(resp.json())
@@ -51,7 +50,6 @@ def entry(request):
 def mood(request):
     page = request.GET.get('page')
     if page is not None:
-        print(page)
         page = Page.objects.get(date=page, owner=request.user)
         scores = getMoodScores(getIBMEmotions(page.content))
         scores = {k: round((v * 4) + 1) for k, v in scores.items()}
@@ -59,7 +57,6 @@ def mood(request):
             Metric.objects.update_or_create(page=page, name=key.lower(), defaults={
                 'value': val
             })
-        print(scores)
         return JsonResponse({
             'success': True,
             'scores': scores
