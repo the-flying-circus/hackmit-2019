@@ -376,7 +376,7 @@
         const backgroundNum = new Date().getMinutes() % 2;
         $("#background").css("background-image", "url(/static/images/placeholder" + backgroundNum + ".jpg)");
 
-        const maps = [1, 2].map((i) => {
+        const maps = [1, 2, 3].map((i) => {
           return new mapboxgl.Map({
             container: "background-map-" + i,
             style: "mapbox://styles/mapbox/dark-v10",
@@ -385,7 +385,7 @@
           });
         });
 
-        maps.forEach((map) => {
+        maps.slice(0, 2).forEach((map) => {
           map.on('load', function() {
             map.style.stylesheet.layers.forEach(function(layer) {
               if (layer.type === 'symbol') {
@@ -422,6 +422,9 @@
           if (e.deltaY > 0 && currentPage === 1) {
             $(document).trigger("page", [2]);
           }
+          if (e.deltaY < 0 && currentPage === 4) {
+            $(document).trigger("page", [1]);
+          }
         });
 
         $.ajaxPrefilter((options, originalOptions, jqXHR) => {
@@ -455,7 +458,7 @@
       </div>
       <div style="text-align: center">
         <div class="title">Hey, <span id="first-name" class="blur">User</span>!</div>
-        <div class="btn next-2">Check in today</div> <div class="btn next-3">View stats</div>
+        <div class="btn next-2">Check in today</div> <div class="btn next-4">View stats</div>
       </div>
     </div>
     <div id="page2" class="page">
@@ -474,11 +477,14 @@
     </div>
     <div id="page3" class="page page-center">
       <div id="background-map-2" class="background"></div>
-      <div id="columns"></div>
-      <br />
-      <div class="btn next-4">View history</div>
+      <div style="text-align: center">
+        <div id="columns"></div>
+        <br />
+        <div class="btn next-4">View history</div>
+      </div>
     </div>
     <div id="page4" class="page">
+      <div id="background-map-3" class="background"></div>
       <div id="graphs">
         <div id="moodchart-container" class="container" style="position: relative; height:30vh; width:70vw">
           <canvas id="moodchart"></canvas>
