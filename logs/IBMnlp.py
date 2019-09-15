@@ -15,7 +15,10 @@ def getIBMEmotions(text):
 
     resp = sess.get('https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze')
 
-    return resp.json()['emotion']['document']['emotion']
+    try:
+        return resp.json()['emotion']['document']['emotion']
+    except KeyError:
+        return {'joy': 0, 'sadness': 0, 'fear': 0, 'anger': 0, 'disgust': 0}
 
 
 def getMoodScores(emotions):
