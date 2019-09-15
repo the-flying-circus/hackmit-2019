@@ -22,6 +22,9 @@
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
+
     <style>
     html, body {
       margin: 0;
@@ -186,6 +189,7 @@
         <Column name='Cynicism' value={90} />
       </div>, document.querySelector("#columns"))
     </script>
+
     <script type="text/javascript">
       mapboxgl.accessToken = 'pk.eyJ1Ijoic3JrYnJhZGJ1cnkiLCJhIjoiY2p6Z2tzbnRnMG13MjNtbGV2ZGYzZDVkYSJ9.--vU61Pvq2Fd1UqhlIUd3g';
 
@@ -208,7 +212,7 @@
       });
 
       $(document).ready(() => {
-        [1, 2, 3].forEach((i) => {
+        [1, 2, 3, 4].forEach((i) => {
           $(".next-" + i).click((e) => {
             e.preventDefault();
             $(document).trigger("page", [i]);
@@ -250,7 +254,7 @@
       <div class="info">
         <ul>
           <li><span id="weather">Weather</span></li>
-          <li><span id="time"></span></li> 
+          <li><span id="time"></span></li>
         </ul>
       </div>
       <div style="text-align: center">
@@ -274,6 +278,63 @@
     <div id="page3" class="page page-center">
       <div id="background-map-2" class="background"></div>
       <div id="columns"></div>
+      <br />
+      <div class="btn next-4">View history</div>
+    </div>
+    <div id="page4" class="page">
+      <div id="graphs">
+        <div id="moodchart-container" class="container" style="position: relative; height:30vh; width:70vw">
+          <canvas id="moodchart"></canvas>
+        </div>
+        <div id="anxietychart-container" class="container" style="position: relative; height:30vh; width:70vw">
+          <canvas id="anxietychart"></canvas>
+        </div>
+        <div id="chart-container" class="container" style="position: relative; height:30vh; width:70vw">
+          <canvas id="moodchart"></canvas>
+        </div>
+
+        <script type="text/javascript">
+            let ctx = document.getElementById('moodchart');
+            let myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>
+
+      </div>
     </div>
   </body>
 </html>
