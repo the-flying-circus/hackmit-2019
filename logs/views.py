@@ -14,7 +14,10 @@ from .serializers import PageSerializer, MetricSerializer
 from .IBMnlp import getIBMEmotions, getMoodScores, getEntityEmotions, parseEntityEmotions
 from .amadeus import getPOIS
 
-prompts = json.load(open('static/prompts.json'))
+
+with open('static/prompts.json', 'r') as f:
+    prompts = json.load(f)
+
 
 class PageViewSet(viewsets.ModelViewSet):
     serializer_class = PageSerializer
@@ -37,7 +40,6 @@ class MetricViewSet(viewsets.ModelViewSet):
 @cache_page(60)
 def weather(request):
     resp = requests.get("http://api.openweathermap.org/data/2.5/weather?id=4931972&APPID=3a2410d61b7127eea64a08e1093fb82c")
-    #print(resp)
     resp.raise_for_status()
 
     return JsonResponse(resp.json())
@@ -52,7 +54,6 @@ def entry(request):
 def mood(request):
     page = request.GET.get('page')
     if page is not None:
-        print(page)
         page = Page.objects.get(date=page, owner=request.user)
         scores = getMoodScores(getIBMEmotions(page.content))
         scores = {k: round((v * 4) + 1) for k, v in scores.items()}
@@ -60,7 +61,6 @@ def mood(request):
             Metric.objects.update_or_create(page=page, name=key.lower(), defaults={
                 'value': val
             })
-        print(scores)
         return JsonResponse({
             'success': True,
             'scores': scores
@@ -83,7 +83,7 @@ def prompt(request):
         obj, sentiment = parseEntityEmotions(entities, emotion, lastObj, lastSentiment)
     else:
         obj = None
-        sentiment = 'negative'
+        sentiment = 'neutral'
 
     if obj is None:
         questions = prompts[sentiment]['no_arg']

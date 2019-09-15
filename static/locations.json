@@ -125,6 +125,131 @@
           "name": "Baksei Chamkrong Temple"
         }
       ]
+    },
+    {
+      "name": "Ulaanbaatar, Mongolia",
+      "image": "mongolia.jpg",
+      "location": [
+        106.9057,
+        47.8864
+      ],
+      "pois": [
+        {
+          "location": [
+            47.91489,
+            106.918434
+          ],
+          "name": "Choijin Lama Temple Museum"
+        },
+        {
+          "location": [
+            47.915375,
+            106.914085
+          ],
+          "name": "Grand Khaan Irish Pub"
+        },
+        {
+          "location": [
+            47.91516,
+            106.9176
+          ],
+          "name": "Veranda"
+        },
+        {
+          "location": [
+            47.914562,
+            106.91852
+          ],
+          "name": "Millie's Cafe"
+        },
+        {
+          "location": [
+            47.913017,
+            106.90054
+          ],
+          "name": "California"
+        },
+        {
+          "location": [
+            47.9149,
+            106.9162
+          ],
+          "name": "National Library of Mongolia"
+        },
+        {
+          "location": [
+            47.913372,
+            106.90418
+          ],
+          "name": "Caffe Ti amo"
+        },
+        {
+          "location": [
+            47.912643,
+            106.937675
+          ],
+          "name": "UBean Coffee House and Roasterie"
+        },
+        {
+          "location": [
+            47.913082,
+            106.92437
+          ],
+          "name": "MexiKhan"
+        },
+        {
+          "location": [
+            47.915276,
+            106.91769
+          ],
+          "name": "Silk Road Bar & Grill"
+        }
+      ]
+    },
+    {
+      "name": "Lalibela, Ethiopia",
+      "image": "ethiopia.jpg",
+      "location": [
+        39.0476,
+        12.0309
+      ],
+      "pois": [
+        {
+          "location": [
+            12.043224,
+            39.037006
+          ],
+          "name": "Ben Abeba"
+        },
+        {
+          "location": [
+            12.03174,
+            39.04113
+          ],
+          "name": "Church of Saint George, Lalibela"
+        },
+        {
+          "location": [
+            12.031734,
+            39.045597
+          ],
+          "name": "Bet Amanuel"
+        },
+        {
+          "location": [
+            12.031608,
+            39.04114
+          ],
+          "name": "Bete Giyorgis"
+        },
+        {
+          "location": [
+            12.034533,
+            39.049164
+          ],
+          "name": "Unique Restaurant"
+        }
+      ]
     }
   ]
 }

@@ -27,8 +27,6 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/4.2.1/simplebar.min.css" integrity="sha256-KuTN+Py9Ut+AuYFyA/Jn+4ENdElDpLe92SYOiFnJr9g=" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplebar/4.2.1/simplebar.min.js" integrity="sha256-HnK5kukrBNKjtb6Agv0oBLwovaMdWG+LfPDnI5BLP2Y=" crossorigin="anonymous"></script>
 
     <style>
     html, body {
@@ -37,6 +35,20 @@
 
       font-family: 'Open Sans', sans-serif;
       overflow: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 2px grey;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: grey;
+      border-radius: 10px;
     }
 
     .page {
@@ -411,7 +423,7 @@
       });
 
       $(document).ready(() => {
-        [1, 2, 3, 4, 5].forEach((i) => {
+        [1, 2, 3, 4, 5, 6].forEach((i) => {
           $(".next-" + i).click((e) => {
             e.preventDefault();
             $(document).trigger("page", [i]);
@@ -546,12 +558,12 @@
         <div class="btn next-2">Check in today</div> <div class="btn next-4">View stats</div> <div class="btn next-5">Browse Entries</div>
       </div>
     </div>
-    <div id="page2" class="page">
+    <div id="page2" class="page clearfix">
       <div class="container">
         <button id="recordButton" class="btn wave-effect" onclick="doStream()">Record</button>
         <button id="promptButton" class="btn wave-effect" onclick="getAndInsertPrompt()">Add Prompt</button>
         <div id="journal" class="card-panel white">
-          <div id="journal-inner" data-simplebar data-simplebar-auto-hide="false" onclick="document.getElementById('final').focus()">
+          <div id="journal-inner" onclick="document.getElementById('final').focus()">
             <span id="final" contenteditable="true"></span>
             <span id="partial" class="grey-text text-darken-1"></span>
           </div>
@@ -694,6 +706,9 @@
 
           addPageLoadEvent(4, () => {
             updateChart();
+          });
+
+          addPageLoadEvent(6, () => {
             toggleLabels(true);
           });
           </script>
@@ -724,11 +739,13 @@
                 <div>Cynicism:</div><div id="cynicism-emoticon"></div>
               </div>
             </div>
-            <div id="carousel-inner" data-simplebar data-simplebar-auto-hide="false"></div>
+            <div id="carousel-inner"></div>
           </div>
         </div>
         <div class="btn next-1">Back To Home</div>
       </div>
+    </div>
+    <div id="page6" class="page page-center">
     </div>
   </body>
 </html>

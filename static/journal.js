@@ -12,7 +12,7 @@ function addPrompt(text) {
 }
 
 function scrollJournalBottom() {
-  let journal = $("#journal-inner .simplebar-content-wrapper");
+  let journal = $("#journal-inner");
   journal.animate({scrollTop: journal.prop("scrollHeight")}, 400);
 }
 

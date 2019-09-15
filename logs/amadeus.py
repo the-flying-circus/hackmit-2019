@@ -20,7 +20,12 @@ def getPOIS(lat, long, num=5):
     p = 0
     rad = 2
     while len(pois) < num:
-        currentpoi = oauth.get('https://api.amadeus.com/v1/reference-data/locations/pois', params={'latitude': lat, 'longitude': long, 'radius': rad, "page[offset]": p}).json()
+        params = {'latitude': lat, 'longitude': long, 'radius': rad, "page[offset]": p}
+        currentpoi = oauth.get('https://api.amadeus.com/v1/reference-data/locations/pois', params=params).json()
+        if 'data' not in currentpoi:
+            print(params)
+            print(currentpoi)
+            continue
         if len(currentpoi['data']) < 1:
             p = 0
             rad *= 2
