@@ -64,10 +64,11 @@ def user(request):
         login(request, obj)
 
     # TODO: this shouldn't be here
-    Page.objects.get_or_create(owner=request.user, date=datetime.date.today())
+    page, _ = Page.objects.get_or_create(owner=request.user, date=datetime.date.today())
 
     return JsonResponse({
-        "name": request.user.first_name
+        "name": request.user.first_name,
+        "page": page.date
     })
 
 

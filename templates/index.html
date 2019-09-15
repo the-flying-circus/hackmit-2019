@@ -265,6 +265,7 @@
 
       const onPageLoad = {};
       var currentPage = 1;
+      var currentLog = null;
 
       function addPageLoadEvent(id, func) {
         onPageLoad[id] = func;
@@ -288,6 +289,7 @@
         });
 
         $.get("/user", (data) => {
+          currentLog = data.page;
           $("#first-name").removeClass("blur").text(data.name);
         });
 
@@ -304,7 +306,7 @@
         });
 
         maps[0].on('load', function() {
-          maps[0].stylesheet.layers.forEach(function(layer) {
+          maps[0].style.stylesheet.layers.forEach(function(layer) {
             if (layer.type === 'symbol') {
               maps[0].removeLayer(layer.id);
             }
@@ -341,11 +343,27 @@
           }
         });
 
+        $.ajaxPrefilter((options, originalOptions, jqXHR) => {
+          if (["post", "put", "patch", "delete"].indexOf(options.type.toLowerCase()) !== -1) {
+            const tok = $('[name="csrfmiddlewaretoken"]').val();
+            jqXHR.setRequestHeader("X-CSRFToken", tok);
+          }
+        });
+
+        $("#continue").click(function() {
+          $.ajax({
+            url: `/pages/${currentLog}/`,
+            method: 'PATCH',
+            data: { content: $.trim($("#journal").text()) }
+          });
+        });
+
         $(document).trigger("page", [1]);
       });
     </script>
   </head>
   <body>
+    {% csrf_token %}
     <div id="page1" class="page page-center">
       <div id="background" class="background"></div>
       <div class="info">
@@ -370,7 +388,7 @@
             <span id="partial" class="grey-text text-darken-1"></span>
           </div>
         </div>
-        <div class="btn next-3">Continue</div>
+        <div id="continue" class="btn next-3">Continue</div>
       </div>
     </div>
     <div id="page3" class="page page-center">
