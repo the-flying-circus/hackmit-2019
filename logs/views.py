@@ -13,7 +13,10 @@ from .models import Page, Metric
 from .serializers import PageSerializer, MetricSerializer
 from .IBMnlp import getIBMEmotions, getMoodScores, getEntityEmotions, parseEntityEmotions
 
-prompts = json.load(open('static/prompts.json'))
+
+with open('static/prompts.json', 'r') as f:
+    prompts = json.load(f)
+
 
 class PageViewSet(viewsets.ModelViewSet):
     serializer_class = PageSerializer
@@ -79,7 +82,7 @@ def prompt(request):
         obj, sentiment = parseEntityEmotions(entities, emotion, lastObj, lastSentiment)
     else:
         obj = None
-        sentiment = 'negative'
+        sentiment = 'neutral'
 
     if obj is None:
         questions = prompts[sentiment]['no_arg']
