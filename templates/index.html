@@ -49,6 +49,7 @@
       bottom: 0px;
       right: 0px;
       z-index: -1;
+      background-color: black;
     }
     .info {
       position: absolute;
@@ -107,12 +108,14 @@
         const backgroundNum = new Date().getMinutes() % 2;
         $("#background").css("background-image", "url(/static/images/placeholder" + backgroundNum + ".jpg)");
 
-        new mapboxgl.Map({
-          container: "background-map",
-          style: "mapbox://styles/mapbox/dark-v10",
-          center: [-74.50, 40],
-          zoom: 8
-        })
+        const maps = [1, 2].map((i) => {
+          return new mapboxgl.Map({
+            container: "background-map-" + i,
+            style: "mapbox://styles/mapbox/dark-v10",
+            center: [-74.50, 40],
+            zoom: 10
+          });
+        });
 
         addPageLoadEvent(1, () => {
           updateTime();
@@ -142,7 +145,7 @@
       </div>
     </div>
     <div id="page2" class="page">
-      <div id="background-map" class="background"></div>
+      <div id="background-map-1" class="background"></div>
       <div class="container">
         <button id="recordButton" class="btn wave-effect" onclick="doStream()">Record</button>
         <div id="recordStatus"></div>
@@ -152,9 +155,11 @@
             <span id="partial" class="grey-text"></span>
           </div>
         </div>
+        <div class="btn next-3">Continue</div>
       </div>
     </div>
     <div id="page3" class="page">
+      <div id="background-map-2" class="background"></div>
       Page 3
     </div>
   </body>
