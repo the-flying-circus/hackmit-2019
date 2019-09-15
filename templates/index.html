@@ -467,10 +467,10 @@
         });
 
         $("#continue").click(function() {
-          const text = $.trim($("#journal").text());
+          const text = $.trim($("#journal").html());
           $.ajax({
             url: `/pages/${currentLog}/`,
-            method: 'GET',
+            method: 'PATCH',
             data: { content: text }
           }).then(() => {
             $.get('/mood/?page=' + currentLog, () => {
