@@ -38,7 +38,10 @@ def getEntityEmotions(text):
 
     resp = requests.post('https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze', auth=("apikey", ibmKey), json=p)
 
-    return resp.json()['entities'], resp.json()['emotion']['document']['emotion']
+    try:
+        return resp.json()['entities'], resp.json()['emotion']['document']['emotion']
+    except KeyError:
+        return [], {'joy': 0, 'sadness': 0, 'fear': 0, 'anger': 0, 'disgust': 0}
 
 
 def getMoodScores(emotions):
