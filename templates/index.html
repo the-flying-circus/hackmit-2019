@@ -248,12 +248,14 @@
       }
 
       const onPageLoad = {};
+      var currentPage = 1;
 
       function addPageLoadEvent(id, func) {
         onPageLoad[id] = func;
       }
 
       $(document).on("page", (e, id) => {
+        currentPage = id;
         $("html, body").animate({ scrollTop: $("#page" + id).offset().top }, 1000);
         const func = onPageLoad[id];
         if (func) {
@@ -293,6 +295,12 @@
             var tmp = Math.round((data.main.temp - 273.15)*9/5);
             $("#weather").html("<img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='100px'><div position:inline>" + tmp + "°F</div>");
           });
+        });
+
+        window.addEventListener("wheel", function(e) {
+          if (e.deltaY > 0 && currentPage === 1) {
+            $(document).trigger("page", [2]);
+          }
         });
 
         $(document).trigger("page", [1]);
