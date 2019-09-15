@@ -26,3 +26,15 @@
 #next-button {
   right: 0;
 }
+
+#feelings > div {
+  display: flex;
+  align-items: center;
+}
+
+#mood-emoticon, #anxiety-emoticon, #cynicism-emoticon {
+  background-color: #AAA;
+  border-radius: 50%;
+  line-height: 0;
+  margin-left: 10px;
+}
