@@ -12,6 +12,7 @@ drf-nested-routers = "*"
 pyyaml = "*"
 uritemplate = "*"
 rev-ai = "*"
+requests_oauthlib = "*"
 
 [dev-packages]
 
