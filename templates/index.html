@@ -386,7 +386,7 @@
           currentLog = data.page;
           $("#first-name").removeClass("blur").text(data.name);
           if (data.content) {
-            $("#final").text(data.content);
+            $("#final").html(data.content);
           }
         });
 
@@ -467,7 +467,7 @@
         });
 
         $("#continue").click(function() {
-          const text = $.trim($("#journal").html());
+          const text = $.trim($("#final").html());
           $.ajax({
             url: `/pages/${currentLog}/`,
             method: 'PATCH',

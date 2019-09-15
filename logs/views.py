@@ -50,6 +50,7 @@ def entry(request):
 def mood(request):
     page = request.GET.get('page')
     if page is not None:
+        print(page)
         page = Page.objects.get(date=page, owner=request.user)
         scores = getMoodScores(getIBMEmotions(page.content))
         scores = {k: round((v * 4) + 1) for k, v in scores.items()}
@@ -57,6 +58,7 @@ def mood(request):
             Metric.objects.update_or_create(page=page, name=key.lower(), defaults={
                 'value': val
             })
+        print(scores)
         return JsonResponse({
             'success': True,
             'scores': scores
