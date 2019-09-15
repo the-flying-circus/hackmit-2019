@@ -191,6 +191,16 @@
     .item-horiz {
       display: block;
     }
+
+    #background-map {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: -2;
+      background-color: black;
+    }
     </style>
     <script type="text/babel">
       const COLUMN_HEIGHT = 150
@@ -332,7 +342,9 @@
       mapboxgl.accessToken = 'pk.eyJ1Ijoic3JrYnJhZGJ1cnkiLCJhIjoiY2p6Z2tzbnRnMG13MjNtbGV2ZGYzZDVkYSJ9.--vU61Pvq2Fd1UqhlIUd3g';
 
       function updateTime() {
-        $("#time").text(new Date());
+        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        var now = new Date();
+        $("#time").text(`${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}  ${now.toLocaleTimeString()}`);
       }
 
       const onPageLoad = {};
@@ -376,36 +388,52 @@
         const backgroundNum = new Date().getMinutes() % 2;
         $("#background").css("background-image", "url(/static/images/placeholder" + backgroundNum + ".jpg)");
 
-        const maps = [1, 2].map((i) => {
-          return new mapboxgl.Map({
-            container: "background-map-" + i,
-            style: "mapbox://styles/mapbox/dark-v10",
-            center: [-74.50, 40],
-            zoom: 10
-          });
+        const map = new mapboxgl.Map({
+          container: "background-map",
+          style: "mapbox://styles/mapbox/dark-v10",
+          center: [-74.50, 40],
+          zoom: 10
         });
 
-        maps.forEach((map) => {
-          map.on('load', function() {
-            map.style.stylesheet.layers.forEach(function(layer) {
-              if (layer.type === 'symbol') {
-                map.removeLayer(layer.id);
-              }
-            });
+        window.toggleLabels = function(val) {
+          map.style.stylesheet.layers.forEach(function(layer) {
+            if (layer.type === 'symbol') {
+              map.setLayoutProperty(layer.id, 'visibility', val ? 'visible' : 'none');
+            }
           });
-        });
-        const markers = [];
 
-        for (var i = 0; i < 360; i += 30) {
-            markers.push([-74.50 + 0.25 * Math.cos(i * Math.PI / 180), 40 + 0.25 * Math.sin(i * Math.PI / 180)]);
+          if (val) {
+            const markers = [];
+            for (var i = 0; i < 360; i += 30) {
+                markers.push([-74.50 + 0.25 * Math.cos(i * Math.PI / 180), 40 + 0.25 * Math.sin(i * Math.PI / 180)]);
+            }
+
+            addMarkers(markers);
+          }
+          else {
+            removeMarkers();
+          }
         }
 
-        markers.forEach(function(mark) {
-          const el = document.createElement("div");
-          el.className = "marker";
-          new mapboxgl.Marker(el)
-            .setLngLat(mark)
-            .addTo(maps[1]);
+        var markerObjects = [];
+
+        function addMarkers(markers) {
+          markers.forEach(function(mark) {
+            const el = document.createElement("div");
+            el.className = "marker";
+            const m = new mapboxgl.Marker(el)
+              .setLngLat(mark)
+              .addTo(map);
+            markerObjects.push(m);
+          });
+        }
+
+        function removeMarkers() {
+          markerObjects.forEach((x) => x.remove());
+        }
+
+        map.on('load', function() {
+          window.toggleLabels(false);
         });
 
         addPageLoadEvent(1, () => {
@@ -413,15 +441,13 @@
           setInterval(updateTime, 1000);
 
           $.get("/weather", (data) => {
-            var tmp = Math.round((data.main.temp - 273.15)*9/5);
-            $("#weather").html("<img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='100px'><div position:inline>" + tmp + "°F</div>");
+            var tmp = Math.round((data.main.temp - 273.15)*9/5 + 32);
+            $("#weather").html("<div style='display:flex;align-items:center;'><div style='border-radius:50%;background-color:#AAA;line-height:0;'><img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='100px'></div><div style='font-size:2em;margin-left:20px;'>" + tmp + "°F</div></div>");
           });
         });
 
-        window.addEventListener("wheel", function(e) {
-          if (e.deltaY > 0 && currentPage === 1) {
-            $(document).trigger("page", [2]);
-          }
+        addPageLoadEvent(2, () => {
+          window.toggleLabels(false);
         });
 
         $.ajaxPrefilter((options, originalOptions, jqXHR) => {
@@ -432,10 +458,15 @@
         });
 
         $("#continue").click(function() {
+          const text = $.trim($("#journal").text());
           $.ajax({
             url: `/pages/${currentLog}/`,
             method: 'PATCH',
-            data: { content: $.trim($("#journal").text()) }
+            data: { content: text }
+          }).then(() => {
+            $.get('/mood/?page=' + currentLog, () => {
+              $(document).trigger("page", [3]);
+            });
           });
         });
 
@@ -445,92 +476,121 @@
   </head>
   <body>
     {% csrf_token %}
+    <div id="background-map"></div>
     <div id="page1" class="page page-center">
       <div id="background" class="background"></div>
-      <div class="info">
-        <ul>
-          <li><span id="weather">Weather</span></li>
-          <li><span id="time"></span></li>
-        </ul>
+      <div class="info card-panel black center-align">
+        <div id="weather" style="margin-bottom:10px;"></div>
+        <div id="time"></div>
       </div>
       <div style="text-align: center">
         <div class="title">Hey, <span id="first-name" class="blur">User</span>!</div>
-        <div class="btn next-2">Check in today</div> <div class="btn next-3">View stats</div>
+        <div class="btn next-2">Check in today</div> <div class="btn next-4">View stats</div>
       </div>
     </div>
     <div id="page2" class="page">
-      <div id="background-map-1" class="background"></div>
       <div class="container">
         <button id="recordButton" class="btn wave-effect" onclick="doStream()">Record</button>
         <button id="promptButton" class="btn wave-effect" onclick="getAndInsertPrompt()">Add Prompt</button>
-        <div id="journal" class="card-panel">
+        <div id="journal" class="card-panel white">
           <div id="journal-inner" data-simplebar data-simplebar-auto-hide="false" onclick="document.getElementById('final').focus()">
             <span id="final" contenteditable="true"><br></span>
             <span id="partial" class="grey-text text-darken-1"></span>
           </div>
         </div>
-        <div id="continue" class="btn next-3">Continue</div>
+        <div id="continue" class="btn">Continue</div>
       </div>
     </div>
     <div id="page3" class="page page-center">
-      <div id="background-map-2" class="background"></div>
-      <div id="columns"></div>
-      <br />
-      <div class="btn next-4">View history</div>
+      <div style="text-align: center">
+        <div id="columns"></div>
+        <br />
+        <div class="btn next-2">Back</div>
+        <div class="btn next-4">View history</div>
+      </div>
     </div>
-    <div id="page4" class="page">
-      <div id="graphs">
-        <div id="moodchart-container" class="container" style="position: relative; height:30vh; width:70vw">
-          <canvas id="moodchart"></canvas>
-        </div>
-        <div id="anxietychart-container" class="container" style="position: relative; height:30vh; width:70vw">
-          <canvas id="anxietychart"></canvas>
-        </div>
-        <div id="chart-container" class="container" style="position: relative; height:30vh; width:70vw">
-          <canvas id="moodchart"></canvas>
-        </div>
+    <div id="page4" class="page page-center">
+      <div style="text-align: center">
+        <div id="graphs">
+          <div id="moodchart-container" class="container" style="position: relative; height:30vh; width:70vw">
+            <canvas id="moodchart"></canvas>
+          </div>
+          <div id="anxietychart-container" class="container" style="position: relative; height:30vh; width:70vw">
+            <canvas id="anxietychart"></canvas>
+          </div>
+          <div id="chart-container" class="container" style="position: relative; height:30vh; width:70vw">
+            <canvas id="moodchart"></canvas>
+          </div>
 
         <script type="text/javascript">
             let ctx = document.getElementById('moodchart');
             let myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                     datasets: [{
-                        label: '# of Votes',
-                        data: [12, 19, 3, 5, 2, 3],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
+                        label: 'Mood',
+                        data: [1, 2, 3, 4, 5, 4],
                         borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
+                            '#FFAB00'
                         ],
-                        borderWidth: 1
+                        borderWidth: 2
+                    }, {
+                      label: 'Anxiety',
+                      data: [1, 2, 3, 4, 5, 4],
+                      borderColor: [
+                        '#18FFFF'
+                      ],
+                      borderWidth: 2
+                    }, {
+                      label: 'Cynicism',
+                      data: [1, 2, 3, 4, 5, 4],
+                      borderColor: [
+                        '#D500F9'
+                      ],
+                      borderWidth: 2
                     }]
                 },
                 options: {
-                    maintainAspectRatio: false,
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
+                  maintainAspectRatio: false,
+                  scales: {
+                    xAxes: [{
+                      ticks: {
+                        fontColor: "#FFFFFF"
+                      }
+                    }],
+                    yAxes: [{
+                      ticks: {
+                        beginAtZero: true,
+                        fontColor: "#FFFFFF"
+                      }
+                    }]
+                  },
+                  legend: {
+                    labels: {
+                      fontColor: "#FFFFFF"
                     }
+                  }
                 }
             });
-        </script>
 
+              function updateChart() {
+                $.get('/graph/', (data) => {
+                  myChart.config.data.labels = data.data.map((x) => x.date);
+                  ['mood', 'anxiety', 'cynicism'].forEach((name, i) => {
+                    myChart.config.data.datasets[i].data = data.data.map((x) => x.metrics[name]);
+                  });
+                  myChart.update();
+                });
+              }
+
+          addPageLoadEvent(4, () => {
+            updateChart();
+            toggleLabels(true);
+          });
+          </script>
+
+        </div>
+        <div class="btn next-1">Back To Home</div>
       </div>
     </div>
   </body>

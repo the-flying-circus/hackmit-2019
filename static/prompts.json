@@ -1,0 +1,44 @@
+{
+    "positive": {
+        "arg": [
+            "Do you think {} has made you happier?",
+        ],
+        "no_arg": [
+            "Seems like things have been going well!  Would you say that's right?",
+        ]
+    },
+    "negative" : {
+        "arg":[
+            "Can you tell me more about {}?  You don't seem happy.",
+            "It seems like {} has gotten you down.  Was there a time when you felt good today?",
+            "It seems like {} is kind of hard to deal with.  Have you found anything that helps you cope or feel better?"
+        ],
+        "no_arg": [
+            "Would you say you're hanging in there?",
+            "Has anybody reached out to you lately?",
+            "It seems like things have been rough lately.  What else have you been going through?",
+            "You seem down.  Is there anything you're looking forward to?",
+            "I'm sorry to hear this.  Can you tell me more about how you've been lately?",
+            "Can you tell me about something you've enjoyed recently?"   
+        ]    
+    },
+    "neutral": {
+        "arg": [
+            "Can you tell me some more about {}?",
+
+        ],
+        "no_arg": [
+            "Tell me some more about how things have been lately.",
+            "What else has been going on?",
+            "Is there anything you're looking forward to?",
+            "Would you say you're doing ok?",
+            "Do you feel like your mood has been stable lately or no?",
+            "Have there been any significant changes in your life recently?",
+            "What else happened today?",
+            "What words would you use to describe your mood today?",
+            "Has anything been bothering you lately?",
+            "How has your energy level been recently?",
+            "How is your self-esteem right now?"
+        ]
+    }
+}
