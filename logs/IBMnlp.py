@@ -1,7 +1,10 @@
 from pprint import pprint
 import requests
 
-ibmKey = open('secrets/nlp-key.txt', 'r').read()
+
+with open('secrets/nlp-key.txt', 'r') as f:
+    ibmKey = f.read()
+
 
 def getIBMEmotions(text):
     sess = requests.Session()
