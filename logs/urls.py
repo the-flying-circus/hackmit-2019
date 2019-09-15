@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework_nested import routers
 
-from .views import PageViewSet, MetricViewSet, weather, mood, entry, prompt, user, graph, pointsOfInterest
+from .views import PageViewSet, MetricViewSet, weather, mood, entry, prompt, user, graph, pointsOfInterest, wiki
 
 
 router = routers.SimpleRouter()
@@ -18,7 +18,8 @@ urlpatterns = [
     path('prompt/', prompt),
     path('user/', user),
     path('graph/', graph),
-    path('pois/', pointsOfInterest)
+    path('pois/', pointsOfInterest),
+    path('wiki/', wiki)
 ]
 urlpatterns += router.urls
 urlpatterns += pages_router.urls

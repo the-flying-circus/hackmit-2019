@@ -2,6 +2,7 @@
   "locations": [
     {
       "name": "Kirkjufellsfoss, Iceland",
+      "wiki": "Kirkjufell",
       "image": "iceland.jpg",
       "location": [
         -23.3208618,
@@ -33,6 +34,7 @@
     },
     {
       "name": "Angkor Wat, Cambodia",
+      "wiki": "Angkor_Wat",
       "image": "cambodia.jpg",
       "location": [
         103.864797,
@@ -79,6 +81,7 @@
     },
     {
       "name": "Ulaanbaatar, Mongolia",
+      "wiki": "Ulaanbaatar",
       "image": "mongolia.jpg",
       "location": [
         106.9057,
@@ -124,6 +127,7 @@
     },
     {
       "name": "Lalibela, Ethiopia",
+      "wiki": "Lalibela",
       "image": "ethiopia.jpg",
       "location": [
         39.0476,

@@ -1,20 +1,27 @@
 import requests
-from requests_oauthlib import OAuth2Session
 import json
+import os
+
+from requests_oauthlib import OAuth2Session
 from pprint import pprint
 
+SECRETS_FILE = 'secrets/amadeus.json'
 TAG_BLACKLIST = {'pub', 'bar', 'liquor', 'restaurant', 'nightclub'}
 CATEGORY_BLACKLIST = {'nightlife', 'restaurant'}
 
-keys = json.load(open('secrets/amadeus.json'))
+if os.path.isfile(SECRETS_FILE):
+    with open(SECRETS_FILE, 'r') as f:
+        keys = json.load(f)
+else:
+    keys = {'client-id': None, 'client-secret': None}
 
 from oauthlib.oauth2 import BackendApplicationClient
 
-client = BackendApplicationClient(client_id=keys['client-id'])
-oauth = OAuth2Session(client=client)
-token = oauth.fetch_token(token_url='https://api.amadeus.com/v1/security/oauth2/token', client_id=keys['client-id'], client_secret=keys['client-secret'])
-
 def getPOIS(lat, long, num=5):
+    client = BackendApplicationClient(client_id=keys['client-id'])
+    oauth = OAuth2Session(client=client)
+    token = oauth.fetch_token(token_url='https://api.amadeus.com/v1/security/oauth2/token', client_id=keys['client-id'], client_secret=keys['client-secret'])
+
     poiNames = set()
     pois = []
     p = 0

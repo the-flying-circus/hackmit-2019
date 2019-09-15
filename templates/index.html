@@ -246,6 +246,26 @@
       font-size: 1em;
       font-weight: bold;
     }
+
+    #wiki-sidebar {
+      background-color: white;
+      padding: 15px;
+      max-height: 100vh;
+      overflow-y: auto;
+      width: 40%;
+      margin-left: auto;
+    }
+
+    #wiki-sidebar .hatnote, #wiki-sidebar .mw-editsection {
+      display: none;
+    }
+
+    #wiki-sidebar h1 {
+      font-size: 2em;
+      border-bottom: 1px solid #ccc;
+      margin-top: 0;
+      padding: 5px;
+    }
     </style>
     <script type="text/babel">
       const COLUMN_HEIGHT = 150
@@ -520,6 +540,19 @@
             setTimeout(() => addPrompt("How was your day?"), 1000);
         });
 
+        addPageLoadEvent(6, () => {
+          $.get('/wiki?q=' + encodeURIComponent(currentLocation.wiki), (data) => {
+            $("<h1 />").text(data.title).appendTo("#wiki-sidebar");
+            $("#wiki-sidebar").append($(data.content));
+            $("#wiki-sidebar .mw-parser-output a").each(function() {
+              if (!$(this).hasClass("external")) {
+                $(this).attr("href", "https://en.wikipedia.org" + $(this).attr("href"));
+              }
+              $(this).attr("target", "_blank");
+            });
+          });
+        });
+
         $.ajaxPrefilter((options, originalOptions, jqXHR) => {
           if (["post", "put", "patch", "delete"].indexOf(options.type.toLowerCase()) !== -1) {
             const tok = $('[name="csrfmiddlewaretoken"]').val();
@@ -576,7 +609,7 @@
         <div id="columns"></div>
         <br />
         <div class="btn next-2">Back</div>
-        <div class="btn next-4">Submit</div>
+        <div class="btn next-6">Submit</div>
       </div>
     </div>
     <div id="page4" class="page page-center">
@@ -748,6 +781,7 @@
       </div>
     </div>
     <div id="page6" class="page page-center">
+      <div id="wiki-sidebar"></div>
     </div>
   </body>
 </html>
