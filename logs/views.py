@@ -34,9 +34,15 @@ def weather(request):
     return JsonResponse(resp.json())
 
 def mood(request):
-    text = request.GET['text']
+    text = request.GET.get('text')
+    if not text:
+        return JsonResponse({
+            'success': False
+        })
     return JsonResponse(getMoodScores(getIBMEmotions(text)))
 
 
 def prompt(request):
-    return HttpResponse("What made you feel sad?")
+    return JsonResponse({
+        "question": "What made you feel sad?"
+    })
