@@ -344,14 +344,15 @@
           });
         });
 
-        maps[0].on('load', function() {
-          maps[0].style.stylesheet.layers.forEach(function(layer) {
-            if (layer.type === 'symbol') {
-              maps[0].removeLayer(layer.id);
-            }
+        maps.forEach((map) => {
+          map.on('load', function() {
+            map.style.stylesheet.layers.forEach(function(layer) {
+              if (layer.type === 'symbol') {
+                map.removeLayer(layer.id);
+              }
+            });
           });
         });
-
         const markers = [];
 
         for (var i = 0; i < 360; i += 30) {
