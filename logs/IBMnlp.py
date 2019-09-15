@@ -1,7 +1,6 @@
 from pprint import pprint
 import requests
 
-
 with open('secrets/nlp-key.txt', 'r') as f:
     ibmKey = f.read()
 
@@ -10,8 +9,8 @@ def getIBMEmotions(text):
     sess = requests.Session()
     sess.auth = ("apikey", ibmKey)
     sess.params = {'version': '2019-07-12',
-                  'features': 'emotion',
-                  'text': text}
+                   'features': 'emotion',
+                   'text': text}
     sess.headers = {
         "accept": "application/json"
     }
@@ -24,12 +23,29 @@ def getIBMEmotions(text):
         return {'joy': 0, 'sadness': 0, 'fear': 0, 'anger': 0, 'disgust': 0}
 
 
-def getMoodScores(emotions):
-     mood = min(1, max(0, (emotions['joy'] - emotions['sadness']) / 2.0 + 0.5))
-     anxiety = min(1, max(0, emotions['fear']))
-     cynicism = min(1, max(0, (12 * emotions['anger'] * emotions['disgust'])))
+def getEntityEmotions(text):
+    p = {'version': '2019-07-12',
+         "features": {
+             "emotion": True,
+             "entities": {
+                 "emotion": True,
+                 "sentiment": True,
+                 "limit": 10
+             },
+         },
+         'text': text}
 
-     return {'mood': mood, 'anxiety': anxiety, 'cynicism': cynicism}
+    resp = requests.post('https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze', auth=("apikey", ibmKey), json=p)
+
+    return resp.json()
+
+
+def getMoodScores(emotions):
+    mood = min(1, max(0, (emotions['joy'] - emotions['sadness']) / 2.0 + 0.5))
+    anxiety = min(1, max(0, emotions['fear']))
+    cynicism = min(1, max(0, (12 * emotions['anger'] * emotions['disgust'])))
+
+    return {'mood': mood, 'anxiety': anxiety, 'cynicism': cynicism}
 
 
 if __name__ == '__main__':
@@ -50,3 +66,8 @@ if __name__ == '__main__':
     print('happy sample:', happy, getMoodScores(happy))
     print('cynical sample:', cynical, getMoodScores(cynical))
     print('cynical + happy sample:', cynicalandhappy, getMoodScores(cynicalandhappy))
+
+    pprint(getEntityEmotions(
+        "I'm really worried about HackMIT. I know that we're supposed to do well, but I'm afraid that we won't win any awards and then everything will be awful. I dread the awards ceremony and wish that I had never signed up to do this in the first place"))
+    pprint(getEntityEmotions(
+        "Fucking Charles frustrated the shit out of me. He came over here and made me redo the goddamn IBM api stuff after it was already done, now the graphs are only half-baked. At least Eric was there to cheer me up by generally fixing everything that wasn't done yet."))
