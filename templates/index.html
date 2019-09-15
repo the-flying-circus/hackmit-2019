@@ -81,14 +81,17 @@
       });
 
       $(document).ready(() => {
-        $(".next-2").click((e) => {
-          e.preventDefault();
-          $(document).trigger("page", [2]);
+        [1, 2, 3].forEach((i) => {
+          $(".next-" + i).click((e) => {
+            e.preventDefault();
+            $(document).trigger("page", [i]);
+          });
         });
-        updateTime();
-        setInterval(updateTime, 1000);
 
         addPageLoadEvent(1, () => {
+          updateTime();
+          setInterval(updateTime, 1000);
+
           $.get("/weather", (data) => {
             $("#weather").text(data.weather[0].description);
           });
@@ -109,7 +112,7 @@
       </div>
       <div style="text-align: center">
         <div class="title">Hey, Grey!</div>
-        <div class="btn next-2">Check in today</div>
+        <div class="btn next-2">Check in today</div> <div class="btn next-3">View stats</div>
       </div>
     </div>
     <div id="page2" class="page">
