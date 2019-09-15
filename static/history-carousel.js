@@ -6,8 +6,10 @@ $(document).ready(function() {
     date: instance.date.toISOString().substring(0, 10)
   })
     .done(function(data) {
-      console.log(data.content);
       carouselEl.innerHTML = data.content;
+    })
+    .fail(function(data) {
+      carouselEl.innerHTML = "No entry.";
     })
   );
   $("#prev-button").click(() => {
@@ -18,4 +20,5 @@ $(document).ready(function() {
     instance.setDate(new Date(Number(instance.date) + 24*60*60000))
     instance._finishSelection();
   });
+  $(instance.$el).change();
 });
