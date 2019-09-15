@@ -184,7 +184,7 @@
     }
 
     .marker {
-      background-image: url('/static/images/mapbox-icon.png');
+      background-image: url('/static/pin.svg');
       background-size: cover;
       width: 50px;
       height: 50px;
@@ -486,17 +486,9 @@
           });
 
           if (val) {
-            if (currentLocation.markers) {
-              addMarkers(currentLocation.markers);
+            if (currentLocation.pois) {
+              addMarkers(currentLocation.pois);
             }
-            //else {
-            //  const markers = [];
-            //  for (var i = 0; i < 360; i += 30) {
-            //      markers.push([currentLocation.location[0] + 0.25 * Math.cos(i * Math.PI / 180), currentLocation.location[1] + 0.25 * Math.sin(i * Math.PI / 180)]);
-            //  }
-
-            //addMarkers(markers);
-          //}
           }
           else {
             removeMarkers();
@@ -510,7 +502,7 @@
             const el = document.createElement("div");
             el.className = "marker";
             const m = new mapboxgl.Marker(el)
-              .setLngLat(mark)
+              .setLngLat([mark.location[1], mark.location[0]])
               .addTo(map);
             markerObjects.push(m);
           });
@@ -544,6 +536,7 @@
 
         addPageLoadEvent(6, () => {
           $("#wiki-sidebar iframe").attr("src", "https://en.m.wikipedia.org/wiki/" + currentLocation.wiki);
+          toggleLabels(true);
         });
 
         $.ajaxPrefilter((options, originalOptions, jqXHR) => {
@@ -739,12 +732,7 @@
           addPageLoadEvent(4, () => {
             updateChart();
           });
-
-          addPageLoadEvent(6, () => {
-            toggleLabels(true);
-          });
           </script>
-
         </div>
         <div class="btn next-1">Back To Home</div>
         <div class="btn next-5">Browse Entries</div>
