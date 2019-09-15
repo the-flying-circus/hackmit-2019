@@ -441,7 +441,7 @@
           setInterval(updateTime, 1000);
 
           $.get("/weather", (data) => {
-            var tmp = Math.round((data.main.temp - 273.15)*9/5);
+            var tmp = Math.round((data.main.temp - 273.15)*9/5 + 32);
             $("#weather").html("<div style='display:flex;align-items:center;'><div style='border-radius:50%;background-color:#AAA;line-height:0;'><img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='100px'></div><div style='font-size:2em;margin-left:20px;'>" + tmp + "°F</div></div>");
           });
         });
