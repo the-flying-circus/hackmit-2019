@@ -66,12 +66,21 @@
         $("#time").text(new Date());
       }
 
+      const onPageLoad = {};
+
+      function addPageLoadEvent(id, func) {
+        onPageLoad[id] = func;
+      }
+
       $(document).on("page", (e, id) => {
         $("html, body").animate({ scrollTop: $("#page" + id).offset().top }, 1000);
+        const func = onPageLoad[id];
+        if (func) {
+          func();
+        }
       });
 
       $(document).ready(() => {
-        $(document).trigger("page", [1]);
         $(".next-2").click((e) => {
           e.preventDefault();
           $(document).trigger("page", [2]);
@@ -79,9 +88,13 @@
         updateTime();
         setInterval(updateTime, 1000);
 
-        $.get("/weather", (data) => {
-          $("#weather").text(data.consolidated_weather[0].weather_state_name);
+        addPageLoadEvent(1, () => {
+          $.get("/weather", (data) => {
+            $("#weather").text(data.weather[0].description);
+          });
         });
+
+        $(document).trigger("page", [1]);
       });
     </script>
   </head>
