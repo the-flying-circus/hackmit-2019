@@ -46,7 +46,6 @@
       bottom: 0px;
       right: 0px;
       z-index: -1;
-      background-image: url(/static/images/placeholder.jpg);
     }
     .info {
       position: absolute;
@@ -88,6 +87,9 @@
           });
         });
 
+        const backgroundNum = new Date().getMinutes() % 2;
+        $(".background").css("background-image", "url(/static/images/placeholder" + backgroundNum + ".jpg)");
+
         addPageLoadEvent(1, () => {
           updateTime();
           setInterval(updateTime, 1000);
@@ -127,7 +129,7 @@
         </div>
       </div>
     </div>
-    <div id="page3", class="page">
+    <div id="page3" class="page">
       Page 3
     </div>
   </body>
