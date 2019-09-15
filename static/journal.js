@@ -1,4 +1,5 @@
 function addPrompt(text) {
+  document.getElementById("promptButton").disabled = true;
   var finalElement = document.getElementById("final");
   if (finalElement.innerText.length > 1)
     finalElement.innerHTML += "<br><br><br>";
@@ -19,6 +20,7 @@ function animateTyping(text, parentId) {
     parent.innerHTML += "<br>";
     scrollJournalBottom();
     setEndOfContenteditable(parent);
+    document.getElementById("promptButton").disabled = false;
     return;
   }
   var pauseMS = 10 + Math.floor(Math.random() * 100);
