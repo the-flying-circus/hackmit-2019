@@ -1,5 +1,6 @@
 #history-carousel {
   height: 80vh;
+  position: relative;
 }
 
 #carousel-inner {
@@ -8,4 +9,16 @@
   padding-right: 1em;
   max-height: 100%;
   overflow-y: auto;
+}
+
+#prev-button {
+  position: absolute;
+  top: 50%;
+  left: 0;
+}
+
+#next-button {
+  position: absolute;
+  top: 50%;
+  right: 0;
 }
