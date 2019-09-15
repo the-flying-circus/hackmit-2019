@@ -8,7 +8,7 @@ from django.views.decorators.cache import cache_page
 
 from .models import Page, Metric
 from .serializers import PageSerializer, MetricSerializer
-from .IBMnlp import getIBMEmotions, getMoodScores
+from .IBMnlp import getIBMEmotions, getMoodScores, getEntityEmotions, parseEntityEmotions
 
 
 class PageViewSet(viewsets.ModelViewSet):
@@ -47,9 +47,20 @@ def mood(request):
 
 
 def prompt(request):
-    print(request.GET.get("text"))
+    lastObj = request.GET.get("lastObj")
+    lastSentiment = request.GET.get("lastSentiment")
+    entities, emotion = getEntityEmotions(request.GET.get("text"))
+    object, sentiment = parseEntityEmotions(entities, emotion, lastObj, lastSentiment)
+
+    if object is None:
+        question = '{} question about nothing in particular'.format(sentiment)
+    else:
+        question = '{} question about {}'.format(sentiment, object)
+
     return JsonResponse({
-        "question": "What made you feel sad?"
+        "question": question,
+        "lastObj": object,
+        "lastSentiment": sentiment
     })
 
 

@@ -26,18 +26,19 @@ def getIBMEmotions(text):
 def getEntityEmotions(text):
     p = {'version': '2019-07-12',
          "features": {
-             "emotion": True,
+             "emotion": {
+                 "document": True
+             },
              "entities": {
                  "emotion": True,
-                 "sentiment": True,
                  "limit": 10
              },
          },
-         'text': text}
+         'text': text.replace('.', ',')}
 
     resp = requests.post('https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze', auth=("apikey", ibmKey), json=p)
 
-    return resp.json()
+    return resp.json()['entities'], resp.json()['emotion']['document']['emotion']
 
 
 def getMoodScores(emotions):
@@ -46,6 +47,43 @@ def getMoodScores(emotions):
     cynicism = min(1, max(0, (12 * emotions['anger'] * emotions['disgust'])))
 
     return {'mood': mood, 'anxiety': anxiety, 'cynicism': cynicism}
+
+
+def parseEntityEmotions(entities, bigEmotions, blacklistedObj=None, blacklistedEmotion=None):
+    maxEnt = -1
+    gb = 'negative'
+    for ind, entity in enumerate(entities):
+        if entity['relevance'] < 0.75 or entity['text'] == blacklistedObj:
+            continue
+        score = getMoodScores(entity['emotion'])
+        if score['mood'] < 0.3 or score['anxiety'] > 0.7 or score['cynicism'] > 0.7:
+            if entities[maxEnt]['relevance'] <= entity['relevance']:
+                maxEnt = ind
+                gb = 'negative'
+        elif score['mood'] > 0.7:
+            if entities[maxEnt]['relevance'] <= entity['relevance']:
+                maxEnt = ind
+                gb = 'positive'
+        else:
+            if entities[maxEnt]['relevance'] <= entity['relevance']:
+                maxEnt = ind
+                gb = 'neutral'
+
+    if maxEnt < 0:
+        score = getMoodScores(bigEmotions)
+        if score['mood'] < 0.3 or score['anxiety'] > 0.7 or score['cynicism'] > 0.7:
+            gb = 'negative'
+        elif score['mood'] > 0.7:
+            gb = 'positive'
+        else:
+            gb = 'neutral'
+
+        if blacklistedObj is None and gb == blacklistedEmotion:
+            gb = 'neutral'
+
+        return None, gb
+
+    return entities[maxEnt]['text'], gb
 
 
 if __name__ == '__main__':
@@ -67,7 +105,9 @@ if __name__ == '__main__':
     print('cynical sample:', cynical, getMoodScores(cynical))
     print('cynical + happy sample:', cynicalandhappy, getMoodScores(cynicalandhappy))
 
-    pprint(getEntityEmotions(
-        "I'm really worried about HackMIT. I know that we're supposed to do well, but I'm afraid that we won't win any awards and then everything will be awful. I dread the awards ceremony and wish that I had never signed up to do this in the first place"))
-    pprint(getEntityEmotions(
-        "Fucking Charles frustrated the shit out of me. He came over here and made me redo the goddamn IBM api stuff after it was already done, now the graphs are only half-baked. At least Eric was there to cheer me up by generally fixing everything that wasn't done yet."))
+    entities, emotes = getEntityEmotions(
+        " Today was a pretty good day, That's a great time at work, Eric came in and complimented me, which never happens, That felt really nice, Even though Squidward was pretty mean to me, I actually got shit done, which again, doesn't actually happen that often.")
+    pprint(entities)
+    pprint(emotes)
+    pprint(parseEntityEmotions(entities, emotes))
+

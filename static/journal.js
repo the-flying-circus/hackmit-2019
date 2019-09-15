@@ -1,6 +1,9 @@
+let savedObj;
+let savedSentiment;
+
 function addPrompt(text) {
   document.getElementById("promptButton").disabled = true;
-  var finalElement = document.getElementById("final");
+  let finalElement = document.getElementById("final");
   if (finalElement.innerText.length > 1)
     finalElement.innerHTML += "<br><br><br>";
   finalElement.innerHTML += "<h5></h5>";
@@ -9,12 +12,12 @@ function addPrompt(text) {
 }
 
 function scrollJournalBottom() {
-  var journal = $("#journal-inner .simplebar-content-wrapper");
+  let journal = $("#journal-inner .simplebar-content-wrapper");
   journal.animate({ scrollTop: journal.prop("scrollHeight") }, 400);
 }
 
 function animateTyping(text, parentId) {
-  var parent = document.getElementById(parentId);
+  let parent = document.getElementById(parentId);
   parent.lastElementChild.innerHTML += text.charAt(0);
   if (text.length == 1) {
     parent.innerHTML += "<br>";
@@ -23,21 +26,25 @@ function animateTyping(text, parentId) {
     document.getElementById("promptButton").disabled = false;
     return;
   }
-  var pauseMS = 10 + Math.floor(Math.random() * 100);
+  let pauseMS = 10 + Math.floor(Math.random() * 100);
   window.setTimeout(function() { animateTyping(text.substring(1), parentId); }, pauseMS);
 }
 
 function getAndInsertPrompt() {
   $.get("/prompt/", {
-    text: document.getElementById("final").innerText
+    text: document.getElementById("final").innerText,
+      lastObj: savedObj,
+      lastSentiment: savedSentiment
   })
     .done(function(data) {
       addPrompt(data.question);
+      savedObj = data.lastObj;
+      savedSentiment = data.lastSentiment
     });
 }
 
 function setEndOfContenteditable(contentEditableElement) {
-  var range, selection;
+  let range, selection;
   range = document.createRange();
   range.selectNodeContents(contentEditableElement);
   range.collapse(false);
@@ -69,7 +76,7 @@ function doStream() {
     websocket.onmessage = onMessage;
     websocket.onerror = console.error;
 
-    var button = document.getElementById("recordButton");
+    let button = document.getElementById("recordButton");
     button.onclick = endStream;
     button.innerHTML = "Stop";
 }
@@ -88,7 +95,7 @@ function endStream() {
     }
 
     partialElement.innerHTML = "";
-    var button = document.getElementById("recordButton");
+    let button = document.getElementById("recordButton");
     button.onclick = doStream;
     button.innerHTML = "Record";
 }
@@ -101,8 +108,8 @@ function onOpen(event) {
     console.log("Opened");
     navigator.mediaDevices.getUserMedia({ audio: true }).then((micStream) => {
         audioContext.suspend();
-        var scriptNode = audioContext.createScriptProcessor(4096, 1, 1 );
-        var input = input = audioContext.createMediaStreamSource(micStream);
+        let scriptNode = audioContext.createScriptProcessor(4096, 1, 1 );
+        let input = input = audioContext.createMediaStreamSource(micStream);
         scriptNode.addEventListener('audioprocess', (event) => processAudioEvent(event));
         input.connect(scriptNode);
         scriptNode.connect(audioContext.destination);
@@ -124,7 +131,7 @@ function onClose(event) {
  * @param {MessageEvent} event
  */
 function onMessage(event) {
-    var data = JSON.parse(event.data);
+    let data = JSON.parse(event.data);
     switch (data.type){
         case "connected":
             console.log(`Connected, job id is ${data.id}`);
@@ -172,8 +179,8 @@ function processAudioEvent(e) {
 }
 
 function parseResponse(response) {
-    var message = "";
-    for (var i = 0; i < response.elements.length; i++){
+    let message = "";
+    for (let i = 0; i < response.elements.length; i++){
         message += response.type == "final" ?  response.elements[i].value : `${response.elements[i].value} `;
     }
     return message;
