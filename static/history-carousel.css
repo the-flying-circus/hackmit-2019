@@ -10,6 +10,7 @@
   padding-right: 4em;
   max-height: 100%;
   overflow-y: auto;
+  font-family: 'Hepta Slab', serif;
 }
 
 #prev-button, #next-button {
