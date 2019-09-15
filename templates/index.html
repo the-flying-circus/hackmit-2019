@@ -78,6 +78,14 @@
       display: none;
     }
 
+    .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+      background-color: transparent;
+    }
+
+    .mapboxgl-ctrl-attrib a {
+      color: #ddd;
+    }
+
     #page2 .card-panel {
       background-color: rgba(255, 255, 255, 0.8);
     }
@@ -292,6 +300,14 @@
             style: "mapbox://styles/mapbox/dark-v10",
             center: [-74.50, 40],
             zoom: 10
+          });
+        });
+
+        maps[0].on('load', function() {
+          maps[0].stylesheet.layers.forEach(function(layer) {
+            if (layer.type === 'symbol') {
+              maps[0].removeLayer(layer.id);
+            }
           });
         });
 
