@@ -522,55 +522,56 @@
             <canvas id="moodchart"></canvas>
           </div>
 
-          <script type="text/javascript">
-              let ctx = document.getElementById('moodchart');
-              let myChart = new Chart(ctx, {
-                  type: 'line',
-                  data: {
-                      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                      datasets: [{
-                          label: 'Mood',
-                          data: [1, 2, 3, 4, 5, 4],
-                          backgroundColor: [
-                              'rgba(255, 99, 132, 0.2)'
-                          ],
-                          borderColor: [
-                              'rgba(255, 99, 132, 1)'
-                          ],
-                          borderWidth: 1
-                      }, {
-                        label: 'Anxiety',
+        <script type="text/javascript">
+            let ctx = document.getElementById('moodchart');
+            let myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'Mood',
                         data: [1, 2, 3, 4, 5, 4],
-                        backgroundColor: [
-                          'rgba(54, 162, 235, 0.2)'
-                        ],
                         borderColor: [
-                          'rgba(54, 162, 235, 1)'
+                            '#FFAB00'
                         ],
-                        borderWidth: 1
-                      }, {
-                        label: 'Cynicism',
-                        data: [1, 2, 3, 4, 5, 4],
-                        backgroundColor: [
-                          'rgba(255, 206, 86, 0.2)'
-                        ],
-                        borderColor: [
-                          'rgba(255, 206, 86, 1)'
-                        ],
-                        borderWidth: 1
-                      }]
-                  },
-                  options: {
-                      maintainAspectRatio: false,
-                      scales: {
-                          yAxes: [{
-                              ticks: {
-                                  beginAtZero: true
-                              }
-                          }]
+                        borderWidth: 2
+                    }, {
+                      label: 'Anxiety',
+                      data: [1, 2, 3, 4, 5, 4],
+                      borderColor: [
+                        '#18FFFF'
+                      ],
+                      borderWidth: 2
+                    }, {
+                      label: 'Cynicism',
+                      data: [1, 2, 3, 4, 5, 4],
+                      borderColor: [
+                        '#D500F9'
+                      ],
+                      borderWidth: 2
+                    }]
+                },
+                options: {
+                  maintainAspectRatio: false,
+                  scales: {
+                    xAxes: [{
+                      ticks: {
+                        fontColor: "#FFFFFF"
                       }
+                    }],
+                    yAxes: [{
+                      ticks: {
+                        beginAtZero: true,
+                        fontColor: "#FFFFFF"
+                      }
+                    }]
+                  },
+                  legend: {
+                    labels: {
+                      fontColor: "#FFFFFF"
+                    }
                   }
-              });
+                }
+            });
 
               function updateChart() {
                 $.get('/graph/', (data) => {
