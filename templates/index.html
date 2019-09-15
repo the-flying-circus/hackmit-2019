@@ -411,7 +411,7 @@
       });
 
       $(document).ready(() => {
-        [1, 2, 3, 4, 5].forEach((i) => {
+        [1, 2, 3, 4, 5, 6].forEach((i) => {
           $(".next-" + i).click((e) => {
             e.preventDefault();
             $(document).trigger("page", [i]);
@@ -546,7 +546,7 @@
         <div class="btn next-2">Check in today</div> <div class="btn next-4">View stats</div> <div class="btn next-5">Browse Entries</div>
       </div>
     </div>
-    <div id="page2" class="page">
+    <div id="page2" class="page clearfix">
       <div class="container">
         <button id="recordButton" class="btn wave-effect" onclick="doStream()">Record</button>
         <button id="promptButton" class="btn wave-effect" onclick="getAndInsertPrompt()">Add Prompt</button>
@@ -694,6 +694,9 @@
 
           addPageLoadEvent(4, () => {
             updateChart();
+          });
+
+          addPageLoadEvent(6, () => {
             toggleLabels(true);
           });
           </script>
@@ -729,6 +732,8 @@
         </div>
         <div class="btn next-1">Back To Home</div>
       </div>
+    </div>
+    <div id="page6" class="page page-center">
     </div>
   </body>
 </html>
