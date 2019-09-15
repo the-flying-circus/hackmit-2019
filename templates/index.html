@@ -142,10 +142,15 @@
         }
 
         render() {
+          var nums = [1, 2, 3, 4, 5]
+          if (this.props.vertical) {
+            nums = [5, 4, 3, 2, 1]
+          }
+
           return <div style={
             { display: this.props.vertical ? 'inline-block' : 'block' }
           }>
-            {[1, 2, 3, 4, 5].map((i) =>
+            {nums.map((i) =>
               <a
                 key={i}
                 onClick={() => this.setState({ value: i })}
