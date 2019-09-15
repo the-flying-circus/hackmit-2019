@@ -249,22 +249,18 @@
 
     #wiki-sidebar {
       background-color: white;
-      padding: 15px;
-      max-height: 100vh;
+      height: 100vh;
       overflow-y: auto;
       width: 40%;
       margin-left: auto;
+      overflow-y: hidden;
     }
 
-    #wiki-sidebar .hatnote, #wiki-sidebar .mw-editsection {
-      display: none;
-    }
-
-    #wiki-sidebar h1 {
-      font-size: 2em;
-      border-bottom: 1px solid #ccc;
-      margin-top: 0;
-      padding: 5px;
+    #wiki-sidebar iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      padding: 0;
     }
     </style>
     <script type="text/babel">
@@ -541,16 +537,7 @@
         });
 
         addPageLoadEvent(6, () => {
-          $.get('/wiki?q=' + encodeURIComponent(currentLocation.wiki), (data) => {
-            $("<h1 />").text(data.title).appendTo("#wiki-sidebar");
-            $("#wiki-sidebar").append($(data.content));
-            $("#wiki-sidebar .mw-parser-output a").each(function() {
-              if (!$(this).hasClass("external")) {
-                $(this).attr("href", "https://en.wikipedia.org" + $(this).attr("href"));
-              }
-              $(this).attr("target", "_blank");
-            });
-          });
+          $("#wiki-sidebar iframe").attr("src", "https://en.m.wikipedia.org/wiki/" + currentLocation.wiki);
         });
 
         $.ajaxPrefilter((options, originalOptions, jqXHR) => {
@@ -782,7 +769,7 @@
       </div>
     </div>
     <div id="page6" class="page page-center">
-      <div id="wiki-sidebar"></div>
+      <div id="wiki-sidebar"><iframe></iframe></div>
     </div>
   </body>
 </html>
