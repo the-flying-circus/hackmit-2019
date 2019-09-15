@@ -14,6 +14,15 @@ function animateTyping(text, parentId) {
   window.setTimeout(function() { animateTyping(text.substring(1), parentId); }, pauseMS);
 }
 
+function getAndAddPrompt() {
+  $.get("/prompt/", function(data) {
+    { text: document.getElementById("final").innerText }
+  })
+    .done(function(data) {
+      addPrompt(data);
+    });
+}
+
 
 /**
  * Begins a stream with rev.ai using the AudioContext from the browser. Stream will continue until the websocket 

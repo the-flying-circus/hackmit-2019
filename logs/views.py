@@ -1,6 +1,6 @@
 import requests
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from rest_framework import viewsets, permissions
 from django.views.decorators.cache import cache_page
 
@@ -36,3 +36,7 @@ def weather(request):
 def mood(request):
     text = request.GET['text']
     return JsonResponse(getMoodScores(getIBMEmotions(text)))
+
+
+def prompt(request):
+    return HttpResponse("What made you feel sad?")
