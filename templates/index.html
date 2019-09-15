@@ -10,10 +10,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static "journal.css" %}">
+    <link rel="stylesheet" href="{% static "history-carousel.css" %}">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="{% static "journal.js" %}"></script>
+    <script type="text/javascript" src="{% static "history-carousel.js" %}"></script>
 
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.css' rel='stylesheet' />
@@ -370,7 +372,7 @@
       });
 
       $(document).ready(() => {
-        [1, 2, 3, 4].forEach((i) => {
+        [1, 2, 3, 4, 5].forEach((i) => {
           $(".next-" + i).click((e) => {
             e.preventDefault();
             $(document).trigger("page", [i]);
@@ -485,7 +487,7 @@
       </div>
       <div style="text-align: center">
         <div class="title">Hey, <span id="first-name" class="blur">User</span>!</div>
-        <div class="btn next-2">Check in today</div> <div class="btn next-4">View stats</div>
+        <div class="btn next-2">Check in today</div> <div class="btn next-4">View stats</div> <div class="btn next-5">View History</div>
       </div>
     </div>
     <div id="page2" class="page">
@@ -591,6 +593,17 @@
 
         </div>
         <div class="btn next-1">Back To Home</div>
+      </div>
+    </div>
+    <div id="page5" class="page">
+      <div class="container">
+        <div id="history-carousel" class="card-panel white">
+          <div class="input-field">
+            <input id="date" type="text" class="datepicker">
+            <label for="date">Pick a date.</label>
+          </div>
+          <div id="carousel-inner" data-simplebar data-simplebar-auto-hide="false"></div>
+        </div>
       </div>
     </div>
   </body>
