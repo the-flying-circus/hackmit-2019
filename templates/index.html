@@ -291,6 +291,9 @@
         $.get("/user", (data) => {
           currentLog = data.page;
           $("#first-name").removeClass("blur").text(data.name);
+          if (data.content) {
+            $("#final").text(data.content);
+          }
         });
 
         const backgroundNum = new Date().getMinutes() % 2;

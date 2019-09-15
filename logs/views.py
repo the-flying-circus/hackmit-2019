@@ -68,7 +68,8 @@ def user(request):
 
     return JsonResponse({
         "name": request.user.first_name,
-        "page": page.date
+        "page": page.date,
+        "content": page.content
     })
 
 
