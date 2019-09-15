@@ -40,4 +40,4 @@ class Command(BaseCommand):
                 Metric.objects.get_or_create(page=page, name=key, defaults={
                     'value': metrics[key]
                 })
-                print('\tGenerating metric: {} -> {}'.format(key, metrics[key]))
+                self.stdout.write('\tGenerating metric: {} -> {}'.format(key, metrics[key]))
