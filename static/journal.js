@@ -1,3 +1,20 @@
+function addPrompt(text) {
+  var finalElement = document.getElementById("final");
+  finalElement.innerHTML += "<br><br><br><h4></h4>";
+  animateTyping(text, finalElement.id);
+}
+
+function animateTyping(text, parentId) {
+  document.getElementById(parentId).lastElementChild.innerHTML += text.charAt(0);
+  if (text.length == 1) {
+    document.getElementById(parentId).innerHTML += "<br>";
+    return;
+  }
+  var pauseMS = 10 + Math.floor(Math.random() * 100);
+  window.setTimeout(function() { animateTyping(text.substring(1), parentId); }, pauseMS);
+}
+
+
 /**
  * Begins a stream with rev.ai using the AudioContext from the browser. Stream will continue until the websocket 
  * connection is closed. Follows the protocol specficied in our documentation:
