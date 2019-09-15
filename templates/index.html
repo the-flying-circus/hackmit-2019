@@ -122,7 +122,7 @@
           setInterval(updateTime, 1000);
 
           $.get("/weather", (data) => {
-            $("#weather").html("<img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='70px'>");
+            $("#weather").html("<img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='100px'>");
           });
         });
 
