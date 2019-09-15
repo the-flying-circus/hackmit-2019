@@ -546,12 +546,12 @@
             <canvas id="anxietychart"></canvas>
           </div>
           <div id="chart-container" class="container" style="position: relative; height:30vh; width:70vw">
-            <canvas id="moodchart"></canvas>
+            <canvas id="cynicismchart"></canvas>
           </div>
 
         <script type="text/javascript">
-            let ctx = document.getElementById('moodchart');
-            let myChart = new Chart(ctx, {
+            let charts = [];
+            charts.push(new Chart(document.getElementById('moodchart'), {
                 type: 'line',
                 data: {
                     datasets: [{
@@ -561,14 +561,66 @@
                             '#FFAB00'
                         ],
                         borderWidth: 2
-                    }, {
+                    }]
+                },
+                options: {
+                  maintainAspectRatio: false,
+                  scales: {
+                    xAxes: [{
+                      ticks: {
+                        fontColor: "#FFFFFF"
+                      }
+                    }],
+                    yAxes: [{
+                      ticks: {
+                        fontColor: "#FFFFFF"
+                      }
+                    }]
+                  },
+                  legend: {
+                    labels: {
+                      fontColor: "#FFFFFF"
+                    }
+                  }
+                }
+            }));
+            charts.push(new Chart(document.getElementById('anxietychart'), {
+                type: 'line',
+                data: {
+                    datasets: [{
                       label: 'Anxiety',
                       data: [1, 2, 3, 4, 5, 4],
                       borderColor: [
                         '#18FFFF'
                       ],
                       borderWidth: 2
-                    }, {
+                    }]
+                },
+                options: {
+                  maintainAspectRatio: false,
+                  scales: {
+                    xAxes: [{
+                      ticks: {
+                        fontColor: "#FFFFFF"
+                      }
+                    }],
+                    yAxes: [{
+                      ticks: {
+                        fontColor: "#FFFFFF"
+                      }
+                    }]
+                  },
+                  legend: {
+                    labels: {
+                      fontColor: "#FFFFFF"
+                    }
+                  }
+                }
+            }));
+            charts.push(new Chart(document.getElementById('cynicismchart'), {
+                type: 'line',
+                data: {
+                    datasets: [{
                       label: 'Cynicism',
                       data: [1, 2, 3, 4, 5, 4],
                       borderColor: [
@@ -587,7 +639,6 @@
                     }],
                     yAxes: [{
                       ticks: {
-                        beginAtZero: true,
                         fontColor: "#FFFFFF"
                       }
                     }]
@@ -598,15 +649,15 @@
                     }
                   }
                 }
-            });
+            }));
 
               function updateChart() {
                 $.get('/graph/', (data) => {
-                  myChart.config.data.labels = data.data.map((x) => x.date);
                   ['mood', 'anxiety', 'cynicism'].forEach((name, i) => {
-                    myChart.config.data.datasets[i].data = data.data.map((x) => x.metrics[name]);
+                    charts[i].config.data.labels = data.data.map((x) => x.date);
+                    charts[i].config.data.datasets[0].data = data.data.map((x) => x.metrics[name]);
+                    charts[i].update();
                   });
-                  myChart.update();
                 });
               }
 
