@@ -585,7 +585,7 @@
       <div id="logo" style="position:absolute;top:30pt;right:30pt;"><img src="/static/logo_white.png" style="width:10em;"></div>
       <div style="text-align: center">
         <div class="title">Hey, <span id="first-name" class="blur">User</span>!</div>
-        <div class="btn next-2">Check in today</div> <div class="btn next-4">View stats</div> <div class="btn next-5">Browse Entries</div>
+        <div class="btn next-2">Check in today</div> <div class="btn next-6">View stats</div> <div class="btn next-5">Browse Entries</div>
       </div>
     </div>
     <div id="page2" class="page clearfix">
@@ -606,10 +606,18 @@
         <div id="columns"></div>
         <br />
         <div class="btn next-2">Back</div>
-        <div class="btn next-6">Submit</div>
+        <div class="btn next-4">Submit</div>
       </div>
     </div>
     <div id="page4" class="page page-center">
+      <div id="wiki-sidebar"><iframe></iframe></div>
+      <div id="sidebar-toggle">
+        <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">location_on</i></a>
+      </div>
+      <div class="btn next-1" style="position:absolute;bottom:85px;left:10px;">Back To Home</div>
+      <div class="btn next-5" style="position:absolute;bottom:40px;left:10px;">See Stats</div>
+    </div>
+    <div id="page5" class="page page-center">
       <div style="text-align: center">
         <div id="graphs">
           <div id="moodchart-container" class="container" style="position: relative; height:30vh; width:70vw">
@@ -622,128 +630,128 @@
             <canvas id="cynicismchart"></canvas>
           </div>
 
-        <script type="text/javascript">
+          <script type="text/javascript">
             let charts = [];
             charts.push(new Chart(document.getElementById('moodchart'), {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: 'Mood',
-                        data: [1, 2, 3, 4, 5, 4],
-                        borderColor: [
-                            '#FFAB00'
-                        ],
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                  maintainAspectRatio: false,
-                  scales: {
-                    xAxes: [{
-                      ticks: {
-                        fontColor: "#FFFFFF"
-                      }
-                    }],
-                    yAxes: [{
-                      ticks: {
-                        fontColor: "#FFFFFF"
-                      }
-                    }]
-                  },
-                  legend: {
-                    labels: {
+              type: 'line',
+              data: {
+                datasets: [{
+                  label: 'Mood',
+                  data: [1, 2, 3, 4, 5, 4],
+                  borderColor: [
+                    '#FFAB00'
+                  ],
+                  borderWidth: 2
+                }]
+              },
+              options: {
+                maintainAspectRatio: false,
+                scales: {
+                  xAxes: [{
+                    ticks: {
                       fontColor: "#FFFFFF"
                     }
+                  }],
+                  yAxes: [{
+                    ticks: {
+                      fontColor: "#FFFFFF"
+                    }
+                  }]
+                },
+                legend: {
+                  labels: {
+                    fontColor: "#FFFFFF"
                   }
                 }
+              }
             }));
             charts.push(new Chart(document.getElementById('anxietychart'), {
-                type: 'line',
-                data: {
-                    datasets: [{
-                      label: 'Anxiety',
-                      data: [1, 2, 3, 4, 5, 4],
-                      borderColor: [
-                        '#18FFFF'
-                      ],
-                      borderWidth: 2
-                    }]
-                },
-                options: {
-                  maintainAspectRatio: false,
-                  scales: {
-                    xAxes: [{
-                      ticks: {
-                        fontColor: "#FFFFFF"
-                      }
-                    }],
-                    yAxes: [{
-                      ticks: {
-                        fontColor: "#FFFFFF"
-                      }
-                    }]
-                  },
-                  legend: {
-                    labels: {
+              type: 'line',
+              data: {
+                datasets: [{
+                  label: 'Anxiety',
+                  data: [1, 2, 3, 4, 5, 4],
+                  borderColor: [
+                    '#18FFFF'
+                  ],
+                  borderWidth: 2
+                }]
+              },
+              options: {
+                maintainAspectRatio: false,
+                scales: {
+                  xAxes: [{
+                    ticks: {
                       fontColor: "#FFFFFF"
                     }
+                  }],
+                  yAxes: [{
+                    ticks: {
+                      fontColor: "#FFFFFF"
+                    }
+                  }]
+                },
+                legend: {
+                  labels: {
+                    fontColor: "#FFFFFF"
                   }
                 }
+              }
             }));
             charts.push(new Chart(document.getElementById('cynicismchart'), {
-                type: 'line',
-                data: {
-                    datasets: [{
-                      label: 'Cynicism',
-                      data: [1, 2, 3, 4, 5, 4],
-                      borderColor: [
-                        '#D500F9'
-                      ],
-                      borderWidth: 2
-                    }]
-                },
-                options: {
-                  maintainAspectRatio: false,
-                  scales: {
-                    xAxes: [{
-                      ticks: {
-                        fontColor: "#FFFFFF"
-                      }
-                    }],
-                    yAxes: [{
-                      ticks: {
-                        fontColor: "#FFFFFF"
-                      }
-                    }]
-                  },
-                  legend: {
-                    labels: {
+              type: 'line',
+              data: {
+                datasets: [{
+                  label: 'Cynicism',
+                  data: [1, 2, 3, 4, 5, 4],
+                  borderColor: [
+                    '#D500F9'
+                  ],
+                  borderWidth: 2
+                }]
+              },
+              options: {
+                maintainAspectRatio: false,
+                scales: {
+                  xAxes: [{
+                    ticks: {
                       fontColor: "#FFFFFF"
                     }
+                  }],
+                  yAxes: [{
+                    ticks: {
+                      fontColor: "#FFFFFF"
+                    }
+                  }]
+                },
+                legend: {
+                  labels: {
+                    fontColor: "#FFFFFF"
                   }
                 }
+              }
             }));
 
-              function updateChart() {
-                $.get('/graph/', (data) => {
-                  ['mood', 'anxiety', 'cynicism'].forEach((name, i) => {
-                    charts[i].config.data.labels = data.data.map((x) => x.date);
-                    charts[i].config.data.datasets[0].data = data.data.map((x) => x.metrics[name]);
-                    charts[i].update();
-                  });
+            function updateChart() {
+              $.get('/graph/', (data) => {
+                ['mood', 'anxiety', 'cynicism'].forEach((name, i) => {
+                  charts[i].config.data.labels = data.data.map((x) => x.date);
+                  charts[i].config.data.datasets[0].data = data.data.map((x) => x.metrics[name]);
+                  charts[i].update();
                 });
-              }
+              });
+            }
 
-          addPageLoadEvent(4, () => {
-            updateChart();
-          });
+            addPageLoadEvent(4, () => {
+              updateChart();
+            });
           </script>
         </div>
         <div class="btn next-1">Back To Home</div>
-        <div class="btn next-5">Browse Entries</div>
+        <div class="btn next-6">Browse Entries</div>
       </div>
     </div>
-    <div id="page5" class="page page-center">
+    <div id="page6" class="page page-center">
       <div class="container">
         <div id="history-carousel" class="card-panel white">
           <div style="display:flex;flex-direction:column;height:100%;max-height:100%;">
@@ -771,13 +779,6 @@
         </div>
         <div class="btn next-1">Back To Home</div>
       </div>
-    </div>
-    <div id="page6" class="page page-center">
-      <div id="wiki-sidebar"><iframe></iframe></div>
-      <div id="sidebar-toggle">
-        <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">location_on</i></a>
-      </div>
-      <div class="btn next-1" style="position:absolute;bottom:40px;left:10px;">Back To Home</div>
     </div>
   </body>
 </html>
