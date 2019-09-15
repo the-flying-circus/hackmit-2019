@@ -40,6 +40,13 @@ def weather(request):
 
     return JsonResponse(resp.json())
 
+def entry(request):
+    date = request.GET.get('date')
+    page = Page.objects.get(date=date, owner=request.user)
+    return JsonResponse({
+        "content": page.content
+    })
+
 def mood(request):
     page = request.GET.get('page')
     if page is not None:

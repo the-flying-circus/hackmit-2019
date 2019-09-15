@@ -41,7 +41,7 @@ function getAndInsertPrompt() {
     lastObj: savedObj,
     lastSentiment: savedSentiment
   })
-      .done(function (data) {
+      .done(function(data) {
         addPrompt(data.question);
         savedObj = data.lastObj;
         savedSentiment = data.lastSentiment
