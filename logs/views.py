@@ -66,6 +66,10 @@ def user(request):
 
     # TODO: this shouldn't be here
     page, _ = Page.objects.get_or_create(owner=request.user, date=datetime.date.today())
+    for metric in ['mood', 'anxiety', 'cynicism']:
+        Metric.objects.get_or_create(page=page, name=metric, defaults={
+            'value': 1
+        })
 
     return JsonResponse({
         "name": request.user.first_name,
