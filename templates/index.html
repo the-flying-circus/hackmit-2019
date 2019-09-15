@@ -453,7 +453,10 @@
 
         addPageLoadEvent(2, () => {
           window.toggleLabels(false);
-          setTimeout(() => addPrompt("How was your day?"), 1000);
+          var finalEl = document.getElementById("final");
+          setEndOfContenteditable(finalEl);
+          if (finalEl.innerText < 1)
+            setTimeout(() => addPrompt("How was your day?"), 1000);
         });
 
         $.ajaxPrefilter((options, originalOptions, jqXHR) => {
@@ -492,7 +495,7 @@
       </div>
       <div style="text-align: center">
         <div class="title">Hey, <span id="first-name" class="blur">User</span>!</div>
-        <div class="btn next-2">Check in today</div> <div class="btn next-4">View stats</div> <div class="btn next-5">View History</div>
+        <div class="btn next-2">Check in today</div> <div class="btn next-4">View stats</div> <div class="btn next-5">Browse Entries</div>
       </div>
     </div>
     <div id="page2" class="page">
@@ -501,7 +504,7 @@
         <button id="promptButton" class="btn wave-effect" onclick="getAndInsertPrompt()">Add Prompt</button>
         <div id="journal" class="card-panel white">
           <div id="journal-inner" data-simplebar data-simplebar-auto-hide="false" onclick="document.getElementById('final').focus()">
-            <span id="final" contenteditable="true"><br></span>
+            <span id="final" contenteditable="true"></span>
             <span id="partial" class="grey-text text-darken-1"></span>
           </div>
         </div>
@@ -598,6 +601,7 @@
 
         </div>
         <div class="btn next-1">Back To Home</div>
+        <div class="btn next-5">Browse Entries</div>
       </div>
     </div>
     <div id="page5" class="page">
@@ -609,8 +613,11 @@
           </div>
           <div id="prev-button"><i class="material-icons medium">chevron_left</i></div>
           <div id="next-button"><i class="material-icons medium">chevron_right</i></div>
-          <div id="carousel-inner" data-simplebar data-simplebar-auto-hide="false"></div>
+          <div>
+            <div id="carousel-inner" data-simplebar data-simplebar-auto-hide="false"></div>
+          </div>
         </div>
+        <div class="btn next-1">Back To Home</div>
       </div>
     </div>
   </body>

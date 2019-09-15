@@ -1,6 +1,6 @@
 #history-carousel {
-  height: 80vh;
   position: relative;
+  height: 80vh;
 }
 
 #carousel-inner {
@@ -16,6 +16,7 @@
   position: absolute;
   top: 50%;
   cursor: pointer;
+  user-select: none;
 }
 
 #prev-button {
