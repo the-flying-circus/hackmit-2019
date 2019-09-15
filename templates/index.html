@@ -235,14 +235,19 @@
           }
         }
 
-        render() {
-          const { prefix, suffix } = this.props
-          var nums = [1, 2, 3, 4, 5]
-          /**if (this.props.vertical) {
-            nums = [5, 4, 3, 2, 1]
-          }**/
+        componentDidUpdate(prevProps) {
+          if (this.props.value !== prevProps.value) {
+            this.setState({
+              value: this.props.value
+            })
+          }
+        }
 
-          return <div className={(this.props.vertical ? 'item-vert' : 'item-horiz') + ' ' + (this.props.right ? 'right' : 'left')}>
+        render() {
+          const { prefix, suffix, vertical } = this.props
+          var nums = [1, 2, 3, 4, 5]
+
+          return <div className={(vertical ? 'item-vert' : 'item-horiz') + ' ' + (this.props.right ? 'right' : 'left')}>
             {nums.map((i) =>
               <span key={i} style={
                 {position: 'relative'}
@@ -252,13 +257,14 @@
                 <a
                   onClick={
                     () => {
-                      this.setState({ value: i })
+                      const trueValue = vertical ? nums.length + 1 - i : i
+                      this.setState({ value: trueValue })
                       if (this.props.onChange) {
-                        this.props.onChange(i)
+                        this.props.onChange(trueValue)
                       }
                     }
                   }
-                  className={'btn-floating btn-large waves-effect waves-light selector-button ' + (this.props.vertical ? 'selector-vertical ' : ' ') + (this.state.value === i ? 'light-blue' : 'blue-grey')}>
+                  className={'btn-floating btn-large waves-effect waves-light selector-button ' + (vertical ? 'selector-vertical ' : ' ') + (this.state.value === (vertical ? nums.length + 1 - i : i) ? 'light-blue' : 'blue-grey')}>
                   <img src={'../static/images/emots/' + i + '.png'} width='100%' margin='auto'/>
                 </a>
               </span>
