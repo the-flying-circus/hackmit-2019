@@ -461,7 +461,7 @@
           const text = $.trim($("#journal").text());
           $.ajax({
             url: `/pages/${currentLog}/`,
-            method: 'PATCH',
+            method: 'GET',
             data: { content: text }
           }).then(() => {
             $.get('/mood/?page=' + currentLog, () => {
