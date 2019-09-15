@@ -6,7 +6,7 @@ from .models import Page, Metric
 
 class MetricSerializer(serializers.ModelSerializer):
     def save(self):
-        self.validated_data['page'] = Page.objects.get(user=self.context['request'].user, code=self.context['view'].kwargs['page_code'])
+        self.validated_data['page'] = Page.objects.get(owner=self.context['request'].user, date=self.context['view'].kwargs['page_date'])
         return super().save()
 
     class Meta:

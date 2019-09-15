@@ -138,6 +138,15 @@
       display: block;
     }
 
+    .selector-separator {
+      display: inline-block;
+      width: 75px;
+    }
+
+    .selector-separator-horizontal {
+      margin-bottom: 30px;
+    }
+
     .blur {
       filter: blur(10px);
     }
@@ -148,6 +157,39 @@
       width: 50px;
       height: 50px;
       border-radius: 50%;
+    }
+
+    .emot {
+      width: 32px;
+      margin: 25px;
+      vertical-align: middle;
+    }
+
+    .item-horiz .emot-abs {
+      position: absolute;
+      top: 25px;
+    }
+
+    .item-vert.left .emot-abs {
+      position: absolute;
+      right: 25px;
+    }
+
+    .item-vert.right .emot-abs {
+      position: absolute;
+      left: 25px;
+    }
+
+    #final {
+      white-space: pre-wrap;
+    }
+
+    .item-vert {
+      display: inline-block;
+    }
+
+    .item-horiz {
+      display: block;
     }
     </style>
     <script type="text/babel">
@@ -163,28 +205,32 @@
         }
 
         render() {
+          const { prefix, suffix } = this.props
           var nums = [1, 2, 3, 4, 5]
           if (this.props.vertical) {
             nums = [5, 4, 3, 2, 1]
           }
 
-          return <div style={
-            { display: this.props.vertical ? 'inline-block' : 'block' }
-          }>
+          return <div className={(this.props.vertical ? 'item-vert' : 'item-horiz') + ' ' + (this.props.right ? 'right' : 'left')}>
             {nums.map((i) =>
-              <a
-                key={i}
-                onClick={
-                  () => {
-                    this.setState({ value: i })
-                    if (this.props.onChange) {
-                      this.props.onChange(i)
+              <span key={i} style={
+                {position: 'relative'}
+              }>
+                {i == 1 && prefix && <img src={'/static/images/emots/' + prefix + '.png'} className='emot emot-abs' />}
+                {i == 5 && suffix && <img src={'/static/images/emots/' + suffix + '.png'} className='emot emot-abs' />}
+                <a
+                  onClick={
+                    () => {
+                      this.setState({ value: i })
+                      if (this.props.onChange) {
+                        this.props.onChange(i)
+                      }
                     }
                   }
-                }
-                className={'btn-floating btn-large waves-effect waves-light selector-button ' + (this.props.vertical ? 'selector-vertical ' : ' ') + (this.state.value === i ? 'green' : 'red')}>
-                {i}
-              </a>
+                  className={'btn-floating btn-large waves-effect waves-light selector-button ' + (this.props.vertical ? 'selector-vertical ' : ' ') + (this.state.value === i ? 'light-blue' : 'blue-grey')}>
+                  {i}
+                </a>
+              </span>
             )}
             <div className='column-label'>{this.props.name}</div>
           </div>
@@ -250,13 +296,36 @@
         }
       }
 
-      ReactDOM.render(<div style={
-        {textAlign: 'center'}
-      }>
-        <Selector name='Mood' value={1} />
-        <Selector name='Anxiety' value={2} vertical={true} />
-        <Selector name='Cynicism' value={3} vertical={true} />
-      </div>, document.querySelector("#columns"))
+      function changeMetric(name, val) {
+        $.ajax({
+          url: `/pages/${currentLog}/metrics/${name}/`,
+          method: 'PATCH',
+          data: {
+            'value': val
+          }
+        })
+      }
+
+      $(document).ready(() => {
+        addPageLoadEvent(3, () => {
+          $.get(`/pages/${currentLog}/`, (data) => {
+            const metrics = {}
+            data.metric_set.forEach((item) => {
+              metrics[item.name] = item.value
+            })
+
+            ReactDOM.render(<div style={
+              {textAlign: 'center'}
+            }>
+              <Selector name='Mood' value={metrics['mood']} prefix='mood_1' suffix='mood_5' onChange={(val) => changeMetric('mood', val)} />
+              <div className='selector-separator-horizontal clearfix'></div>
+              <Selector name='Anxiety' value={metrics['anxiety']} prefix='anxiety_1' suffix='anxiety_5' vertical={true} onChange={(val) => changeMetric('anxiety', val)} />
+              <div className='selector-separator'></div>
+              <Selector name='Cynicism' value={metrics['cynicism']} right={true} prefix='cynicism_1' suffix='cynicism_5' vertical={true} onChange={(val) => changeMetric('cynicism', val)} />
+            </div>, document.querySelector("#columns"))
+          })
+        })
+      })
     </script>
 
     <script type="text/javascript">
@@ -271,15 +340,20 @@
       var currentLog = null;
 
       function addPageLoadEvent(id, func) {
-        onPageLoad[id] = func;
+        if (id in onPageLoad) {
+          onPageLoad[id].push(func);
+        }
+        else {
+          onPageLoad[id] = [func];
+        }
       }
 
       $(document).on("page", (e, id) => {
         currentPage = id;
         $("html, body").animate({ scrollTop: $("#page" + id).offset().top }, 1000);
         const func = onPageLoad[id];
-        if (func) {
-          func();
+        if (func && func.length) {
+          func.forEach((x) => x());
         }
       });
 
@@ -294,6 +368,9 @@
         $.get("/user", (data) => {
           currentLog = data.page;
           $("#first-name").removeClass("blur").text(data.name);
+          if (data.content) {
+            $("#final").text(data.content);
+          }
         });
 
         const backgroundNum = new Date().getMinutes() % 2;
@@ -308,14 +385,15 @@
           });
         });
 
-        maps[0].on('load', function() {
-          maps[0].style.stylesheet.layers.forEach(function(layer) {
-            if (layer.type === 'symbol') {
-              maps[0].removeLayer(layer.id);
-            }
+        maps.forEach((map) => {
+          map.on('load', function() {
+            map.style.stylesheet.layers.forEach(function(layer) {
+              if (layer.type === 'symbol') {
+                map.removeLayer(layer.id);
+              }
+            });
           });
         });
-
         const markers = [];
 
         for (var i = 0; i < 360; i += 30) {
@@ -387,7 +465,7 @@
         <button id="promptButton" class="btn wave-effect" onclick="getAndInsertPrompt()">Add Prompt</button>
         <div id="journal" class="card-panel">
           <div id="journal-inner" data-simplebar data-simplebar-auto-hide="false" onclick="document.getElementById('final').focus()">
-            <span id="final" contenteditable="true"></span>
+            <span id="final" contenteditable="true"><br></span>
             <span id="partial" class="grey-text text-darken-1"></span>
           </div>
         </div>

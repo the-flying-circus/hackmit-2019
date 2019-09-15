@@ -47,6 +47,7 @@ def mood(request):
 
 
 def prompt(request):
+    print(request.GET.get("text"))
     return JsonResponse({
         "question": "What made you feel sad?"
     })
@@ -65,14 +66,25 @@ def user(request):
 
     # TODO: this shouldn't be here
     page, _ = Page.objects.get_or_create(owner=request.user, date=datetime.date.today())
+    for metric in ['mood', 'anxiety', 'cynicism']:
+        Metric.objects.get_or_create(page=page, name=metric, defaults={
+            'value': 1
+        })
 
     return JsonResponse({
         "name": request.user.first_name,
-        "page": page.date
+        "page": page.date,
+        "content": page.content
     })
 
 
 def graph(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            'success': False,
+            'error': 'Not Logged In'
+        })
+
     output = []
 
     for page in Page.objects.filter(owner=request.user).order_by('date'):
