@@ -156,7 +156,14 @@
             {nums.map((i) =>
               <a
                 key={i}
-                onClick={() => this.setState({ value: i })}
+                onClick={
+                  () => {
+                    this.setState({ value: i })
+                    if (this.props.onChange) {
+                      this.props.onChange(i)
+                    }
+                  }
+                }
                 className={'btn-floating btn-large waves-effect waves-light selector-button ' + (this.props.vertical ? 'selector-vertical ' : ' ') + (this.state.value === i ? 'green' : 'red')}>
                 {i}
               </a>
