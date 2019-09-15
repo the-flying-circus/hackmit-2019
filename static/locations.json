@@ -24,59 +24,10 @@
         },
         {
           "location": [
-            64.927765,
-            -23.26163
-          ],
-          "name": "Bjargarsteinn Math\u00fas"
-        },
-        {
-          "location": [
-            64.92599,
-            -23.256493
-          ],
-          "name": "Laki Hafnarkaffi"
-        },
-        {
-          "location": [
-            64.92446,
-            -23.267239
-          ],
-          "name": "Kaffi 59"
-        },
-        {
-          "location": [
-            64.92438,
-            -23.267452
-          ],
-          "name": "RuBen"
-        },
-        {
-          "location": [
-            64.92685,
-            -23.25683
-          ],
-          "name": "Laki Tours"
-        },
-        {
-          "location": [
             64.92475,
             -23.260494
           ],
           "name": "Cafe Emil"
-        },
-        {
-          "location": [
-            64.924576,
-            -23.259775
-          ],
-          "name": "Meistarinn"
-        },
-        {
-          "location": [
-            64.92684,
-            -23.256807
-          ],
-          "name": "Restaurant at Hotel Framnes"
         }
       ]
     },
@@ -150,27 +101,6 @@
         },
         {
           "location": [
-            47.91516,
-            106.9176
-          ],
-          "name": "Veranda"
-        },
-        {
-          "location": [
-            47.914562,
-            106.91852
-          ],
-          "name": "Millie's Cafe"
-        },
-        {
-          "location": [
-            47.913017,
-            106.90054
-          ],
-          "name": "California"
-        },
-        {
-          "location": [
             47.9149,
             106.9162
           ],
@@ -178,31 +108,17 @@
         },
         {
           "location": [
-            47.913372,
-            106.90418
+            47.915836,
+            106.89979
           ],
-          "name": "Caffe Ti amo"
+          "name": "Matrix Salon"
         },
         {
           "location": [
-            47.912643,
-            106.937675
+            47.914253,
+            106.90976
           ],
-          "name": "UBean Coffee House and Roasterie"
-        },
-        {
-          "location": [
-            47.913082,
-            106.92437
-          ],
-          "name": "MexiKhan"
-        },
-        {
-          "location": [
-            47.915276,
-            106.91769
-          ],
-          "name": "Silk Road Bar & Grill"
+          "name": "Rosewood Kitchen Enoteca"
         }
       ]
     },
@@ -214,13 +130,6 @@
         12.0309
       ],
       "pois": [
-        {
-          "location": [
-            12.043224,
-            39.037006
-          ],
-          "name": "Ben Abeba"
-        },
         {
           "location": [
             12.03174,
@@ -241,13 +150,6 @@
             39.04114
           ],
           "name": "Bete Giyorgis"
-        },
-        {
-          "location": [
-            12.034533,
-            39.049164
-          ],
-          "name": "Unique Restaurant"
         }
       ]
     }

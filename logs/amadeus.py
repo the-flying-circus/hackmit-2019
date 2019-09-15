@@ -19,19 +19,25 @@ def getPOIS(lat, long, num=5):
     pois = []
     p = 0
     rad = 2
-    while len(pois) < num:
+
+    # give up after trying super extra hard
+    bad = 0
+    while len(pois) < num and bad < 5 and rad < 20:
         params = {'latitude': lat, 'longitude': long, 'radius': rad, "page[offset]": p}
         currentpoi = oauth.get('https://api.amadeus.com/v1/reference-data/locations/pois', params=params).json()
         if 'data' not in currentpoi:
             print(params)
             print(currentpoi)
+            bad += 1
+            p = 0
+            rad *= 2
             continue
         if len(currentpoi['data']) < 1:
             p = 0
             rad *= 2
         pprint(currentpoi)
         for poi in currentpoi['data']:
-            if poi['category'].lower not in CATEGORY_BLACKLIST and poi['name'].lower() not in poiNames:
+            if poi['category'].lower() not in CATEGORY_BLACKLIST and poi['name'].lower() not in poiNames:
                 pois.append(poi)
                 poiNames.add(poi['name'].lower())
         p += 1
