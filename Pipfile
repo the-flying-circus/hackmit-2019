@@ -13,6 +13,7 @@ pyyaml = "*"
 uritemplate = "*"
 rev-ai = "*"
 requests_oauthlib = "*"
+bleach = "*"
 
 [dev-packages]
 
