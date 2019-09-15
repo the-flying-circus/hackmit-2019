@@ -457,7 +457,7 @@
         });
 
         window.toggleLabels = function(val) {
-          map.style.stylesheet.layers.forEach(function(layer) {
+          map.style.stylesheet.layers.forEach(function (layer) {
             if (layer.type === 'symbol') {
               map.setLayoutProperty(layer.id, 'visibility', val ? 'visible' : 'none');
             }
@@ -474,7 +474,7 @@
             //  }
 
             //addMarkers(markers);
-            }
+          //}
           }
           else {
             removeMarkers();
