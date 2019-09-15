@@ -6,6 +6,7 @@ from django.views.decorators.cache import cache_page
 
 from .models import Page, Metric
 from .serializers import PageSerializer, MetricSerializer
+from .IBMnlp import getIBMEmotions, getMoodScores
 
 
 class PageViewSet(viewsets.ModelViewSet):
@@ -32,3 +33,7 @@ def weather(request):
     resp.raise_for_status()
 
     return JsonResponse(resp.json())
+
+def mood(request):
+    text = request.GET['text']
+    return JsonResponse(getMoodScores(getIBMEmotions(text)))
