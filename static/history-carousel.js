@@ -6,8 +6,12 @@ $(document).ready(function() {
     .done(function(data) {
       carouselEl.innerHTML = data.content;
       let emoticon_dict = {};
-      for (let i = 0; i < data.metric_set.length; i++)
-        emoticon_dict[data.metric_set[i]["name"]] = data.metric_set[i]["value"];
+      for (let i = 0; i < data.metric_set.length; i++) {
+        if (emoticon_dict[data.metric_set[i]["name"] == "anxiety" || emoticon_dict[data.metric_set[i]["name"] == "cynicism"]])
+          emoticon_dict[data.metric_set[i]["name"]] = 5 - data.metric_set[i]["value"];
+        else
+          emoticon_dict[data.metric_set[i]["name"]] = data.metric_set[i]["value"];
+      }
       document.getElementById("mood-emoticon").innerHTML = `<img src="/static/images/emots/${emoticon_dict['mood']}.png">`;
       document.getElementById("anxiety-emoticon").innerHTML = `<img src="/static/images/emots/${emoticon_dict['anxiety']}.png">`;
       document.getElementById("cynicism-emoticon").innerHTML = `<img src="/static/images/emots/${emoticon_dict['cynicism']}.png">`;

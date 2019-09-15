@@ -12,6 +12,7 @@ from django.views.decorators.cache import cache_page
 from .models import Page, Metric
 from .serializers import PageSerializer, MetricSerializer
 from .IBMnlp import getIBMEmotions, getMoodScores, getEntityEmotions, parseEntityEmotions
+from .amadeus import getPOIS
 
 
 with open('static/prompts.json', 'r') as f:
@@ -93,7 +94,7 @@ def prompt(request):
 
     return JsonResponse({
         "question": question,
-        "lastObj": obj,
+        "lastObj": '' if obj is None else obj,
         "lastSentiment": sentiment
     })
 
@@ -140,4 +141,20 @@ def graph(request):
 
     return JsonResponse({
         'data': output
+    })
+
+
+def pointsOfInterest(request):
+    lat = request.GET.get('latitude')
+    long = request.GET.get('longitude')
+    pois = getPOIS(lat, long)
+    return JsonResponse(pois)
+
+
+def wiki(request):
+    content = requests.get('https://en.wikipedia.org/w/api.php?action=parse&format=json&page={}'.format(request.GET.get('q'))).json()["parse"]
+
+    return JsonResponse({
+        'title': content['title'],
+        'content': content['text']['*']
     })

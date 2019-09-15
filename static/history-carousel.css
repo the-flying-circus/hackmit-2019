@@ -1,13 +1,14 @@
 #history-carousel {
   position: relative;
   height: 80vh;
+  padding-right: 2em;
 }
 
 #carousel-inner {
   width: 100%;
   height: 100%;
   padding-left: 3em;
-  padding-right: 4em;
+  padding-right: 2em;
   max-height: 100%;
   overflow-y: auto;
   font-family: 'Hepta Slab', serif;

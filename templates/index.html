@@ -246,6 +246,26 @@
       font-size: 1em;
       font-weight: bold;
     }
+
+    #wiki-sidebar {
+      background-color: white;
+      padding: 15px;
+      max-height: 100vh;
+      overflow-y: auto;
+      width: 40%;
+      margin-left: auto;
+    }
+
+    #wiki-sidebar .hatnote, #wiki-sidebar .mw-editsection {
+      display: none;
+    }
+
+    #wiki-sidebar h1 {
+      font-size: 2em;
+      border-bottom: 1px solid #ccc;
+      margin-top: 0;
+      padding: 5px;
+    }
     </style>
     <script type="text/babel">
       const COLUMN_HEIGHT = 150
@@ -457,7 +477,7 @@
         });
 
         window.toggleLabels = function(val) {
-          map.style.stylesheet.layers.forEach(function(layer) {
+          map.style.stylesheet.layers.forEach(function (layer) {
             if (layer.type === 'symbol') {
               map.setLayoutProperty(layer.id, 'visibility', val ? 'visible' : 'none');
             }
@@ -467,14 +487,14 @@
             if (currentLocation.markers) {
               addMarkers(currentLocation.markers);
             }
-            else {
-              const markers = [];
-              for (var i = 0; i < 360; i += 30) {
-                  markers.push([currentLocation.location[0] + 0.25 * Math.cos(i * Math.PI / 180), currentLocation.location[1] + 0.25 * Math.sin(i * Math.PI / 180)]);
-              }
+            //else {
+            //  const markers = [];
+            //  for (var i = 0; i < 360; i += 30) {
+            //      markers.push([currentLocation.location[0] + 0.25 * Math.cos(i * Math.PI / 180), currentLocation.location[1] + 0.25 * Math.sin(i * Math.PI / 180)]);
+            //  }
 
-              addMarkers(markers);
-            }
+            //addMarkers(markers);
+          //}
           }
           else {
             removeMarkers();
@@ -518,6 +538,19 @@
           setEndOfContenteditable(finalEl);
           if (finalEl.innerText < 1)
             setTimeout(() => addPrompt("How was your day?"), 1000);
+        });
+
+        addPageLoadEvent(6, () => {
+          $.get('/wiki?q=' + encodeURIComponent(currentLocation.wiki), (data) => {
+            $("<h1 />").text(data.title).appendTo("#wiki-sidebar");
+            $("#wiki-sidebar").append($(data.content));
+            $("#wiki-sidebar .mw-parser-output a").each(function() {
+              if (!$(this).hasClass("external")) {
+                $(this).attr("href", "https://en.wikipedia.org" + $(this).attr("href"));
+              }
+              $(this).attr("target", "_blank");
+            });
+          });
         });
 
         $.ajaxPrefilter((options, originalOptions, jqXHR) => {
@@ -576,7 +609,7 @@
         <div id="columns"></div>
         <br />
         <div class="btn next-2">Back</div>
-        <div class="btn next-4">Submit</div>
+        <div class="btn next-6">Submit</div>
       </div>
     </div>
     <div id="page4" class="page page-center">
@@ -721,31 +754,34 @@
     <div id="page5" class="page page-center">
       <div class="container">
         <div id="history-carousel" class="card-panel white">
-          <div class="input-field">
-            <input id="date" type="text" class="datepicker">
-            <label for="date">Pick a date.</label>
-          </div>
-          <div id="prev-button"><i class="material-icons medium">chevron_left</i></div>
-          <div id="next-button"><i class="material-icons medium">chevron_right</i></div>
-          <div>
-            <div id="feelings" class="row">
-              <div class="col s12 m4">
-                <div>Mood:</div><div id="mood-emoticon"></div>
-              </div>
-              <div class="col s12 m4">
-                <div>Anxiety:</div><div id="anxiety-emoticon"></div>
-              </div>
-              <div class="col s12 m4">
-                <div>Cynicism:</div><div id="cynicism-emoticon"></div>
-              </div>
+          <div style="display:flex;flex-direction:column;height:100%;max-height:100%;">
+            <div class="input-field">
+              <input id="date" type="text" class="datepicker">
+              <label for="date">Pick a date.</label>
             </div>
-            <div id="carousel-inner"></div>
+            <div id="prev-button"><i class="material-icons medium">chevron_left</i></div>
+            <div id="next-button"><i class="material-icons medium">chevron_right</i></div>
+            <div style="height:100%;max-height:100%;display:flex;flex-direction:column;padding-right:20px;">
+              <div id="feelings" class="row">
+                <div class="col s12 m4">
+                  <div>Mood:</div><div id="mood-emoticon"></div>
+                </div>
+                <div class="col s12 m4">
+                  <div>Anxiety:</div><div id="anxiety-emoticon"></div>
+                </div>
+                <div class="col s12 m4">
+                  <div>Cynicism:</div><div id="cynicism-emoticon"></div>
+                </div>
+              </div>
+              <div id="carousel-inner"></div>
+            </div>
           </div>
         </div>
         <div class="btn next-1">Back To Home</div>
       </div>
     </div>
     <div id="page6" class="page page-center">
+      <div id="wiki-sidebar"></div>
     </div>
   </body>
 </html>

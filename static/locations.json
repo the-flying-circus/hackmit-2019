@@ -1,26 +1,161 @@
 {
-    "locations": [
+  "locations": [
+    {
+      "name": "Kirkjufellsfoss, Iceland",
+      "wiki": "Kirkjufell",
+      "image": "iceland.jpg",
+      "location": [
+        -23.3208618,
+        64.9264356
+      ],
+      "pois": [
         {
-            "name": "Kirkjufellsfoss, Iceland",
-            "image": "iceland.jpg",
-            "location": [-23.3208618, 64.9264356]
+          "location": [
+            64.92629,
+            -23.3115
+          ],
+          "name": "Kirkjufellsfoss"
         },
         {
-            "name": "Angkor Wat, Cambodia",
-            "image": "cambodia.jpg",
-            "location": [103.864797, 13.4124745],
-            "zoom": 15
+          "location": [
+            64.9402,
+            -23.306755
+          ],
+          "name": "Kirkjufell"
         },
         {
-
-            "name": "Ulaanbaatar, Mongolia",
-            "image": "mongolia.jpg",
-            "location": [47.8864, 106.9057]
-        },
-        {
-            "name": "Lalibela, Ethiopia",
-            "image": "ethiopia.jpg",
-            "location": [12.0309, 39.0476]
+          "location": [
+            64.92475,
+            -23.260494
+          ],
+          "name": "Cafe Emil"
         }
-    ]
+      ]
+    },
+    {
+      "name": "Angkor Wat, Cambodia",
+      "wiki": "Angkor_Wat",
+      "image": "cambodia.jpg",
+      "location": [
+        103.864797,
+        13.4124745
+      ],
+      "zoom": 15,
+      "pois": [
+        {
+          "location": [
+            13.412469,
+            103.86699
+          ],
+          "name": "Angkor Wat"
+        },
+        {
+          "location": [
+            13.424464,
+            103.85624
+          ],
+          "name": "Phnom Bakheng"
+        },
+        {
+          "location": [
+            13.415674,
+            103.8586
+          ],
+          "name": "Ta Prohm Kel"
+        },
+        {
+          "location": [
+            13.412469,
+            103.86699
+          ],
+          "name": "Angkor Archaeological Park"
+        },
+        {
+          "location": [
+            13.425357,
+            103.858376
+          ],
+          "name": "Baksei Chamkrong Temple"
+        }
+      ]
+    },
+    {
+      "name": "Ulaanbaatar, Mongolia",
+      "wiki": "Ulaanbaatar",
+      "image": "mongolia.jpg",
+      "location": [
+        106.9057,
+        47.8864
+      ],
+      "pois": [
+        {
+          "location": [
+            47.91489,
+            106.918434
+          ],
+          "name": "Choijin Lama Temple Museum"
+        },
+        {
+          "location": [
+            47.915375,
+            106.914085
+          ],
+          "name": "Grand Khaan Irish Pub"
+        },
+        {
+          "location": [
+            47.9149,
+            106.9162
+          ],
+          "name": "National Library of Mongolia"
+        },
+        {
+          "location": [
+            47.915836,
+            106.89979
+          ],
+          "name": "Matrix Salon"
+        },
+        {
+          "location": [
+            47.914253,
+            106.90976
+          ],
+          "name": "Rosewood Kitchen Enoteca"
+        }
+      ]
+    },
+    {
+      "name": "Lalibela, Ethiopia",
+      "wiki": "Lalibela",
+      "image": "ethiopia.jpg",
+      "location": [
+        39.0476,
+        12.0309
+      ],
+      "pois": [
+        {
+          "location": [
+            12.03174,
+            39.04113
+          ],
+          "name": "Church of Saint George, Lalibela"
+        },
+        {
+          "location": [
+            12.031734,
+            39.045597
+          ],
+          "name": "Bet Amanuel"
+        },
+        {
+          "location": [
+            12.031608,
+            39.04114
+          ],
+          "name": "Bete Giyorgis"
+        }
+      ]
+    }
+  ]
 }
