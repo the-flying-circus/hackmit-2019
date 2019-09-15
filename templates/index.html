@@ -484,7 +484,7 @@
         });
 
         $("#continue").click(function() {
-          const text = $.trim($("#journal").html());
+          const text = $.trim($("#final").html());
           $.ajax({
             url: `/pages/${currentLog}/`,
             method: 'PATCH',
