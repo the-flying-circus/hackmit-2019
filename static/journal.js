@@ -4,7 +4,7 @@ let savedSentiment;
 function addPrompt(text) {
   document.getElementById("promptButton").disabled = true;
   let finalElement = document.getElementById("final");
-  if (finalElement.innerText.length >= 1)
+  if (finalElement.innerText.length > 1)
     finalElement.innerHTML += "<br><br><br>";
   finalElement.innerHTML += "<h5></h5>";
   scrollJournalBottom();
@@ -115,7 +115,7 @@ function onOpen(event) {
   navigator.mediaDevices.getUserMedia({audio: true}).then((micStream) => {
     audioContext.suspend();
     let scriptNode = audioContext.createScriptProcessor(4096, 1, 1);
-    let input = input = audioContext.createMediaStreamSource(micStream);
+    let input = audioContext.createMediaStreamSource(micStream);
     scriptNode.addEventListener('audioprocess', (event) => processAudioEvent(event));
     input.connect(scriptNode);
     scriptNode.connect(audioContext.destination);
