@@ -464,7 +464,7 @@
 
           $.get("/weather", (data) => {
             var tmp = Math.round((data.main.temp - 273.15)*9/5 + 32);
-            $("#weather").html("<div style='display:flex;align-items:center;'><div style='border-radius:50%;background-color:#AAA;line-height:0;'><img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='100px'></div><div style='font-size:2em;margin-left:20px;'>" + tmp + "°F</div></div>");
+            $("#weather").html("<div style='display:flex;align-items:center;'><div style='border-radius:50%;background-color:#AAA;line-height:0;'><img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='100px'></div><div style='margin-left:20px'><div style='font-size:2em;'>" + tmp + "°F</div><div style='font-size:10pt;'><i>Cambridge, MA</i></div></div></div>");
           });
         });
 
@@ -507,8 +507,7 @@
       <div id="background" class="background"></div>
       <div class="info card-panel black center-align">
         <div id="weather" style="margin-bottom:10px;"></div>
-        <div id="time" align="left" style="padding-top:15px;"></div>
-        <div align="left" style="font-size:10pt;"><i>Cambridge, MA</i></div>
+        <div id="time" style="padding-top:15px;"></div>
       </div>
       <div style="text-align: center">
         <div class="title">Hey, <span id="first-name" class="blur">User</span>!</div>
