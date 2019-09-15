@@ -15,6 +15,9 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="{% static "journal.js" %}"></script>
 
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.css' rel='stylesheet' />
+
     <style>
     html, body {
       margin: 0;
@@ -46,7 +49,7 @@
       bottom: 0px;
       right: 0px;
       z-index: -1;
-      background-image: url(/static/images/placeholder.jpg);
+      background-color: black;
     }
     .info {
       position: absolute;
@@ -60,42 +63,89 @@
     .info ul {
       margin: 0;
     }
+
+    .mapbox-improve-map {
+      display: none;
+    }
+
+    #page2 .card-panel {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    #page2 .container {
+      padding: 15px;
+    }
     </style>
     <script>
+      mapboxgl.accessToken = 'pk.eyJ1Ijoic3JrYnJhZGJ1cnkiLCJhIjoiY2p6Z2tzbnRnMG13MjNtbGV2ZGYzZDVkYSJ9.--vU61Pvq2Fd1UqhlIUd3g';
+
       function updateTime() {
         $("#time").text(new Date());
       }
 
-      $(document).ready(() => {
-        $("html, body").animate({ scrollTop: 0 }, 500);
-        $(".next-2").click((e) => {
-          e.preventDefault();
-          $("html, body").animate({ scrollTop: $("#page2").offset().top }, 1000);
-        });
-        updateTime();
-        setInterval(updateTime, 1000);
+      const onPageLoad = {};
 
-        $.get("/weather", (data) => {
-          $("#weather").text(data.consolidated_weather[0].weather_state_name);
+      function addPageLoadEvent(id, func) {
+        onPageLoad[id] = func;
+      }
+
+      $(document).on("page", (e, id) => {
+        $("html, body").animate({ scrollTop: $("#page" + id).offset().top }, 1000);
+        const func = onPageLoad[id];
+        if (func) {
+          func();
+        }
+      });
+
+      $(document).ready(() => {
+        [1, 2, 3].forEach((i) => {
+          $(".next-" + i).click((e) => {
+            e.preventDefault();
+            $(document).trigger("page", [i]);
+          });
         });
+
+        const backgroundNum = new Date().getMinutes() % 2;
+        $("#background").css("background-image", "url(/static/images/placeholder" + backgroundNum + ".jpg)");
+
+        const maps = [1, 2].map((i) => {
+          return new mapboxgl.Map({
+            container: "background-map-" + i,
+            style: "mapbox://styles/mapbox/dark-v10",
+            center: [-74.50, 40],
+            zoom: 10
+          });
+        });
+
+        addPageLoadEvent(1, () => {
+          updateTime();
+          setInterval(updateTime, 1000);
+
+          $.get("/weather", (data) => {
+            $("#weather").html("<img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png', width='100px'>");
+          });
+        });
+
+        $(document).trigger("page", [1]);
       });
     </script>
   </head>
   <body>
     <div id="page1" class="page page-center">
-      <div class="background"></div>
+      <div id="background" class="background"></div>
       <div class="info">
         <ul>
-          <li><i class="fa fa-fw fa-clock-o"></i> <span id="time"></span></li>
-          <li><i class="fa fa-fw fa-cloud"></i> <span id="weather">Weather</span></li>
+          <li><span id="weather">Weather</span></li>
+          <li><span id="time"></span></li> 
         </ul>
       </div>
       <div style="text-align: center">
         <div class="title">Hey, Grey!</div>
-        <div class="btn next-2">Check in today</div>
+        <div class="btn next-2">Check in today</div> <div class="btn next-3">View stats</div>
       </div>
     </div>
     <div id="page2" class="page">
+      <div id="background-map-1" class="background"></div>
       <div class="container">
         <button id="recordButton" class="btn wave-effect" onclick="doStream()">Record</button>
         <div id="recordStatus"></div>
@@ -105,9 +155,11 @@
             <span id="partial" class="grey-text"></span>
           </div>
         </div>
+        <div class="btn next-3">Continue</div>
       </div>
     </div>
-    <div id="page3", class="page">
+    <div id="page3" class="page">
+      <div id="background-map-2" class="background"></div>
       Page 3
     </div>
   </body>
