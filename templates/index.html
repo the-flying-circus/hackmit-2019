@@ -136,6 +136,11 @@
       display: block;
     }
 
+    .selector-separator {
+      display: inline-block;
+      width: 75px;
+    }
+
     .blur {
       filter: blur(10px);
     }
@@ -267,6 +272,7 @@
       }>
         <Selector name='Mood' value={1} onChange={(val) => changeMetric('mood', val)} />
         <Selector name='Anxiety' value={2} vertical={true} onChange={(val) => changeMetric('anxiety', val)} />
+        <div className='selector-separator'></div>
         <Selector name='Cynicism' value={3} vertical={true} onChange={(val) => changeMetric('cynicism', val)} />
       </div>, document.querySelector("#columns"))
     </script>
