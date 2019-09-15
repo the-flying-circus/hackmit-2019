@@ -13,6 +13,7 @@ from .IBMnlp import getIBMEmotions, getMoodScores
 class PageViewSet(viewsets.ModelViewSet):
     serializer_class = PageSerializer
     permission_classes = [permissions.IsAuthenticated]
+    lookup_field = 'date'
 
     def get_queryset(self):
         return Page.objects.filter(owner=self.request.user)
@@ -21,9 +22,10 @@ class PageViewSet(viewsets.ModelViewSet):
 class MetricViewSet(viewsets.ModelViewSet):
     serializer_class = MetricSerializer
     permission_classes = [permissions.IsAuthenticated]
+    lookup_field = 'name'
 
     def get_queryset(self):
-        return Metric.objects.filter(page=self.kwargs['page_pk'], page__owner=self.request.user)
+        return Metric.objects.filter(page__date=self.kwargs['page_date'], page__owner=self.request.user)
 
 
 @cache_page(60)
