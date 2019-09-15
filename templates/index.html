@@ -141,6 +141,10 @@
       width: 75px;
     }
 
+    .selector-separator-horizontal {
+      margin-bottom: 30px;
+    }
+
     .blur {
       filter: blur(10px);
     }
@@ -153,8 +157,37 @@
       border-radius: 50%;
     }
 
+    .emot {
+      width: 32px;
+      margin: 25px;
+      vertical-align: middle;
+    }
+
+    .item-horiz .emot-abs {
+      position: absolute;
+      top: 25px;
+    }
+
+    .item-vert.left .emot-abs {
+      position: absolute;
+      right: 25px;
+    }
+
+    .item-vert.right .emot-abs {
+      position: absolute;
+      left: 25px;
+    }
+
     #final {
       white-space: pre-wrap;
+    }
+
+    .item-vert {
+      display: inline-block;
+    }
+
+    .item-horiz {
+      display: block;
     }
     </style>
     <script type="text/babel">
@@ -170,28 +203,32 @@
         }
 
         render() {
+          const { prefix, suffix } = this.props
           var nums = [1, 2, 3, 4, 5]
           if (this.props.vertical) {
             nums = [5, 4, 3, 2, 1]
           }
 
-          return <div style={
-            { display: this.props.vertical ? 'inline-block' : 'block' }
-          }>
+          return <div className={(this.props.vertical ? 'item-vert' : 'item-horiz') + ' ' + (this.props.right ? 'right' : 'left')}>
             {nums.map((i) =>
-              <a
-                key={i}
-                onClick={
-                  () => {
-                    this.setState({ value: i })
-                    if (this.props.onChange) {
-                      this.props.onChange(i)
+              <span key={i} style={
+                {position: 'relative'}
+              }>
+                {i == 1 && prefix && <img src={'/static/images/emots/' + prefix + '.png'} className='emot emot-abs' />}
+                {i == 5 && suffix && <img src={'/static/images/emots/' + suffix + '.png'} className='emot emot-abs' />}
+                <a
+                  onClick={
+                    () => {
+                      this.setState({ value: i })
+                      if (this.props.onChange) {
+                        this.props.onChange(i)
+                      }
                     }
                   }
-                }
-                className={'btn-floating btn-large waves-effect waves-light selector-button ' + (this.props.vertical ? 'selector-vertical ' : ' ') + (this.state.value === i ? 'light-blue' : 'blue-grey')}>
-                {i}
-              </a>
+                  className={'btn-floating btn-large waves-effect waves-light selector-button ' + (this.props.vertical ? 'selector-vertical ' : ' ') + (this.state.value === i ? 'light-blue' : 'blue-grey')}>
+                  {i}
+                </a>
+              </span>
             )}
             <div className='column-label'>{this.props.name}</div>
           </div>
@@ -278,10 +315,11 @@
             ReactDOM.render(<div style={
               {textAlign: 'center'}
             }>
-              <Selector name='Mood' value={metrics['mood']} onChange={(val) => changeMetric('mood', val)} />
-              <Selector name='Anxiety' value={metrics['anxiety']} vertical={true} onChange={(val) => changeMetric('anxiety', val)} />
+              <Selector name='Mood' value={metrics['mood']} prefix='mood_1' suffix='mood_5' onChange={(val) => changeMetric('mood', val)} />
+              <div className='selector-separator-horizontal clearfix'></div>
+              <Selector name='Anxiety' value={metrics['anxiety']} prefix='anxiety_1' suffix='anxiety_5' vertical={true} onChange={(val) => changeMetric('anxiety', val)} />
               <div className='selector-separator'></div>
-              <Selector name='Cynicism' value={metrics['cynicism']} vertical={true} onChange={(val) => changeMetric('cynicism', val)} />
+              <Selector name='Cynicism' value={metrics['cynicism']} right={true} prefix='cynicism_1' suffix='cynicism_5' vertical={true} onChange={(val) => changeMetric('cynicism', val)} />
             </div>, document.querySelector("#columns"))
           })
         })
